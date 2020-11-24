@@ -1,0 +1,289 @@
+# User configuration
+PATH=$PATH:/Applications/VirtualBox.app/Contents/MacOS/
+export MAMP_PHP=/Applications/MAMP/bin/php/php7.1.8/bin
+export PATH=$PATH:/Applications/MAMP/Library/bin/
+export PATH="$MAMP_PHP:$PATH"
+export PATH=$PATH:~/bin
+export PATH=$PATH:~/.composer/vendor/bin
+# export PATH="vnu-runtime-image/bin"
+export PATH
+#export PYTHONPATH=`brew --prefix`/lib/python3.7/site-packages:$PYTHONPATH
+
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+POWERLEVEL9K_MODE='awesome-fontconfig'
+ZSH_THEME="powerlevel9k/powerlevel9k"
+
+POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
+POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
+POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="\n🚀 "
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon vcs dir)
+POWERLEVEL9K_CUSTOM_LINE='zsh_line'
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time)
+POWERLEVEL9K_OS_ICON_BACKGROUND='green'
+POWERLEVEL9K_OS_ICON_FOREGROUND='black'
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
+POWERLEVEL9K_TIME_FORMAT="%D{%H:%M}"
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS=true
+
+# Enable command auto-correction.
+ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git zsh-autosuggestions)
+
+source $ZSH/oh-my-zsh.sh
+
+# add support for ctrl+o to open selected file in VS Code
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+export EDITOR=vim
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+
+# Welcome Message
+if [ $TERM = "ansi" ] || [ $TERM = "xterm-256color" ] && [ $TERM_PROGRAM != "vscode" ]
+	then
+	printf "\e[92m"
+	figlet -f slant "Explorador"
+	printf "\e[0m"
+fi
+
+# Fix catalina "man" command errors
+alias man='/usr/bin/man 2>/dev/null'
+alias apropos="apropos 2>/dev/null"
+alias whatis="whatis 2>/dev/null"
+
+# Reload .zshrc
+alias zreload='source ~/.zshrc && echo .zshrc reloaded!'
+
+# Reload command with sudo
+alias please='sudo !!'
+
+# Browser-sync
+watch() {
+	# If argument is empty
+	if [ -z "$1" ]
+		then
+		# Run browser-sync on current directory (html)
+		browser-sync start --directory --server --files "**/*.js, **/*.html, **/*.css" --logLevel "silent"
+	else
+		# If argument is present, use it as a proxy value and run on current directory (php)
+		browser-sync start --proxy $1 --directory --files "**/*.js, **/*.php, **/*.html, **/*.css" --logLevel "silent"
+	fi
+}
+
+# Fix Wordpress Permissions
+# (based on recommendations from http://codex.wordpress.org/Hardening_WordPress#File_permissions)
+fixpermissions() {
+	find ./ -type d -exec chmod 755 {} \;
+	find ./ -type f -exec chmod 644 {} \;
+	chmod 600 wp-config.php
+}
+
+# Fix large file on Git
+fixlargefile() {
+	# If argument is empty
+	if [ -z "$1" ]
+		then
+		printf '\e[1;31m%-6s\e[m' "Enter the file's path as an argument"
+		echo '';
+	else
+		# If argument is present, run the command
+		git filter-branch --force --index-filter "git rm --cached --ignore-unmatch $1" --prune-empty --tag-name-filter cat -- --all
+		printf '\e[1;32m%-6s\e[m' "Success!"
+		echo '';
+	fi
+}
+
+# Search file
+search() {
+	find ~/ -iname "$1" 2> /dev/null
+}
+
+# Clear DNS cache
+cleardns() {
+	sudo killall -HUP mDNSResponder; sleep 2; echo macOS DNS Cache Reset
+}
+
+# Preview files
+preview() {
+	if [ -z "$1" ]
+		then
+		# ls -apF . | fzf --preview 'bat --color "always" {}'
+		find . -type f -maxdepth 1 | fzf --preview 'bat --color "always" {}'
+	else
+		# ls -apFd "$1"/* | fzf --preview 'bat --color "always" {}'
+		find "$1" -type f -maxdepth 1 | fzf --preview 'bat --color "always" {}'
+	fi
+}
+
+# Open centos bash
+centos() {
+	docker container exec -it -e "PS1=root@centos: " `docker container ls | grep "centos" | awk '{print $1}'` bash
+}
+
+# Open Ubuntu bash
+ubuntu() {
+	docker container exec -it `docker container ls | grep "ubuntu" | awk '{print $1}'` bash
+}
+
+# Lighthouse
+siteaudit() {
+	if [ -z "$2" ]
+	then
+		lighthouse --chrome-flags="--headless" --emulated-form-factor="desktop" --view $1
+	else
+		lighthouse --chrome-flags="--headless" --emulated-form-factor="$1" --view $2
+	fi
+}
+
+# Optimize svg icons
+svgoptim() {
+	# loop through all svg icons in current directory.
+	for icon in *.svg
+	do
+		# svgo
+		svgo $icon;
+		# Edit svg file.
+			# Get width.
+			width=`grep -Eo width\=\"[0-9]+\" $icon | grep -Eo [0-9]+`;
+			# Get height.
+			height=`grep -Eo height\=\"[0-9]+\" $icon | grep -Eo [0-9]+`;
+			# Add viewBox values and remove width/height.
+			sed -i '' -e "s/<svg width=\"[0-9]*\" height=\"[0-9]*\"/<svg viewBox=\"0 0 $width $height\"/g" $icon;
+			# Add encoding
+			sed -i '' -e "s/^<svg/<?xml version=\"1.0\" encoding=\"UTF-8\"?><svg/" $icon;
+			# Remove fill
+			# sed -i '' -e "s/fill=\"\#[0-9a-fA-F]*\"//g" $icon;
+	done
+}
+
+# Watch for "defaults" macos settings changes
+watchdefaults() {
+
+	# _cleanup() {
+	# 	rm -f macosdefaults.txt macosdefaults2.txt
+	# }
+	# trap '_cleanup' EXIT
+
+	_saveOriginalSettings() {
+		# Save original file
+		defaults read > macosdefaults.txt
+	}
+
+	while true
+	do
+		if [ ! -e macosdefaults.txt ]
+			then
+			_saveOriginalSettings
+		fi
+
+		# Save "changes" file
+		defaults read > macosdefaults2.txt
+		# Get changes
+		diff -uw macosdefaults.txt macosdefaults2.txt | grep -E "^\+" && _saveOriginalSettings
+		sleep 1
+	done
+}
+
+# Generate random password
+genpass() {
+	date +%s | sha256sum | base64 | head -c 32 ; echo
+}
+
+# Deletes Spotify Cache
+# (Run this when app starts running slow)
+spotifycache() {
+	# (zshell only) Do not query the user before executing ‘rm *’ or ‘rm path/*’.
+	setopt localoptions rmstarsilent
+
+	# Clear cache files
+	\rm -fr ~/Library/Caches/com.spotify.client/Browser/*
+	\rm -fr ~/Library/Caches/com.spotify.client/Data/*
+	\rm -fr ~/Library/Caches/com.spotify.client/fsCachedData/*
+	echo 'Cache Cleared!'
+}
+
+# npm install fix
+alias npmplease='rm -rf node_modules/ && rm -f package-lock.json && npm install'
+
+#export NODE_PATH=/opt/lib/node_modules
+
+# Update brew
+alias brewery='brew update && brew upgrade && brew cleanup'
+
+# ls aliases
+alias l='ls -CF'
+alias la='ls -A'
+alias ll='ls -alF'
+alias lh='ls -Shl' # Sort files by size
+
+# cat alias
+alias cat='bat'
+
+# stat alias
+alias stat='stat -x'
+
+# WPCLI for docker-compose
+alias wpcli='docker-compose run --rm wp'
+
+# rvm
+PATH="$GEM_HOME/bin:$HOME/.rvm/bin:$PATH" # Add RVM to PATH for scripting
+[ -s ${HOME}/.rvm/scripts/rvm ] && source ${HOME}/.rvm/scripts/rvm
+
+# Shopify-app-cli
+[ -f "$HOME/.shopify-app-cli/shopify.sh" ] && source "$HOME/.shopify-app-cli/shopify.sh"
+
+# NVM
+export NODE_PATH="${HOME}/version/v12.18.3/lib/node_modules"
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use # This loads nvm
+
+# Google application credentials
+export GOOGLE_APPLICATION_CREDENTIALS="$HOME/Lume Deodorant-9b7ee4fa2e51.json"
+
+# Gren Github Token.
+export GREN_GITHUB_TOKEN="{{- (index (index (onepassword "5sr4x6zzfnazjke776emmgykiq").details.sections 2).fields 0).v -}}"
