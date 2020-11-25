@@ -1,0 +1,175 @@
+#!/bin/sh
+
+tput setaf 7
+tput smso;  echo " Running apps configuration file. "; tput rmso
+tput sgr0
+
+
+# Get email.
+email=$(defaults read com.apple.iTunes MacBuddyStoreID)
+
+
+# Setup dropbox.
+# ----------------------------------------------------------------
+# Open dropbox
+open /Applications/Dropbox.app
+
+# Prompt action.
+echo "Did Dropbox finish syncing?"
+read -p "Press enter to continue"
+
+# Wait 1 second.
+sleep 1
+
+
+# 1Password
+# ----------------------------------------------------------------
+# Signin into 1password
+eval $(op signin my.1password.com $email)
+
+
+
+# Alfred.
+# ----------------------------------------------------------------
+# Prompt action.
+echo "Set Alfred license and sync folder?"
+read -p "Once it's done, press enter to continue"
+
+# Wait 1 second.
+sleep 1
+
+
+# Wait 1 second.
+sleep 1
+
+
+# Firefox default settings.
+# ----------------------------------------------------------------
+# Open firefox.
+open "/Applications/Firefox Developer Edition.app"
+# Close app.
+killall "firefox" &> /dev/null
+# Copy firefox profile styles.
+cp -R ~/Dropbox/FirefoxTheme/chrome ~/Library/Application\ Support/Firefox/Profiles/*.dev-edition-default
+# Copy firefox default config.
+cp ~/Dropbox/FirefoxTheme/autoconfig.js /Applications/Firefox\ Developer\ Edition.app/Contents/Resources/defaults/pref
+cp ~/Dropbox/FirefoxTheme/mozilla.cfg /Applications/Firefox\ Developer\ Edition.app/Contents/Resources
+
+# Wait 1 second.
+sleep 1
+
+
+# Git.
+# ----------------------------------------------------------------
+git config --global color.ui true
+git config --global user.name "Cristian"
+git config --global user.email $email
+ssh-keygen -t rsa -b 4096 -C $email
+cat ~/.ssh/id_rsa.pub
+open -a "Firefox Developer Edition" https://github.com/settings/ssh
+# Prompt action.
+echo "Add your generated SSH key and add it to your Github account."
+read -p "Press enter to continue"
+# Authenticate.
+ssh -T git@github.com
+
+# Wait 1 second.
+sleep 1
+
+
+# Fliqlo (Screensaver).
+# ----------------------------------------------------------------
+# Set time to 300 seconds.
+defaults -currentHost write com.apple.screensaver idleTime -int 300
+# Set Fliqlo as screensaver.
+defaults -currentHost write com.apple.screensaver moduleDict -dict \
+	moduleName -string "Fliqlo" \
+	path -string "$HOME/Library/Screen Savers/Fliqlo.saver" \
+	type -int 0
+
+# Wait 1 second.
+sleep 1
+
+
+# iTerm settings.
+# ----------------------------------------------------------------
+# Open app
+open "/Applications/iTerm.app"
+# Close app
+killall "iTerm2" &> /dev/null
+# Specify iTerm preferences directory
+defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/Dropbox/Settings/iTerm"
+# Tell iTerm2 to use the custom preferences in the directory
+defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
+
+# Wait 1 second.
+sleep 1
+
+
+# Jumpshare.
+# ----------------------------------------------------------------
+# Open app
+open "/Applications/Jumpshare.app"
+# Close app
+killall "Jumpshare" &> /dev/null
+# Take & Edit Screenshot shortcut
+defaults write com.jumpshare.Jumpshare hotkeyannotation -dict \
+	characters -int 4 \
+	charactersIgnoringModifiers -string "$" \
+	keyCode -int 21 \
+	modifierFlags -int 1179648
+
+# Wait 1 second.
+sleep 1
+
+
+# Mail settings.
+# ----------------------------------------------------------------
+# Open Mail.
+open "/System/Applications/Mail.app"
+# Close app
+killall "Mail" &> /dev/null
+# Disable "Use dark backgrounds for messages".
+defaults write com.apple.mail ViewMessagesWithDarkBackgrounds -bool false
+# Enable "Show most recent message at the top".
+defaults write com.apple.mail ConversationViewSortDescending -bool true
+# Enable "Use the same message format as the original message" (Preferences > Composing).
+defaults write com.apple.mail AutoReplyFormat -bool true
+# Disable "Increase quote level" (Preferences > Composing).
+defaults write com.apple.mail SupressQuoteBarsInComposeWindows -bool false
+
+
+# Rectangle settings.
+# ----------------------------------------------------------------
+# Open Rectangle.
+open "/Applications/Rectangle.app"
+# Prompt action.
+echo "Authorize app"
+read -p "Once it's done, press enter to continue"
+# Close app
+killall "Rectangle" &> /dev/null
+
+# Set "Spectacle mode" shortcuts
+defaults write com.knollsoft.Rectangle alternateDefaultShortcuts -bool false
+# Set cycling behavior to "Spectacle mode"
+defaults write com.knollsoft.Rectangle subsequentExecutionMode -int 0
+# Open app again.
+open "/Applications/Rectangle.app"
+
+
+# SourceTree.
+# ----------------------------------------------------------------
+# Open app
+open "/Applications/SourceTree.app"
+# Close app.
+killall "SourceTree" &> /dev/null
+# Set app settings.
+defaults write com.torusknot.SourceTreeNotMAS AtlassianAccountEmail -string $email
+defaults write com.torusknot.SourceTreeNotMAS globalUserEmail -string $email
+defaults write com.torusknot.SourceTreeNotMAS CurrentTheme 1
+defaults write com.torusknot.SourceTreeNotMAS globalUserFullName -string "Cristian"
+defaults write com.torusknot.SourceTreeNotMAS diffTool 5
+defaults write com.torusknot.SourceTreeNotMAS mergeTool 5
+defaults write com.torusknot.SourceTreeNotMAS terminalApp 2
+defaults write com.torusknot.SourceTreeNotMAS respondToGitHubMacURLs -bool true
+defaults write com.torusknot.SourceTreeNotMAS respondToGitHubMacURLs gitPushAllTags -bool false

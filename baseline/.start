@@ -1,0 +1,66 @@
+#!/bin/sh
+
+# Some prefs, like Mail, need Terminal to have Full Disk Access
+if ( ! ls ~/Library/Containers/com.apple.Mail 2>&1 ) | grep -q 'Operation not permitted'; then
+	echo 'Add `Terminal.app` to System Preferences -> Security -> Privacy -> Full Disk Access' 1>&2
+	/usr/bin/open 'x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles'
+	exit 1
+fi
+
+# Create "install" directory
+# (Used to download and save apps not available in the appstore or brew)
+mkdir install
+
+# NVM
+# ----------------------------------------------------------------
+# Install
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.0/install.sh | bash
+
+# Shopify app-cli
+export SHOPIFY_CLI_BOOTSTRAP_GIT_URL=https://github.com/shopify/shopify-app-cli.git
+eval "$(curl -sS https://raw.githubusercontent.com/Shopify/shopify-app-cli/master/install.sh)"
+
+
+# ohmyzsh
+# ----------------------------------------------------------------
+# Install
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# Download and install "Powerline9k Droid sans mono" font
+curl -L "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf?raw=true" -o droid.otf && mv droid.otf ~/Library/Fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete\ Mono.otf
+# Install zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# Install Powerlevel9k theme
+git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
+
+
+# Run files.
+# ----------------------------------------------------------------
+sh .macos
+sh .brew
+sh .app_settings
+
+# Chezmoi (Dotfile manager).
+# ----------------------------------------------------------------
+mkdir ~/.config/chezmoi
+# Copy default config file from repo
+cp ~/.dotfiles/config/chezmoi.json ~/.config/chezmoi
+# Pull dot files
+chezmoi update
+
+# Countdown
+countdown() {
+	secs=$1
+	shift
+	msg=$@
+	while [ $secs -gt 0 ]
+	do
+		printf "\r\033[K$msg %.d seconds" $((secs--))
+		sleep 1
+	done
+	echo
+}
+
+countdown 10 "Rebooting in"
+
+# Reboot.
+reboot
