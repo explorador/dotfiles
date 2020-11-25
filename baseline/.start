@@ -7,14 +7,32 @@ if ( ! ls ~/Library/Containers/com.apple.Mail 2>&1 ) | grep -q 'Operation not pe
 	exit 1
 fi
 
+
+# Run files.
+# ----------------------------------------------------------------
+sh ~/.dotfiles/baseline/.macos
+sh ~/.dotfiles/baseline/.brew
+sh ~/.dotfiles/baseline/.apps_settings
+
+
 # Create "install" directory
 # (Used to download and save apps not available in the appstore or brew)
 mkdir install
+
 
 # NVM
 # ----------------------------------------------------------------
 # Install
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.0/install.sh | bash
+
+
+# Chezmoi (Dotfile manager).
+# ----------------------------------------------------------------
+mkdir ~/.config/chezmoi
+# Copy default config file from repo
+cp ~/.dotfiles/config/chezmoi.json ~/.config/chezmoi
+# Pull dot files
+chezmoi update
 
 
 # ohmyzsh
@@ -28,21 +46,6 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 # Install Powerlevel9k theme
 git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 
-
-# Run files.
-# ----------------------------------------------------------------
-sh ~/.dotfiles/baseline/.macos
-sh ~/.dotfiles/baseline/.brew
-sh ~/.dotfiles/baseline/.apps_settings
-
-
-# Chezmoi (Dotfile manager).
-# ----------------------------------------------------------------
-mkdir ~/.config/chezmoi
-# Copy default config file from repo
-cp ~/.dotfiles/config/chezmoi.json ~/.config/chezmoi
-# Pull dot files
-chezmoi update
 
 # Countdown
 countdown() {
