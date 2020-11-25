@@ -39,10 +39,6 @@ read -p "Once it's done, press enter to continue"
 sleep 1
 
 
-# Wait 1 second.
-sleep 1
-
-
 # Firefox default settings.
 # ----------------------------------------------------------------
 # Open firefox.
@@ -138,6 +134,9 @@ defaults write com.apple.mail AutoReplyFormat -bool true
 # Disable "Increase quote level" (Preferences > Composing).
 defaults write com.apple.mail SupressQuoteBarsInComposeWindows -bool false
 
+# Wait 1 second.
+sleep 1
+
 
 # Rectangle settings.
 # ----------------------------------------------------------------
@@ -155,6 +154,9 @@ defaults write com.knollsoft.Rectangle alternateDefaultShortcuts -bool false
 defaults write com.knollsoft.Rectangle subsequentExecutionMode -int 0
 # Open app again.
 open "/Applications/Rectangle.app"
+
+# Wait 1 second.
+sleep 1
 
 
 # SourceTree.
