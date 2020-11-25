@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Run files.
+sh .brew
+sh .macos
+
+
+# Install Integrity Plus
+curl -L https://paddle.s3.amazonaws.com/fulfillment_downloads/198/496583/Integrity_Plus.dmg -o integrityPlus.dmg && sudo hdiutil attach integrityPlus.dmg && cp -r "`ls -d /Volumes/Integrity*/*.app`" /Applications/
+
+
+# NPM packages
+# ----------------------------------------------------------------
+npm i -g contentful-cli create-react-app expo-cli gatsby-cli lerna lighthouse np pa11y skpm vnu-jar browser-sync svgo
+
+# WPScan
+# gem install wpscan
+
+# Run app settings.
+sh .apps_settings

@@ -1,0 +1,46 @@
+#!/bin/sh
+
+tput setaf 7
+tput smso;  echo " Running OSX config file. "; tput rmso
+tput sgr0
+
+# Dock
+# ----------------------------------------------------------------
+
+# Set Dock app icons.
+__dock_item() {
+    printf '%s%s%s%s%s' \
+           '<dict><key>tile-data</key><dict><key>file-data</key><dict>' \
+           '<key>_CFURLString</key><string>' \
+           "$1" \
+           '</string><key>_CFURLStringType</key><integer>0</integer>' \
+           '</dict></dict></dict>'
+}
+
+defaults write com.apple.dock \
+	persistent-apps -array "$(__dock_item System/Applications/App\ Store.app)" \
+	"$(__dock_item System/Applications/Launchpad.app)" \
+	'{"tile-type"="spacer-tile";}'\
+	"$(__dock_item /Applications/Safari.app)" \
+	"$(__dock_item /Applications/Vivaldi.app)" \
+	"$(__dock_item /Applications/Firefox\ Developer\ Edition.app)" \
+	'{"tile-type"="spacer-tile";}'\
+	"$(__dock_item /Applications/SourceTree.app)" \
+	"$(__dock_item /Applications/Visual\ Studio\ Code.app)" \
+	"$(__dock_item /Applications/Sketch.app)" \
+	"$(__dock_item /Applications/Postman.app)" \
+	"$(__dock_item /Applications/Termius.app)" \
+	"$(__dock_item /Applications/iTerm.app)" \
+	"$(__dock_item /Applications/SnippetsLab.app)" \
+	"$(__dock_item /Applications/Dash.app)" \
+	"$(__dock_item /Applications/IconJar.app)" \
+	'{"tile-type"="spacer-tile";}'\
+	"$(__dock_item /Applications/Slack.app)" \
+	"$(__dock_item /Applications/Skype.app)" \
+	"$(__dock_item System/Applications/Messages.app)" \
+	"$(__dock_item /Applications/WhatsApp.app)" \
+	"$(__dock_item System/Applications/Mail.app)" \
+	"$(__dock_item /Applications/1Password\ 7.app)" \
+	"$(__dock_item /Applications/Spotify.app)"
+
+killall Dock

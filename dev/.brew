@@ -1,0 +1,44 @@
+#!/bin/sh
+
+tput setaf 7
+tput smso;  echo " Running homebrew file. "; tput rmso
+tput sgr0
+
+# Tap formula repositories.
+brew tap shopify/shopify
+
+# Install cli packages
+brew install bat
+brew install fzf
+brew install mkcert
+brew install nmap
+brew install themekit
+
+# Install apps
+brew cask install dash
+brew cask install docker
+brew cask install gas-mask
+mas install 1081413713 # GIF Brewery 3
+brew cask install google-chrome
+mas install 1101267774 # HTML Email Signature - Outlook
+brew cask install iconjar
+brew cask install iterm2
+brew cask install kitematic
+brew cask install omnigraffle
+brew cask install poedit
+brew cask install postman
+brew cask install safari-technology-preview
+brew cask install sequel-pro
+brew cask install sketch
+brew cask install parallels
+mas install 1006087419 # SnippetsLab
+brew cask install sourcetree
+brew cask install table-tool
+mas install 1176074088 # Termius
+brew cask install the-unarchiver
+brew cask install tinypng4mac
+brew cask install transmit
+brew cask install visual-studio-code
+brew cask install virtualbox
+brew cask install vivaldi
+mas install 497799835 # Xcode

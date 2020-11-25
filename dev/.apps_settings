@@ -1,0 +1,88 @@
+#!/bin/sh
+
+tput setaf 7
+tput smso;  echo " Running apps configuration file. "; tput rmso
+tput sgr0
+
+
+# Get TinyPNG API
+open -a "Firefox Developer Edition" https://tinyjpg.com
+read "TinyPNG API" tinyPNG
+
+# Open apps we are about to modify.
+open "/Applications/iTerm.app"
+open "/Applications/Kaleidoscope.app"
+open "/Applications/TinyPNG4Mac.app"
+open "/Applications/Dash.app"
+open "/Applications/SnippetsLab.app"
+open "/Applications/Safari.app"
+open "/Applications/Safari Technology Preview.app"
+open "/System/Applications/Utilities/Terminal.app"
+
+
+# Kaleidoscope
+# ----------------------------------------------------------------
+# Ignore differences in whitespace
+defaults write com.blackpixel.kaleidoscope KSIgnoreWhitespaceUserDefaultsKey -int 1
+# Disable "Send anonumous system profile"
+defaults write com.blackpixel.kaleidoscope KSSendsSystemProfile -int 0
+
+
+# TinyPNG
+# ----------------------------------------------------------------
+# Set API Key
+defaults write com.kyleduo.tinypngmac saved_api_key -string $tinyPNG
+# Replace Origin?
+defaults write com.kyleduo.tinypngmac replace -bool true
+
+
+# Dash
+# ----------------------------------------------------------------
+# Set sync directory
+defaults write com.kapeli.dashdoc syncFolderPath -string "$HOME/Dropbox/Dash"
+
+
+# Snippets lab
+# ----------------------------------------------------------------
+# Set editor theme.
+defaults write com.renfei.SnippetsLab "User EditorTheme" -string "CodeRunner"
+# Set active languages.
+defaults write com.renfei.SnippetsLab "User ActiveLanguages" -array "TextLexer" "CLexer" "CppLexer" "ObjectiveCLexer" "PythonLexer" "PhpLexer" "JavascriptLexer" "MarkdownLexer" "SassLexer" "ScssLexer" "BashLexer" "NginxConfLexer" "LiquidLexer"
+# Enable iCloud Sync.
+defaults write com.renfei.SnippetsLab "Preferences EnableiCloudSync" -bool true
+
+
+# Safari
+# ----------------------------------------------------------------
+# Enagle developer menu in safari
+defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu -bool true
+# Enable developer menu in Safari Technology Preview
+defaults write com.apple.SafariTechnologyPreview.SandboxBroker ShowDevelopMenu -bool true
+
+
+# Terminal
+# ----------------------------------------------------------------
+# Set theme.
+open "$HOME/Dropbox/Settings/terminal/One Dark 1.0.1.terminal"
+defaults write com.apple.terminal "Default Window Settings" "One Dark 1.0.1"
+defaults write com.apple.terminal "Startup Window Settings" "One Dark 1.0.1"
+
+
+# Visual Studio Code
+# ----------------------------------------------------------------
+# Turn sync on.
+code --sync on
+
+# Wait 3 seconds.
+sleep 3
+
+# Close apps we just modified.
+for app in "Kaleidoscope" \
+	"TinyPNG4Mac" \
+	"Dash" \
+	"SnippetsLab" \
+	"Safari" \
+	"Safari Technology Preview" \
+	"iTerm2"; do
+	killall "${app}" &> /dev/null
+done
