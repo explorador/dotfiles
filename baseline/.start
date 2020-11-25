@@ -33,7 +33,7 @@ git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/theme
 # ----------------------------------------------------------------
 sh ~/.dotfiles/baseline/.macos
 sh ~/.dotfiles/baseline/.brew
-sh ~/.dotfiles/baseline/.app_settings
+sh ~/.dotfiles/baseline/.apps_settings
 
 
 # Chezmoi (Dotfile manager).
