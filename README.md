@@ -5,3 +5,17 @@
 
 ## 🚀 Getting started
 
+1. Install command line developer tools 
+```
+xcode-select --install
+```
+2. Clone this repo
+```
+git clone git://github.com/explorador/dotfiles ~/.dotfiles
+```
+3. Run installer
+```
+sh ~/.dotfiles/installer.sh
+```
+
+
