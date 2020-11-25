@@ -12,6 +12,7 @@ tput sgr0
 
 # Tap formula repositories.
 brew tap homebrew/cask-versions
+brew tap shopify/shopify
 
 # Basic CLI packages
 brew install archey
@@ -19,6 +20,7 @@ brew install chezmoi
 brew install figlet
 brew install ksdiff
 brew install mas
+brew install shopify-cli
 brew install tldr
 brew install um
 brew install youtube-dl

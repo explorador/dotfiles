@@ -4,9 +4,6 @@ tput setaf 7
 tput smso;  echo " Running homebrew file. "; tput rmso
 tput sgr0
 
-# Tap formula repositories.
-brew tap shopify/shopify
-
 # Install cli packages
 brew install bat
 brew install fzf

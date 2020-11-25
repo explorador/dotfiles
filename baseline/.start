@@ -16,10 +16,6 @@ mkdir install
 # Install
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.0/install.sh | bash
 
-# Shopify app-cli
-export SHOPIFY_CLI_BOOTSTRAP_GIT_URL=https://github.com/shopify/shopify-app-cli.git
-eval "$(curl -sS https://raw.githubusercontent.com/Shopify/shopify-app-cli/master/install.sh)"
-
 
 # ohmyzsh
 # ----------------------------------------------------------------
