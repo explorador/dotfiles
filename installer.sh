@@ -29,15 +29,15 @@ echo "1. Baseline"
 tput cup 13 2
 echo "2. Dev"
 
-tput cup 14 2
-echo "3. Design"
+# tput cup 14 2
+# echo "3. Design"
 
-tput cup 15 2
-echo "4. Music"
+# tput cup 15 2
+# echo "4. Music"
 
 # Set bold mode
 tput bold
-tput cup 17 2
+tput cup 15 2
 read -p "Enter your choice [1-4] " choice
 
 tput sgr0
