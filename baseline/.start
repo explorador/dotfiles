@@ -31,9 +31,10 @@ git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/theme
 
 # Run files.
 # ----------------------------------------------------------------
-sh .macos
-sh .brew
-sh .app_settings
+sh ~/.dotfiles/baseline/.macos
+sh ~/.dotfiles/baseline/.brew
+sh ~/.dotfiles/baseline/.app_settings
+
 
 # Chezmoi (Dotfile manager).
 # ----------------------------------------------------------------

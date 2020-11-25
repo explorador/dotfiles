@@ -47,9 +47,9 @@ tput rc
 # Run selected option.
 # ----------------------------------------------------------------
 case $choice in
-	1) sh ./baseline/.start # Run baseline setup
+	1) sh ~/.dotfiles/baseline/.start # Run baseline setup
 	;;
-	2) sh ./dev/.start # Run dev setup
+	2) sh ~/.dotfiles/dev/.start # Run dev setup
 	;;
 	# 3) sh ./design/.start # Run design setup
 	# ;;
