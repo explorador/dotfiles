@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Clear screen
+clear
+
 # Run files.
 sh ~/.dotfiles/dev/.brew
 sh ~/.dotfiles/dev/.macos
