@@ -1,0 +1,69 @@
+:root.theme-dark {
+  --theme-body-background: #212733 !important;
+  --theme-sidebar-background: var(--theme-body-background) !important;
+  --theme-tab-toolbar-background: #212733 !important;
+  --theme-toolbar-hover: #303540 !important;
+  --theme-selection-background: #737d87 !important;
+  --rule-overridden-name-text-color: #73d0ff !important;
+  --theme-splitter-color: #5c6773 !important;
+  --theme-body-color-inactive: #8fa1b2 !important;
+  --tab-line-selected-color: #72BEF3 !important;
+  --rule-header-background-color: #1a1e29 !important;
+}
+
+/* Code line-height */
+.tag-line {
+  line-height: 1.7em !important;
+}
+
+/* HTML */
+
+/* Element */
+.tag.theme-fg-color3 {
+  color: #73d0ff !important;
+}
+
+/* Attribute */
+.attr-name.theme-fg-color1 {
+  color: #ffa759 !important;
+}
+
+/* Attribute value */
+.attr-value.theme-fg-color2 {
+  color: #a6cc70 !important;
+}
+
+/* Highlighted element color */
+.tag-line[selected] .attr-name.theme-fg-color1,
+.tag-line[selected] .attr-value.theme-fg-color2,
+.tag-line[selected] .tag.theme-fg-color3 {
+  color: #fff !important;
+}
+
+/* Comments */
+.editor.comment:not(.doctype) {
+   color: #5c6773 !important;
+}
+
+/* CSS */
+
+/* Rule Selector */
+.ruleview-selector,
+.ruleview-selector-unmatched{
+  color: #738699 !important;
+}
+
+/* Rule Attribute */
+.ruleview-color {
+  color: #a6cc70 !important;
+}
+
+/* Rest of the text */
+.ruleview-propertyvalue {
+  color: #ffa759 !important;
+}
+
+/* Rule source label */
+.ruleview-rule-source-label {
+  color: #5c6773 !important;
+}

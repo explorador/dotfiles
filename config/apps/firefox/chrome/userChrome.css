@@ -1,0 +1,155 @@
+:root.theme-dark {
+
+	--theme-body-background: #212733 !important; /* Updated */
+	--theme-sidebar-background: #212733 !important; /* Updated */
+	--theme-contrast-background: #ffb35b !important;
+
+	--theme-tab-toolbar-background: #212733 !important; /* Updated */
+	--theme-toolbar-background: #212733 !important; /* Updated */
+	--theme-selection-background: #737d87 !important; /* Updated */
+	--theme-selection-background-semitransparent: rgba(235, 88, 83, 0.5) !important;
+	--theme-selection-color: #ffffff !important; /* Updated */
+	--theme-splitter-color: #5c6773 !important; /* Updated */
+	--theme-comment: #5c6773 !important; /* Updated */
+	--theme-toolbar-hover: #303540 !important;
+	
+	--theme-body-color: #73d0ff !important; /* Updated */
+	--theme-body-color-alt: #D6D6D6 !important;
+	--theme-body-color-inactive: #8fa1b2 !important;
+	--theme-content-color1: #D6D6D6 !important;
+	--theme-content-color2: #D6D6D6 !important;
+	--theme-content-color3: #D6D6D6 !important;
+
+	--theme-highlight-green: #5c6773 !important; /* Updated */
+	--theme-highlight-blue: #73d0ff !important;
+	--theme-highlight-bluegrey: white !important;
+	--theme-highlight-purple: #bae67e !important; /* Updated */
+	--theme-highlight-lightorange: #FF5A2C !important;
+	--theme-highlight-orange: #F79900 !important;
+	--theme-highlight-red: #ffa759 !important; /* Updated */
+	--theme-highlight-pink: #72BEF3 !important;
+	--theme-highlight-gray: #e9f4fe !important;
+
+	/* For accessibility purposes we want to enhance the focus styling. This
+   * should improve keyboard navigation usability. */
+	--theme-focus-outline-color: #ced3d9 !important;
+
+	/* Colors used in Graphs, like performance tools. Mostly similar to some "highlight-*" colors. */
+	--theme-graphs-green: #70bf53 !important;
+	--theme-graphs-blue: #46afe3 !important;
+	--theme-graphs-bluegrey: #5e88b0 !important;
+	--theme-graphs-purple: #df80ff !important;
+	--theme-graphs-yellow: #d99b28 !important;
+	--theme-graphs-orange: #d96629 !important;
+	--theme-graphs-red: #eb5368 !important;
+	--theme-graphs-grey: #5c6773 !important; /* Updated */
+	--theme-graphs-full-red: #f00 !important;
+	--theme-graphs-full-blue: #00f !important;
+
+	/* Images */
+	--theme-pane-collapse-image: url("chrome://devtools/skin/images/pane-collapse.svg");
+	--theme-pane-expand-image: url("chrome://devtools/skin/images/pane-expand.svg");
+
+	/* Tooltips */
+	--theme-tooltip-border: #434850 !important;
+	--theme-tooltip-background: rgba(19, 28, 38, .9) !important;
+	--theme-tooltip-shadow: rgba(25, 25, 25, 0.76) !important;
+
+	/* Command line */
+	--theme-command-line-image: url("chrome://devtools/skin/images/commandline-icon.svg#dark-theme");
+	--theme-command-line-image-focus: url("chrome://devtools/skin/images/commandline-icon.svg#dark-theme-focus");
+
+	/* Markup */
+	--markup-badge-background-color: var(--grey-70);
+	--markup-badge-border-color: var(--grey-50);
+	--markup-badge-color: var(--grey-30);
+	--markup-badge-hover-background-color: var(--grey-80);
+	--markup-hidden-attr-name-color: rgba(255, 167, 89, .6) !important; /* Updated */
+	--markup-hidden-attr-value-color: rgba(186, 230, 126, .6) !important; /* Updated */
+	--markup-hidden-punctuation-color: #909090;
+	--markup-hidden-tag-color: rgba(115, 208, 255, .6) !important; /* Updated */
+	--markup-outline: var(--theme-selection-background);
+}
+
+:root:-moz-lwtheme {
+    --toolbar-bgcolor: #272d38 !important;
+}
+
+.tag-line {
+  line-height: 1.7em !important;
+}
+
+.ruleview-selector-separator,
+.ruleview-selector-unmatched,
+.ruleview-unmatched-variable {
+	color: var(--theme-comment) !important;
+}
+
+.theme-link, .cm-s-mozilla .cm-link, .CodeMirror-Tern-type {
+	color: #738699 !important;
+}
+
+.ruleview-selector-unmatched {
+	color: rgba(255, 167, 89, .55) !important;
+}
+
+.ruleview-selector-matched {
+	color: #ffa759 !important;
+}
+
+.theme-fg-color1, .cm-s-mozilla .cm-attribute, .cm-s-mozilla .cm-builtin, .cm-s-mozilla .cm-keyword, .variables-view-variable > .title > .name {
+	color: #d4bfff !important;
+}
+
+/* UI */
+#navigator-toolbox > toolbar:not(#TabsToolbar):not(#toolbar-menubar), .browserContainer > findbar, #browser-bottombox {
+	background-color: #272d38 !important
+}
+
+#urlbar:-moz-lwtheme, #navigator-toolbox .searchbar-textbox:-moz-lwtheme {
+  background-color: #212733 !important;	
+  border-color: #3e4b59 !important;
+}
+
+#TabsToolbar, #navigator-toolbox {
+  background-color: #11141a !important;	
+}
+
+#PersonalToolbar .toolbarbutton-1:not([disabled="true"]):not([checked]):not([open]):not(:active):hover, .tabbrowser-arrowscrollbox > .scrollbutton-up:not([disabled="true"]):hover, .tabbrowser-arrowscrollbox > .scrollbutton-down:not([disabled="true"]):hover, .findbar-button:not(:-moz-any([checked="true"], [disabled="true"])):hover > .toolbarbutton-text, toolbarbutton.bookmark-item:not(.subviewbutton):hover:not([disabled="true"]):not([open]), toolbar .toolbarbutton-1:not([disabled="true"]):not([checked]):not([open]):not(:active):hover > .toolbarbutton-icon, toolbar .toolbarbutton-1:not([disabled="true"]):not([checked]):not([open]):not(:active):hover > .toolbarbutton-text, toolbar .toolbarbutton-1:not([disabled="true"]):not([checked]):not([open]):not(:active):hover > .toolbarbutton-badge-stack {
+  background-color: #66737f !important;
+}
+
+#PersonalToolbar .toolbarbutton-1:not([disabled="true"]):-moz-any([open], [checked], :hover:active), .findbar-button:not([disabled="true"]):-moz-any([checked="true"], :hover:active) > .toolbarbutton-text, toolbarbutton.bookmark-item:not(.subviewbutton):hover:active:not([disabled="true"]), toolbarbutton.bookmark-item[open="true"], toolbar .toolbarbutton-1:not([disabled="true"]):-moz-any([open], [checked], :hover:active) > .toolbarbutton-icon, toolbar .toolbarbutton-1:not([disabled="true"]):-moz-any([open], [checked], :hover:active) > .toolbarbutton-text, toolbar .toolbarbutton-1:not([disabled="true"]):-moz-any([open], [checked], :hover:active) > .toolbarbutton-badge-stack {
+  background-color: #47515D !important;
+}
+
+.tab-background[selected="true"] {
+    background-color: #2C3D4E !important;
+	color: white !important;
+}
+
+.tabbrowser-tab:hover {
+	background-color: #2C3D4E !important;
+}
+
+.tabbrowser-tab[visuallyselected="true"]:not(:-moz-lwtheme) {
+    color: white !important;
+}
+
+.toolbarbutton-animatable-box, .toolbarbutton-1 {
+    fill-opacity: .7 !important;;
+	fill: white !important;
+}
+
+:root:not([uidensity="compact"]) #back-button > .toolbarbutton-icon {
+    background-color: #515C69 !important;
+	fill: white !important;
+}
+
+:root:not([uidensity="compact"]) #back-button:hover > .toolbarbutton-icon {
+    background-color: #667380 !important;
+}
+
+#navigator-toolbox::after {
+    border-bottom: 1px solid #212733 !important;
+}
