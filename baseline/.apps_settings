@@ -66,6 +66,7 @@ open "/Applications/iTerm.app"
 sleep 3
 # Close app
 killall "iTerm2" &> /dev/null
+sleep 1
 # Specify iTerm preferences directory
 defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.dotfiles/config/apps/iTerm"
 # Tell iTerm2 to use the custom preferences in the directory
@@ -142,7 +143,7 @@ sleep 1
 open "/Applications/SourceTree.app"
 sleep 3
 # Close app.
-killall "SourceTree" &> /dev/null
+killall "Sourcetree" &> /dev/null
 # Set app settings.
 defaults write com.torusknot.SourceTreeNotMAS AtlassianAccountEmail -string $email
 defaults write com.torusknot.SourceTreeNotMAS globalUserEmail -string $email
