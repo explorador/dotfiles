@@ -10,7 +10,6 @@ open -a "Firefox Developer Edition" https://tinyjpg.com
 read "TinyPNG API" tinyPNG
 
 # Open apps we are about to modify.
-open "/Applications/iTerm.app"
 open "/Applications/Kaleidoscope.app"
 open "/Applications/TinyPNG4Mac.app"
 open "/Applications/Dash.app"
@@ -18,6 +17,20 @@ open "/Applications/SnippetsLab.app"
 open "/Applications/Safari.app"
 open "/Applications/Safari Technology Preview.app"
 open "/System/Applications/Utilities/Terminal.app"
+
+# Wait 3 seconds.
+sleep 3
+
+# Close apps we are about to modify.
+for app in "Kaleidoscope" \
+	"TinyPNG4Mac" \
+	"Dash" \
+	"SnippetsLab" \
+	"Safari" \
+	"Safari Technology Preview" \
+	"Terminal" ; do
+	killall "${app}" &> /dev/null
+done
 
 
 # Kaleidoscope
@@ -60,29 +73,19 @@ defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu -bool true
 defaults write com.apple.SafariTechnologyPreview.SandboxBroker ShowDevelopMenu -bool true
 
 
-# Terminal
-# ----------------------------------------------------------------
-# Set theme.
-open "$HOME/Dropbox/Settings/terminal/One Dark 1.0.1.terminal"
-defaults write com.apple.terminal "Default Window Settings" "One Dark 1.0.1"
-defaults write com.apple.terminal "Startup Window Settings" "One Dark 1.0.1"
-
-
 # Visual Studio Code
 # ----------------------------------------------------------------
 # Turn sync on.
 code --sync on
 
-# Wait 3 seconds.
-sleep 3
+# Wait 1 second.
+sleep 1
 
-# Close apps we just modified.
-for app in "Kaleidoscope" \
-	"TinyPNG4Mac" \
-	"Dash" \
-	"SnippetsLab" \
-	"Safari" \
-	"Safari Technology Preview" \
-	"iTerm2"; do
-	killall "${app}" &> /dev/null
-done
+
+# Terminal
+# ----------------------------------------------------------------
+# Set theme.
+open "$HOME/.dotfiles/config/apps/terminal/One Dark 1.0.1.terminal"
+defaults write com.apple.terminal "Default Window Settings" "One Dark 1.0.1"
+defaults write com.apple.terminal "Startup Window Settings" "One Dark 1.0.1"
+
