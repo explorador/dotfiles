@@ -87,7 +87,14 @@ export EDITOR=vim
 if [ $TERM = "ansi" ] || [ $TERM = "xterm-256color" ] && [ $TERM_PROGRAM != "vscode" ]
 	then
 	printf "\e[92m"
-	figlet -f slant "Explorador"
+cat << "EOF"
+    ______           __                     __
+   / ____/  ______  / /___  _________ _____/ /___  _____
+  / __/ | |/_/ __ \/ / __ \/ ___/ __ `/ __  / __ \/ ___/
+ / /____>  </ /_/ / / /_/ / /  / /_/ / /_/ / /_/ / /
+/_____/_/|_/ .___/_/\____/_/   \__,_/\__,_/\____/_/
+          /_/
+EOF
 	printf "\e[0m"
 fi
 
