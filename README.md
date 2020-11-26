@@ -9,11 +9,15 @@
 ```
 xcode-select --install
 ```
-2. Clone this repo
+2. Temporary enable "Full Disk Access" for the terminal app
+```
+/usr/bin/open 'x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles'
+```
+3. Clone this repo
 ```
 git clone git://github.com/explorador/dotfiles ~/.dotfiles
 ```
-3. Run installer
+4. Run installer
 ```
 sh ~/.dotfiles/installer.sh
 ```
