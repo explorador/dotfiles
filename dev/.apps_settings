@@ -67,8 +67,8 @@ defaults write com.renfei.SnippetsLab "Preferences EnableiCloudSync" -bool true
 
 # Safari
 # ----------------------------------------------------------------
-# Enagle developer menu in safari
-defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu -bool true
+# Enable developer menu in safari
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
 # Enable developer menu in Safari Technology Preview
 defaults write com.apple.SafariTechnologyPreview.SandboxBroker ShowDevelopMenu -bool true
 
