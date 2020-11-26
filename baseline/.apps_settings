@@ -9,47 +9,19 @@ tput sgr0
 email=$(defaults read com.apple.iTunes MacBuddyStoreID)
 
 
-# Setup dropbox.
-# ----------------------------------------------------------------
-# Open dropbox
-open /Applications/Dropbox.app
-
-# Prompt action.
-echo "Did Dropbox finish syncing?"
-read -p "Press enter to continue"
-
-# Wait 1 second.
-sleep 1
-
-
-# 1Password
-# ----------------------------------------------------------------
-# Signin into 1password
-eval $(op signin my.1password.com $email)
-
-
-
-# Alfred.
-# ----------------------------------------------------------------
-# Prompt action.
-echo "Set Alfred license and sync folder?"
-read -p "Once it's done, press enter to continue"
-
-# Wait 1 second.
-sleep 1
-
-
 # Firefox default settings.
 # ----------------------------------------------------------------
 # Open firefox.
 open "/Applications/Firefox Developer Edition.app"
+sleep 3
 # Close app.
 killall "firefox" &> /dev/null
+sleep 1
 # Copy firefox profile styles.
-cp -R ~/Dropbox/FirefoxTheme/chrome ~/Library/Application\ Support/Firefox/Profiles/*.dev-edition-default
+cp -R ~/.dotfiles/config/apps/firefox/chrome ~/Library/Application\ Support/Firefox/Profiles/*.dev-edition-default
 # Copy firefox default config.
-cp ~/Dropbox/FirefoxTheme/autoconfig.js /Applications/Firefox\ Developer\ Edition.app/Contents/Resources/defaults/pref
-cp ~/Dropbox/FirefoxTheme/mozilla.cfg /Applications/Firefox\ Developer\ Edition.app/Contents/Resources
+cp ~/.dotfiles/config/apps/firefox/autoconfig.js /Applications/Firefox\ Developer\ Edition.app/Contents/Resources/defaults/pref
+cp ~/.dotfiles/config/apps/firefox/mozilla.cfg /Applications/Firefox\ Developer\ Edition.app/Contents/Resources
 
 # Wait 1 second.
 sleep 1
@@ -91,10 +63,11 @@ sleep 1
 # ----------------------------------------------------------------
 # Open app
 open "/Applications/iTerm.app"
+sleep 3
 # Close app
 killall "iTerm2" &> /dev/null
 # Specify iTerm preferences directory
-defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/Dropbox/Settings/iTerm"
+defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.dotfiles/config/apps/iTerm"
 # Tell iTerm2 to use the custom preferences in the directory
 defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 
@@ -106,8 +79,10 @@ sleep 1
 # ----------------------------------------------------------------
 # Open app
 open "/Applications/Jumpshare.app"
+sleep 3
 # Close app
 killall "Jumpshare" &> /dev/null
+sleep 1
 # Take & Edit Screenshot shortcut
 defaults write com.jumpshare.Jumpshare hotkeyannotation -dict \
 	characters -int 4 \
@@ -123,6 +98,7 @@ sleep 1
 # ----------------------------------------------------------------
 # Open Mail.
 open "/System/Applications/Mail.app"
+sleep 3
 # Close app
 killall "Mail" &> /dev/null
 # Disable "Use dark backgrounds for messages".
@@ -145,6 +121,7 @@ open "/Applications/Rectangle.app"
 # Prompt action.
 echo "Authorize app"
 read -p "Once it's done, press enter to continue"
+sleep 3
 # Close app
 killall "Rectangle" &> /dev/null
 
@@ -163,6 +140,7 @@ sleep 1
 # ----------------------------------------------------------------
 # Open app
 open "/Applications/SourceTree.app"
+sleep 3
 # Close app.
 killall "SourceTree" &> /dev/null
 # Set app settings.
