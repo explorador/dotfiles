@@ -1,12 +1,7 @@
 #!/bin/sh
 
-# Some prefs, like Mail, need Terminal to have Full Disk Access
-if ( ! ls ~/Library/Containers/com.apple.Mail 2>&1 ) | grep -q 'Operation not permitted'; then
-	echo 'Add `Terminal.app` to System Preferences -> Security -> Privacy -> Full Disk Access' 1>&2
-	/usr/bin/open 'x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles'
-	exit 1
-fi
-
+# Clear screen
+clear
 
 # Run files.
 # ----------------------------------------------------------------
@@ -26,6 +21,12 @@ mkdir install
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.0/install.sh | bash
 
 
+# Get email.
+email=$(defaults read com.apple.iTunes MacBuddyStoreID)
+# Signin into 1password
+eval $(op signin my.1password.com $email)
+
+
 # Chezmoi (Dotfile manager).
 # ----------------------------------------------------------------
 mkdir ~/.config/chezmoi
@@ -38,7 +39,7 @@ chezmoi update
 # ohmyzsh
 # ----------------------------------------------------------------
 # Install
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
 # Download and install "Powerline9k Droid sans mono" font
 curl -L "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf?raw=true" -o droid.otf && mv droid.otf ~/Library/Fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete\ Mono.otf
 # Install zsh-autosuggestions
@@ -60,6 +61,10 @@ countdown() {
 	echo
 }
 
+# Display reminder.
+osascript -e 'tell app "System Events" to display dialog "⚠️ Remember to setup Dropbox and Alfred"'
+
+# Execute countdown
 countdown 10 "Rebooting in"
 
 # Reboot.
