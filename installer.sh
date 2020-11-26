@@ -38,7 +38,7 @@ echo "2. Dev"
 # Set bold mode
 tput bold
 tput cup 15 2
-read -p "Enter your choice [1-4] " choice
+read -p "Enter your choice [1-2] " choice
 
 tput sgr0
 tput rc
