@@ -10,7 +10,7 @@ brew install nmap
 brew install themekit
 
 # Install apps
-brew cask install dash
+brew cask install dash4
 brew cask install docker
 brew cask install gas-mask
 mas install 1081413713 # GIF Brewery 3
