@@ -16,7 +16,6 @@ open "/Applications/Dash.app"
 open "/Applications/SnippetsLab.app"
 open "/Applications/Safari.app"
 open "/Applications/Safari Technology Preview.app"
-open "/System/Applications/Utilities/Terminal.app"
 
 # Wait 3 seconds.
 sleep 3
@@ -27,8 +26,7 @@ for app in "Kaleidoscope" \
 	"Dash" \
 	"SnippetsLab" \
 	"Safari" \
-	"Safari Technology Preview" \
-	"Terminal" ; do
+	"Safari Technology Preview" ; do
 	killall "${app}" &> /dev/null
 done
 
@@ -86,6 +84,9 @@ sleep 1
 # ----------------------------------------------------------------
 # Set theme.
 open "$HOME/.dotfiles/config/apps/terminal/One Dark 1.0.1.terminal"
+# Close app.
+killall "terminal" &> /dev/null
+sleep 1
 defaults write com.apple.terminal "Default Window Settings" "One Dark 1.0.1"
 defaults write com.apple.terminal "Startup Window Settings" "One Dark 1.0.1"
 
