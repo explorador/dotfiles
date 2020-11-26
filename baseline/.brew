@@ -20,7 +20,7 @@ brew install bat
 brew install chezmoi
 brew install figlet
 brew install fzf
-brew install ksdiff # Test
+brew install ksdiff
 brew install mas
 brew install shopify-cli
 brew install tldr
