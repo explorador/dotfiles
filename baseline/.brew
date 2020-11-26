@@ -16,18 +16,16 @@ brew tap shopify/shopify
 
 # Basic CLI packages
 brew install archey
+brew install bat
 brew install chezmoi
 brew install figlet
-brew install ksdiff
+brew install fzf
+brew install ksdiff # Test
 brew install mas
 brew install shopify-cli
 brew install tldr
 brew install um
 brew install youtube-dl
-
-# Fix brew mas-cli permission errors.
-sudo chown -R $(whoami) /usr/local/share/man/man8
-sudo chown -R $(whoami) /usr/local/share/man/man8
 
 # Basic apps
 mas install 1333542190 # 1Password 7
@@ -41,6 +39,7 @@ brew cask install firefox-developer-edition
 brew cask install fliqlo # Screensaver
 brew cask install jumpshare
 mas install 587512244 # Kaleidoscope
+brew cask install iterm2
 mas install 689992800 # MemoryKeeper
 brew cask install muzzle
 brew cask install notion
@@ -50,6 +49,7 @@ brew cask install raindropio
 brew cask install rectangle
 brew cask install skype
 brew cask install slack
+brew cask install sourcetree
 mas install 1153157709 # Speedtest
 brew cask install spotify
 mas install 585829637 # Todoist
