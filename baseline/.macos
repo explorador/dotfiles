@@ -58,6 +58,17 @@ defaults write com.apple.AppleMultitouchMouse MouseButtonMode -string "TwoButton
 defaults write -g com.apple.mouse.scaling 3
 
 
+# Trackpad
+# ----------------------------------------------------------------
+# Secondary click (click in bottom right corner)
+defaults write com.apple.AppleMultitouchTrackpad TrackpadCornerSecondaryClick -int 2
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadCornerSecondaryClick -int 2
+defaults write com.apple.AppleMultitouchTrackpad TrackpadRightClick -bool false
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick  -bool false
+# Tracking speed
+defaults write NSGlobalDomain com.apple.trackpad.scaling -float 1.5
+
+
 # Date and Time
 # ----------------------------------------------------------------
 # Set Time Zone.
