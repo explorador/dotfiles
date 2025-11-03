@@ -295,5 +295,7 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 # Google application credentials
 export GOOGLE_APPLICATION_CREDENTIALS="$HOME/Lume Deodorant-9b7ee4fa2e51.json"
 
+export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc'
+
 # Gren Github Token.
 export GREN_GITHUB_TOKEN="{{- (index (index (onepassword "5sr4x6zzfnazjke776emmgykiq").details.sections 2).fields 0).v -}}"
