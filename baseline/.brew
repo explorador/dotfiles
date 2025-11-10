@@ -8,7 +8,7 @@ tput sgr0
 
 
 # Install.
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Tap formula repositories.
 brew tap homebrew/cask-versions
@@ -29,32 +29,32 @@ brew install youtube-dl
 
 # Basic apps
 mas install 1333542190 # 1Password 7
-brew cask install 1password-cli
-brew cask install alfred
+brew install --cask 1password-cli
+brew install --cask alfred
 mas install 917664748 # Bible
-brew cask install cheatsheet
-brew cask install daisydisk
-brew cask install dropbox
-brew cask install firefox-developer-edition
-brew cask install fliqlo # Screensaver
-brew cask install jumpshare
+brew install --cask cheatsheet
+brew install --cask daisydisk
+brew install --cask dropbox
+brew install --cask firefox-developer-edition
+brew install --cask fliqlo # Screensaver
+brew install --cask jumpshare
 mas install 587512244 # Kaleidoscope
-brew cask install iterm2
+brew install --cask iterm2
 mas install 689992800 # MemoryKeeper
-brew cask install muzzle
-brew cask install notion
-brew cask install numi
+brew install --cask muzzle
+brew install --cask notion
+brew install --cask numi
 mas install 1513574319 # Quick look plugin
-brew cask install raindropio
-brew cask install rectangle
-brew cask install skype
-brew cask install slack
-brew cask install sourcetree
+brew install --cask raindropio
+brew install --cask rectangle
+brew install --cask skype
+brew install --cask slack
+brew install --cask sourcetree
 mas install 1153157709 # Speedtest
-brew cask install spotify
+brew install --cask spotify
 mas install 585829637 # Todoist
 mas install 557168941 # Tweetbot
-brew cask install vlc
+brew install --cask vlc
 mas install 727593140 # VPN Unlimited
-brew cask install whatsapp
-brew cask install ibettercharge
+brew install --cask whatsapp
+brew install --cask ibettercharge

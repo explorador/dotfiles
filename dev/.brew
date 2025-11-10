@@ -10,28 +10,28 @@ brew install nmap
 brew install themekit
 
 # Install apps
-brew cask install dash4
-brew cask install docker
-brew cask install gas-mask
+brew install --cask dash4
+brew install --cask docker
+brew install --cask gas-mask
 mas install 1081413713 # GIF Brewery 3
-brew cask install google-chrome
+brew install --cask google-chrome
 mas install 1101267774 # HTML Email Signature - Outlook
-brew cask install iconjar
-brew cask install kitematic
-brew cask install omnigraffle
-brew cask install poedit
-brew cask install postman
-brew cask install safari-technology-preview
-brew cask install sequel-pro
-brew cask install sketch
-brew cask install parallels
+brew install --cask iconjar
+brew install --cask kitematic
+brew install --cask omnigraffle
+brew install --cask poedit
+brew install --cask postman
+brew install --cask safari-technology-preview
+brew install --cask sequel-pro
+brew install --cask sketch
+brew install --cask parallels
 mas install 1006087419 # SnippetsLab
-brew cask install table-tool
+brew install --cask table-tool
 mas install 1176074088 # Termius
-brew cask install the-unarchiver
-brew cask install tinypng4mac
-brew cask install transmit
-brew cask install visual-studio-code
-brew cask install virtualbox
-brew cask install vivaldi
+brew install --cask the-unarchiver
+brew install --cask tinypng4mac
+brew install --cask transmit
+brew install --cask visual-studio-code
+brew install --cask virtualbox
+brew install --cask vivaldi
 mas install 497799835 # Xcode
