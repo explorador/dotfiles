@@ -135,22 +135,3 @@ open "/Applications/Rectangle.app"
 
 # Wait 1 second.
 sleep 1
-
-
-# SourceTree.
-# ----------------------------------------------------------------
-# Open app
-open "/Applications/SourceTree.app"
-sleep 3
-# Close app.
-killall "Sourcetree" &> /dev/null
-# Set app settings.
-defaults write com.torusknot.SourceTreeNotMAS AtlassianAccountEmail -string $email
-defaults write com.torusknot.SourceTreeNotMAS globalUserEmail -string $email
-defaults write com.torusknot.SourceTreeNotMAS CurrentTheme 1
-defaults write com.torusknot.SourceTreeNotMAS globalUserFullName -string "Cristian"
-defaults write com.torusknot.SourceTreeNotMAS diffTool 5
-defaults write com.torusknot.SourceTreeNotMAS mergeTool 5
-defaults write com.torusknot.SourceTreeNotMAS terminalApp 2
-defaults write com.torusknot.SourceTreeNotMAS respondToGitHubMacURLs -bool true
-defaults write com.torusknot.SourceTreeNotMAS respondToGitHubMacURLs gitPushAllTags -bool false
