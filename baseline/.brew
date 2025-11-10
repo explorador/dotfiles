@@ -28,7 +28,7 @@ brew install um
 brew install youtube-dl
 
 # Basic apps
-mas install 1333542190 # 1Password 7
+brew install --cask 1password
 brew install --cask 1password-cli
 brew install --cask alfred
 mas install 917664748 # Bible
@@ -49,12 +49,8 @@ brew install --cask raindropio
 brew install --cask rectangle
 brew install --cask skype
 brew install --cask slack
-brew install --cask sourcetree
 mas install 1153157709 # Speedtest
 brew install --cask spotify
-mas install 585829637 # Todoist
-mas install 557168941 # Tweetbot
 brew install --cask vlc
-mas install 727593140 # VPN Unlimited
 brew install --cask whatsapp
 brew install --cask ibettercharge
