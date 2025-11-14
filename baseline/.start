@@ -40,8 +40,6 @@ chezmoi update
 # ----------------------------------------------------------------
 # Install
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
-# Download and install "Powerline9k Droid sans mono" font
-curl -L "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf?raw=true" -o droid.otf && mv droid.otf ~/Library/Fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete\ Mono.otf
 # Install zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 # Install Powerlevel9k theme

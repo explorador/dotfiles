@@ -26,6 +26,7 @@ brew install shopify-cli
 brew install tldr
 brew install um
 brew install youtube-dl
+brew install --cask font-droid-sans-mono-for-powerline
 
 # Basic apps
 brew install --cask 1password
