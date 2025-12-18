@@ -284,26 +284,9 @@ alias dotfiles='chezmoi'
 PATH="$GEM_HOME/bin:$HOME/.rvm/bin:$PATH" # Add RVM to PATH for scripting
 [ -s ${HOME}/.rvm/scripts/rvm ] && source ${HOME}/.rvm/scripts/rvm
 
-# Shopify-app-cli
-[ -f "$HOME/.shopify-app-cli/shopify.sh" ] && source "$HOME/.shopify-app-cli/shopify.sh"
-
 # NVM
 export NODE_PATH="${HOME}/version/v12.18.3/lib/node_modules"
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use # This loads nvm
 
-# Google application credentials
-export GOOGLE_APPLICATION_CREDENTIALS="$HOME/Lume Deodorant-9b7ee4fa2e51.json"
-
 export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc'
-
-# Gren Github Token.
-{{- if and (lookPath "op") (onepasswordItemFields "5sr4x6zzfnazjke776emmgykiq") }}
-{{- with (onepasswordItemFields "5sr4x6zzfnazjke776emmgykiq") }}
-{{- range . }}
-{{- if eq .label "token" }}
-export GREN_GITHUB_TOKEN="{{ .value }}"
-{{- end }}
-{{- end }}
-{{- end }}
-{{- end }}
