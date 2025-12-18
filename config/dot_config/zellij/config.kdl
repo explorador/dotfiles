@@ -1,0 +1,77 @@
+// ~/.config/zellij/config.kdl
+
+// General settings
+default_shell "zsh"
+pane_frames false
+simplified_ui true
+default_layout "default"
+scroll_buffer_size 50000
+
+// Session behavior
+session_serialization true
+pane_viewport_serialization true
+
+// Copy behavior
+copy_on_select true
+scrollback_editor "/opt/homebrew/bin/nvim"
+
+// Mouse
+mouse_mode true
+
+// Ayu Mirage theme
+themes {
+    ayu-mirage {
+        fg "#cbccc6"
+        bg "#1f2430"
+        black "#1f2430"
+        red "#f28779"
+        green "#bae67e"
+        yellow "#ffcc66"
+        blue "#73d0ff"
+        magenta "#d4bfff"
+        cyan "#95e6cb"
+        white "#cbccc6"
+        orange "#ffad66"
+    }
+}
+
+theme "ayu-mirage"
+
+// Keybindings
+keybinds clear-defaults=false {
+    shared {
+        bind "Ctrl Space" { SwitchToMode "tmux"; }
+    }
+
+    tmux {
+        bind "Ctrl Space" { SwitchToMode "Normal"; }
+        bind "d" { Detach; }
+        bind "c" { NewTab; SwitchToMode "Normal"; }
+        bind "n" { GoToNextTab; SwitchToMode "Normal"; }
+        bind "p" { GoToPreviousTab; SwitchToMode "Normal"; }
+        bind "-" { NewPane "Down"; SwitchToMode "Normal"; }
+        bind "|" { NewPane "Right"; SwitchToMode "Normal"; }
+        bind "z" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
+        bind "h" { MoveFocus "Left"; SwitchToMode "Normal"; }
+        bind "j" { MoveFocus "Down"; SwitchToMode "Normal"; }
+        bind "k" { MoveFocus "Up"; SwitchToMode "Normal"; }
+        bind "l" { MoveFocus "Right"; SwitchToMode "Normal"; }
+        bind "x" { CloseFocus; SwitchToMode "Normal"; }
+        bind "f" { ToggleFloatingPanes; SwitchToMode "Normal"; }
+        bind "w" {
+            LaunchOrFocusPlugin "session-manager" {
+                floating true
+                move_to_focused_tab true
+            };
+            SwitchToMode "Normal"
+        }
+    }
+}
+
+// Plugins
+plugins {
+    session-manager location="zellij:session-manager"
+    filepicker location="zellij:strider" {
+        cwd "/"
+    }
+}
