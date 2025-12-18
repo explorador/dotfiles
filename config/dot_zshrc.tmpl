@@ -104,19 +104,6 @@ alias zreload='source ~/.zshrc && echo .zshrc reloaded!'
 # Reload command with sudo
 alias please='sudo !!'
 
-# Browser-sync
-watch() {
-	# If argument is empty
-	if [ -z "$1" ]
-		then
-		# Run browser-sync on current directory (html)
-		browser-sync start --directory --server --files "**/*.js, **/*.html, **/*.css" --logLevel "silent"
-	else
-		# If argument is present, use it as a proxy value and run on current directory (php)
-		browser-sync start --proxy $1 --directory --files "**/*.js, **/*.php, **/*.html, **/*.css" --logLevel "silent"
-	fi
-}
-
 # Fix Wordpress Permissions
 # (based on recommendations from http://codex.wordpress.org/Hardening_WordPress#File_permissions)
 fixpermissions() {
