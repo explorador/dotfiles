@@ -236,11 +236,6 @@ watchdefaults() {
 	done
 }
 
-# Generate random password
-genpass() {
-	date +%s | sha256sum | base64 | head -c 32 ; echo
-}
-
 # npm install fix
 alias npmplease='rm -rf node_modules/ && rm -f package-lock.json && npm install'
 
