@@ -1,37 +1,14 @@
 #!/bin/sh
 
+# Dev Homebrew Setup
+# All packages are now in the unified Brewfile at ~/.dotfiles/Brewfile
+# This script runs brew bundle if baseline/.brew hasn't been run yet
+
 tput setaf 7
-tput smso;  echo " Running homebrew file. "; tput rmso
+tput smso;  echo " Running dev homebrew setup. "; tput rmso
 tput sgr0
 
-# Install cli packages
-brew install mkcert
-brew install nmap
-brew install themekit
+# Run brew bundle (idempotent - safe to run multiple times)
+brew bundle --file="$HOME/.dotfiles/Brewfile"
 
-# Install apps
-brew install --cask dash
-brew install --cask docker
-brew install --cask gas-mask
-mas install 1081413713 # GIF Brewery 3
-brew install --cask google-chrome
-mas install 1101267774 # HTML Email Signature - Outlook
-brew install --cask iconjar
-brew install --cask kitematic
-brew install --cask omnigraffle
-brew install --cask poedit
-brew install --cask postman
-brew install --cask safari-technology-preview
-brew install --cask sequel-pro
-brew install --cask sketch
-brew install --cask parallels
-mas install 1006087419 # SnippetsLab
-brew install --cask table-tool
-brew install --cask termius
-brew install --cask the-unarchiver
-brew install --cask tinypng4mac
-brew install --cask transmit
-brew install --cask visual-studio-code
-brew install --cask virtualbox
-brew install --cask vivaldi
-mas install 497799835 # Xcode
+echo "Dev homebrew setup complete!"

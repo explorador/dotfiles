@@ -3,69 +3,23 @@
 # Homebrew
 # ################################################################
 tput setaf 7
-tput smso;  echo " Running homebrew file. "; tput rmso
+tput smso;  echo " Running homebrew setup. "; tput rmso
 tput sgr0
 
+# Install Homebrew if not present
+if ! command -v brew &> /dev/null; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# Install.
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    # Add brew to PATH for Apple Silicon Macs
+    if [[ -f "/opt/homebrew/bin/brew" ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+fi
 
-# Tap formula repositories.
-brew tap homebrew/cask-versions
-brew tap shopify/shopify
+# Install all packages from Brewfile using brew bundle
+# This is faster than individual installs and idempotent
+echo "Installing packages from Brewfile..."
+brew bundle --file="$HOME/.dotfiles/Brewfile"
 
-# Basic CLI packages
-brew install archey
-brew install bat
-brew install chezmoi
-brew install fd
-brew install ffmpeg
-brew install ffmpegthumbnailer
-brew install figlet
-brew install fzf
-brew install imagemagick
-brew install jq
-brew install ksdiff
-brew install lazygit
-brew install mas
-brew install neovim
-brew install poppler
-brew install ripgrep
-brew install shopify-cli
-brew install tldr
-brew install um
-brew install unar
-brew install yazi
-brew install youtube-dl
-brew install zellij
-brew install zoxide
-brew install --cask font-droid-sans-mono-for-powerline
-brew install --cask kitty
-
-# Basic apps
-brew install --cask 1password
-brew install --cask 1password-cli
-brew install --cask alfred
-mas install 917664748 # Bible
-brew install --cask cheatsheet
-brew install --cask daisydisk
-brew install --cask dropbox
-brew install --cask firefox-developer-edition
-brew install --cask fliqlo # Screensaver
-brew install --cask jumpshare
-mas install 587512244 # Kaleidoscope
-brew install --cask iterm2
-mas install 689992800 # MemoryKeeper
-brew install --cask muzzle
-brew install --cask notion
-brew install --cask numi
-mas install 1513574319 # Quick look plugin
-brew install --cask raindropio
-brew install --cask rectangle
-brew install --cask skype
-brew install --cask slack
-mas install 1153157709 # Speedtest
-brew install --cask spotify
-brew install --cask vlc
-brew install --cask whatsapp
-brew install --cask ibettercharge
+echo "Homebrew setup complete!"

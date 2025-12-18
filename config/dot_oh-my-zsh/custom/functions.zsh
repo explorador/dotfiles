@@ -9,6 +9,7 @@ myfunctions() {
 	echo "  search          - Search for files by name"
 	echo "  cleardns        - Clear macOS DNS cache"
 	echo "  watchdefaults   - Watch for macOS defaults changes"
+	echo "  brewsync        - Sync Homebrew packages from dotfiles Brewfile"
 }
 
 # ===========================================
@@ -56,4 +57,33 @@ watchdefaults() {
 		diff -uw macosdefaults.txt macosdefaults2.txt | grep -E "^\+" && _saveOriginalSettings
 		sleep 1
 	done
+}
+
+# ===========================================
+# Homebrew
+# ===========================================
+
+# Sync Homebrew packages from dotfiles Brewfile
+# Only installs packages listed in the Brewfile, does not export or remove anything
+# Usage: brewsync [--pull]
+#   --pull  Pull latest dotfiles before syncing
+brewsync() {
+	local DOTFILES_DIR="$HOME/.dotfiles"
+	local BREWFILE="$DOTFILES_DIR/Brewfile"
+
+	if [[ ! -f "$BREWFILE" ]]; then
+		echo "Error: Brewfile not found at $BREWFILE"
+		return 1
+	fi
+
+	# Pull latest dotfiles if --pull flag is passed
+	if [[ "$1" == "--pull" ]]; then
+		echo "Pulling latest dotfiles..."
+		git -C "$DOTFILES_DIR" pull
+	fi
+
+	echo "Installing packages from Brewfile..."
+	brew bundle --file="$BREWFILE"
+
+	echo "Homebrew sync complete!"
 }
