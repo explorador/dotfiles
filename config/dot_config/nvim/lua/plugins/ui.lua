@@ -78,20 +78,26 @@ return {
 	-- Image support (inline preview)
 	{
 		"3rd/image.nvim",
-		ft = { "png", "jpg", "jpeg", "gif", "webp" },
-		event = "BufReadPre *.png,*.jpg,*.jpeg,*.gif,*.webp",
+		ft = { "markdown", "png", "jpg", "jpeg", "gif", "webp", "svg" },
+		event = { "BufReadPre *.md", "BufReadPre *.png,*.jpg,*.jpeg,*.gif,*.webp,*.svg" },
 		opts = {
 			backend = "kitty",
 			processor = "magick_cli",
 			integrations = {
-				markdown = { enabled = true },
+				markdown = {
+					enabled = true,
+					clear_in_insert_mode = false,
+					download_remote_images = true,
+					only_render_image_at_cursor = false,
+					filetypes = { "markdown", "vimwiki" },
+				},
 				neorg = { enabled = false },
 			},
-			max_width = 100,
-			max_height = 30,
-			max_height_window_percentage = 50,
-			max_width_window_percentage = 50,
-			hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp" },
+			max_width = nil,
+			max_height = nil,
+			max_height_window_percentage = 80,
+			max_width_window_percentage = 80,
+			hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.svg" },
 		},
 	},
 
