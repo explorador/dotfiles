@@ -18,15 +18,29 @@ brew tap shopify/shopify
 brew install archey
 brew install bat
 brew install chezmoi
+brew install fd
+brew install ffmpeg
+brew install ffmpegthumbnailer
 brew install figlet
 brew install fzf
+brew install imagemagick
+brew install jq
 brew install ksdiff
+brew install lazygit
 brew install mas
+brew install neovim
+brew install poppler
+brew install ripgrep
 brew install shopify-cli
 brew install tldr
 brew install um
+brew install unar
+brew install yazi
 brew install youtube-dl
+brew install zellij
+brew install zoxide
 brew install --cask font-droid-sans-mono-for-powerline
+brew install --cask kitty
 
 # Basic apps
 brew install --cask 1password
