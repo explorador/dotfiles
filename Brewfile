@@ -61,10 +61,7 @@ cask "rectangle"
 cask "firefox-developer-edition"
 cask "google-chrome"
 cask "safari-technology-preview"
-cask "vivaldi"
-
 # Communication
-cask "skype"
 cask "slack"
 cask "whatsapp"
 
@@ -82,7 +79,6 @@ cask "kitematic"
 cask "omnigraffle"
 cask "poedit"
 cask "postman"
-cask "sequel-pro"
 cask "sketch"
 cask "table-tool"
 cask "termius"
@@ -90,7 +86,6 @@ cask "transmit"
 cask "visual-studio-code"
 
 # Virtualization
-cask "parallels"
 cask "virtualbox"
 
 # Utilities
@@ -100,11 +95,7 @@ cask "tinypng4mac"
 
 # Mac App Store apps (requires: brew install mas)
 mas "Bible", id: 917664748
-mas "GIF Brewery 3", id: 1081413713
 mas "HTML Email Signature - Outlook", id: 1101267774
-mas "Kaleidoscope", id: 587512244
-mas "MemoryKeeper", id: 689992800
-mas "Quick Look plugin", id: 1513574319
 mas "SnippetsLab", id: 1006087419
 mas "Speedtest", id: 1153157709
 mas "Xcode", id: 497799835
