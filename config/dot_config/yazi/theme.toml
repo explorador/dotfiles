@@ -1,0 +1,120 @@
+# ~/.config/yazi/theme.toml
+# Ayu Mirage theme for Yazi
+
+[mgr]
+cwd = { fg = "#73d0ff" }
+
+# Hovered
+hovered = { fg = "#1f2430", bg = "#ffcc66" }
+preview_hovered = { underline = true }
+
+# Find
+find_keyword = { fg = "#ffcc66", bold = true, italic = true, underline = true }
+find_position = { fg = "#d4bfff", bg = "reset", bold = true, italic = true }
+
+# Marker
+marker_copied = { fg = "#bae67e", bg = "#bae67e" }
+marker_cut = { fg = "#f28779", bg = "#f28779" }
+marker_marked = { fg = "#73d0ff", bg = "#73d0ff" }
+marker_selected = { fg = "#ffcc66", bg = "#ffcc66" }
+
+# Tab
+tab_active = { fg = "#cbccc6", bg = "#232834" }
+tab_inactive = { fg = "#707a8c", bg = "#1f2430" }
+tab_width = 1
+
+# Count
+count_copied = { fg = "#1f2430", bg = "#bae67e" }
+count_cut = { fg = "#1f2430", bg = "#f28779" }
+count_selected = { fg = "#1f2430", bg = "#ffcc66" }
+
+# Border
+border_symbol = "│"
+border_style = { fg = "#707a8c" }
+
+[status]
+sep_left = { open = "", close = "" }
+sep_right = { open = "", close = "" }
+
+# Progress
+progress_label = { fg = "#cbccc6", bold = true }
+progress_normal = { fg = "#73d0ff", bg = "#232834" }
+progress_error = { fg = "#f28779", bg = "#232834" }
+
+# Permissions
+perm_type = { fg = "#73d0ff" }
+perm_read = { fg = "#ffcc66" }
+perm_write = { fg = "#f28779" }
+perm_exec = { fg = "#bae67e" }
+perm_sep = { fg = "#707a8c" }
+
+[mode]
+normal_main = { fg = "#1f2430", bg = "#73d0ff", bold = true }
+normal_alt = { fg = "#73d0ff", bg = "#232834" }
+select_main = { fg = "#1f2430", bg = "#bae67e", bold = true }
+select_alt = { fg = "#bae67e", bg = "#232834" }
+unset_main = { fg = "#1f2430", bg = "#d4bfff", bold = true }
+unset_alt = { fg = "#d4bfff", bg = "#232834" }
+
+[input]
+border = { fg = "#73d0ff" }
+title = {}
+value = {}
+selected = { reversed = true }
+
+[select]
+border = { fg = "#73d0ff" }
+active = { fg = "#d4bfff", bold = true }
+inactive = {}
+
+[tasks]
+border = { fg = "#73d0ff" }
+title = {}
+hovered = { fg = "#d4bfff", underline = true }
+
+[which]
+mask = { bg = "#1f2430" }
+cand = { fg = "#95e6cb" }
+rest = { fg = "#707a8c" }
+desc = { fg = "#d4bfff" }
+separator = "  "
+separator_style = { fg = "#707a8c" }
+
+[help]
+on = { fg = "#95e6cb" }
+run = { fg = "#d4bfff" }
+desc = {}
+hovered = { reversed = true, bold = true }
+footer = { fg = "#cbccc6", bg = "#1f2430" }
+
+[notify]
+title_info = { fg = "#bae67e" }
+title_warn = { fg = "#ffcc66" }
+title_error = { fg = "#f28779" }
+
+[filetype]
+rules = [
+  # Images
+  { mime = "image/*", fg = "#95e6cb" },
+
+  # Media
+  { mime = "video/*", fg = "#ffcc66" },
+  { mime = "audio/*", fg = "#ffcc66" },
+
+  # Archives
+  { mime = "application/zip", fg = "#d4bfff" },
+  { mime = "application/gzip", fg = "#d4bfff" },
+  { mime = "application/x-tar", fg = "#d4bfff" },
+  { mime = "application/x-bzip*", fg = "#d4bfff" },
+  { mime = "application/x-7z-compressed", fg = "#d4bfff" },
+  { mime = "application/x-rar", fg = "#d4bfff" },
+
+  # Documents
+  { mime = "application/pdf", fg = "#f28779" },
+  { mime = "application/*office*", fg = "#f28779" },
+  { mime = "application/*document*", fg = "#f28779" },
+
+  # Fallback
+  { name = "*", fg = "#cbccc6" },
+  { name = "*/", fg = "#73d0ff" },
+]
