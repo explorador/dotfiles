@@ -150,18 +150,6 @@ cleardns() {
 	sudo killall -HUP mDNSResponder; sleep 2; echo macOS DNS Cache Reset
 }
 
-# Preview files
-preview() {
-	if [ -z "$1" ]
-		then
-		# ls -apF . | fzf --preview 'bat --color "always" {}'
-		find . -type f -maxdepth 1 | fzf --preview 'bat --color "always" {}'
-	else
-		# ls -apFd "$1"/* | fzf --preview 'bat --color "always" {}'
-		find "$1" -type f -maxdepth 1 | fzf --preview 'bat --color "always" {}'
-	fi
-}
-
 # Lighthouse
 siteaudit() {
 	if [ -z "$2" ]
