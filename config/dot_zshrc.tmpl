@@ -119,7 +119,7 @@ search() {
 
 # Clear DNS cache
 cleardns() {
-	sudo killall -HUP mDNSResponder; sleep 2; echo macOS DNS Cache Reset
+	sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder; echo "macOS DNS Cache Reset"
 }
 
 # Lighthouse
