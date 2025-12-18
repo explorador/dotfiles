@@ -241,19 +241,6 @@ genpass() {
 	date +%s | sha256sum | base64 | head -c 32 ; echo
 }
 
-# Deletes Spotify Cache
-# (Run this when app starts running slow)
-spotifycache() {
-	# (zshell only) Do not query the user before executing ‘rm *’ or ‘rm path/*’.
-	setopt localoptions rmstarsilent
-
-	# Clear cache files
-	\rm -fr ~/Library/Caches/com.spotify.client/Browser/*
-	\rm -fr ~/Library/Caches/com.spotify.client/Data/*
-	\rm -fr ~/Library/Caches/com.spotify.client/fsCachedData/*
-	echo 'Cache Cleared!'
-}
-
 # npm install fix
 alias npmplease='rm -rf node_modules/ && rm -f package-lock.json && npm install'
 
