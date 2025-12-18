@@ -17,9 +17,7 @@ nvm install --lts
 # NPM packages
 # ----------------------------------------------------------------
 # Install packages.
-npm i -g contentful-cli create-react-app expo-cli gatsby-cli lerna lighthouse np pa11y skpm vnu-jar svgo
-# Disable "Anonymous data anylytics sharing" for Gatsby.
-gatsby telemetry --disable
+npm i -g contentful-cli expo-cli lighthouse np pa11y skpm vnu-jar svgo
 
 # WPScan
 # gem install wpscan
