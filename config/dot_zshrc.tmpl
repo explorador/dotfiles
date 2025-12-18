@@ -187,27 +187,6 @@ siteaudit() {
 	fi
 }
 
-# Optimize svg icons
-svgoptim() {
-	# loop through all svg icons in current directory.
-	for icon in *.svg
-	do
-		# svgo
-		svgo $icon;
-		# Edit svg file.
-			# Get width.
-			width=`grep -Eo width\=\"[0-9]+\" $icon | grep -Eo [0-9]+`;
-			# Get height.
-			height=`grep -Eo height\=\"[0-9]+\" $icon | grep -Eo [0-9]+`;
-			# Add viewBox values and remove width/height.
-			sed -i '' -e "s/<svg width=\"[0-9]*\" height=\"[0-9]*\"/<svg viewBox=\"0 0 $width $height\"/g" $icon;
-			# Add encoding
-			sed -i '' -e "s/^<svg/<?xml version=\"1.0\" encoding=\"UTF-8\"?><svg/" $icon;
-			# Remove fill
-			# sed -i '' -e "s/fill=\"\#[0-9a-fA-F]*\"//g" $icon;
-	done
-}
-
 # Watch for "defaults" macos settings changes
 watchdefaults() {
 
