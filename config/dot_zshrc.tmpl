@@ -104,9 +104,9 @@ alias zreload='source ~/.zshrc && echo .zshrc reloaded!'
 # Reload command with sudo
 alias please='sudo !!'
 
-# Fix Wordpress Permissions
+# Fix WordPress Permissions
 # (based on recommendations from http://codex.wordpress.org/Hardening_WordPress#File_permissions)
-fixpermissions() {
+wp-permissions() {
 	find ./ -type d -exec chmod 755 {} \;
 	find ./ -type f -exec chmod 644 {} \;
 	chmod 600 wp-config.php
