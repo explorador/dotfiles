@@ -11,9 +11,6 @@ sh ~/.dotfiles/dev/.macos
 # Install Integrity Plus
 curl -L https://paddle.s3.amazonaws.com/fulfillment_downloads/198/496583/Integrity_Plus.dmg -o integrityPlus.dmg && sudo hdiutil attach integrityPlus.dmg && cp -r "`ls -d /Volumes/Integrity*/*.app`" /Applications/
 
-# Install NodeJS
-nvm install --lts
-
 # NPM packages
 # ----------------------------------------------------------------
 # Install packages.
