@@ -167,16 +167,6 @@ preview() {
 	fi
 }
 
-# Open centos bash
-centos() {
-	docker container exec -it -e "PS1=root@centos: " `docker container ls | grep "centos" | awk '{print $1}'` bash
-}
-
-# Open Ubuntu bash
-ubuntu() {
-	docker container exec -it `docker container ls | grep "ubuntu" | awk '{print $1}'` bash
-}
-
 # Lighthouse
 siteaudit() {
 	if [ -z "$2" ]
