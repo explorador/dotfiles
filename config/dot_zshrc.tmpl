@@ -125,21 +125,6 @@ fixpermissions() {
 	chmod 600 wp-config.php
 }
 
-# Fix large file on Git
-fixlargefile() {
-	# If argument is empty
-	if [ -z "$1" ]
-		then
-		printf '\e[1;31m%-6s\e[m' "Enter the file's path as an argument"
-		echo '';
-	else
-		# If argument is present, run the command
-		git filter-branch --force --index-filter "git rm --cached --ignore-unmatch $1" --prune-empty --tag-name-filter cat -- --all
-		printf '\e[1;32m%-6s\e[m' "Success!"
-		echo '';
-	fi
-}
-
 # Search file
 search() {
 	find ~/ -iname "$1" 2> /dev/null
