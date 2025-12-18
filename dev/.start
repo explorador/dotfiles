@@ -14,7 +14,7 @@ curl -L https://paddle.s3.amazonaws.com/fulfillment_downloads/198/496583/Integri
 # NPM packages
 # ----------------------------------------------------------------
 # Install packages.
-npm i -g contentful-cli expo-cli lighthouse pa11y vnu-jar svgo
+npm i -g contentful-cli expo-cli pa11y vnu-jar svgo
 
 # WPScan
 # gem install wpscan

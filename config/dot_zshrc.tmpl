@@ -122,16 +122,6 @@ cleardns() {
 	sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder; echo "macOS DNS Cache Reset"
 }
 
-# Lighthouse
-siteaudit() {
-	if [ -z "$2" ]
-	then
-		lighthouse --chrome-flags="--headless" --emulated-form-factor="desktop" --view $1
-	else
-		lighthouse --chrome-flags="--headless" --emulated-form-factor="$1" --view $2
-	fi
-}
-
 # Watch for "defaults" macos settings changes
 watchdefaults() {
 
