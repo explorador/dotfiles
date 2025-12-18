@@ -3,11 +3,10 @@
 # Sync:    brewsync --pull
 
 # Tap repositories
-tap "homebrew/cask-versions"
 tap "shopify/shopify"
 
 # CLI tools
-brew "archey"
+brew "archey4"
 brew "bat"
 brew "chezmoi"
 brew "fd"
@@ -17,7 +16,6 @@ brew "figlet"
 brew "fzf"
 brew "imagemagick"
 brew "jq"
-brew "ksdiff"
 brew "lazygit"
 brew "luarocks"
 brew "mas"
@@ -32,7 +30,7 @@ brew "tldr"
 brew "um"
 brew "unar"
 brew "yazi"
-brew "youtube-dl"
+brew "yt-dlp"
 brew "zellij"
 brew "zoxide"
 
@@ -47,7 +45,7 @@ cask "kitty"
 cask "1password"
 cask "1password-cli"
 cask "alfred"
-cask "cheatsheet"
+cask "keyclu"
 cask "daisydisk"
 cask "dropbox"
 cask "jumpshare"
@@ -58,7 +56,7 @@ cask "raindropio"
 cask "rectangle"
 
 # Browsers
-cask "firefox-developer-edition"
+cask "firefox@developer-edition"
 cask "google-chrome"
 cask "safari-technology-preview"
 # Communication
@@ -72,10 +70,9 @@ cask "vlc"
 
 # Development
 cask "dash"
-cask "docker"
+cask "docker-desktop"
 cask "gas-mask"
 cask "iconjar"
-cask "kitematic"
 cask "omnigraffle"
 cask "poedit"
 cask "postman"
