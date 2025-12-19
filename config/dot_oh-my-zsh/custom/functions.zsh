@@ -9,7 +9,7 @@ myfunctions() {
 	echo "  search          - Search for files by name"
 	echo "  cleardns        - Clear macOS DNS cache"
 	echo "  watchdefaults   - Watch for macOS defaults changes"
-	echo "  brewsync        - Sync Homebrew packages from dotfiles Brewfile"
+	echo "  brewsync        - Sync Homebrew packages (prompts for personal/work config)"
 }
 
 # ===========================================
@@ -80,10 +80,30 @@ brewsync() {
 	if [[ "$1" == "--pull" ]]; then
 		echo "Pulling latest dotfiles..."
 		git -C "$DOTFILES_DIR" pull
+		shift
 	fi
 
-	echo "Installing packages from Brewfile..."
-	brew bundle --file="$BREWFILE"
+	# Prompt for configuration
+	echo "Select configuration:"
+	echo "  1) Personal (all packages)"
+	echo "  2) Work (excludes personal apps)"
+	echo ""
+	read "choice?Enter choice [1]: "
 
-	echo "Homebrew sync complete!"
+	case "${choice:-1}" in
+		1|personal)
+			echo "\nInstalling all packages..."
+			brew bundle --file="$BREWFILE"
+			;;
+		2|work)
+			echo "\nInstalling work packages only..."
+			MACHINE=work brew bundle --file="$BREWFILE"
+			;;
+		*)
+			echo "Invalid choice"
+			return 1
+			;;
+	esac
+
+	echo "\nHomebrew sync complete!"
 }

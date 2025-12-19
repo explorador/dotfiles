@@ -61,11 +61,9 @@ cask "google-chrome"
 cask "safari-technology-preview"
 # Communication
 cask "slack"
-cask "whatsapp"
 
 # Media
 cask "fliqlo"
-cask "spotify"
 cask "vlc"
 
 # Development
@@ -74,13 +72,11 @@ cask "dash"
 cask "docker-desktop"
 cask "gas-mask"
 cask "iconjar"
-cask "omnigraffle"
 cask "poedit"
 cask "postman"
 cask "sketch"
 cask "table-tool"
 cask "termius"
-cask "transmit"
 cask "visual-studio-code"
 
 # Virtualization
@@ -91,9 +87,19 @@ cask "ibettercharge"
 cask "the-unarchiver"
 cask "tinypng4mac"
 
-# Mac App Store apps (requires: brew install mas)
-mas "Bible", id: 917664748
-mas "HTML Email Signature - Outlook", id: 1101267774
-mas "SnippetsLab", id: 1006087419
-mas "Speedtest", id: 1153157709
-mas "Xcode", id: 497799835
+# ===========================================
+# Personal only (skipped on work machines)
+# ===========================================
+unless ENV["MACHINE"] == "work"
+  cask "whatsapp"
+  cask "spotify"
+  cask "transmit"
+  cask "omnigraffle"
+
+  # Mac App Store apps (requires: brew install mas)
+  mas "Bible", id: 917664748
+  mas "HTML Email Signature - Outlook", id: 1101267774
+  mas "SnippetsLab", id: 1006087419
+  mas "Speedtest", id: 1153157709
+  mas "Xcode", id: 497799835
+end
