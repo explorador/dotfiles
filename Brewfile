@@ -46,8 +46,6 @@ cask "1password"
 cask "1password-cli"
 cask "alfred"
 cask "keyclu"
-cask "daisydisk"
-cask "dropbox"
 cask "jumpshare"
 cask "muzzle"
 cask "notion"
@@ -83,7 +81,6 @@ cask "visual-studio-code"
 cask "virtualbox"
 
 # Utilities
-cask "ibettercharge"
 cask "the-unarchiver"
 cask "tinypng4mac"
 
@@ -91,10 +88,13 @@ cask "tinypng4mac"
 # Personal only (skipped on work machines)
 # ===========================================
 unless ENV["MACHINE"] == "work"
-  cask "whatsapp"
+  cask "daisydisk"
+  cask "dropbox"
+  cask "ibettercharge"
+  cask "omnigraffle"
   cask "spotify"
   cask "transmit"
-  cask "omnigraffle"
+  cask "whatsapp"
 
   # Mac App Store apps (requires: brew install mas)
   mas "Bible", id: 917664748
