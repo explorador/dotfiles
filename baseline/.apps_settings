@@ -27,6 +27,20 @@ cp ~/.dotfiles/config/apps/firefox/mozilla.cfg /Applications/Firefox\ Developer\
 sleep 1
 
 
+# Kitty icon.
+# ----------------------------------------------------------------
+# Replace default icon with custom dark icon.
+cp ~/.dotfiles/config/apps/kitty/kitty-dark.icns /Applications/kitty.app/Contents/Resources/kitty.icns
+# Touch app bundle to invalidate cache.
+touch /Applications/kitty.app
+# Clear icon cache and restart Dock.
+sudo rm -rf /Library/Caches/com.apple.iconservices.store 2>/dev/null
+killall Dock
+
+# Wait 1 second.
+sleep 1
+
+
 # Git.
 # ----------------------------------------------------------------
 git config --global color.ui true
