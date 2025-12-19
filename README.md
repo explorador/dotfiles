@@ -15,7 +15,7 @@ xcode-select --install
 ```
 3. Clone this repo
 ```
-git clone git://github.com/explorador/dotfiles ~/.dotfiles
+git clone https://github.com/explorador/dotfiles.git ~/.dotfiles
 ```
 4. Run installer
 ```
