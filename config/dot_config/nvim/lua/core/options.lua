@@ -71,6 +71,14 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
 	command = "checktime",
 })
 
+-- Filetype detection for chezmoi templates
+vim.filetype.add({
+	pattern = {
+		[".*%.zsh%.tmpl"] = "zsh",
+		["dot_zshrc%.tmpl"] = "zsh",
+	},
+})
+
 -- Mouse
 opt.mouse = "a"
 
