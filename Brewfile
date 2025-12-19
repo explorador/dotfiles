@@ -34,7 +34,7 @@ brew "zellij"
 brew "zoxide"
 
 # Fonts
-cask "font-droid-sans-mono-for-powerline"
+cask "font-droid-sans-mono-nerd-font"
 
 # Terminal emulators
 cask "iterm2"
