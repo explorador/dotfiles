@@ -65,6 +65,12 @@ opt.pumheight = 10
 opt.updatetime = 250
 opt.timeoutlen = 300
 
+-- Auto-reload files changed outside of Neovim
+opt.autoread = true
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
+	command = "checktime",
+})
+
 -- Mouse
 opt.mouse = "a"
 
