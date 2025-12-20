@@ -32,14 +32,11 @@ PROJECTS_DIR="$HOME/Web"
 proj() {
     local project
 
-    # Find all directories that look like projects (have package.json, .git, etc.)
-    project=$(fd --type d --max-depth 2 --hidden . "$PROJECTS_DIR" 2>/dev/null | \
-        while read -r dir; do
-            if [[ -f "$dir/package.json" ]] || [[ -d "$dir/.git" ]]; then
-                echo "$dir"
-            fi
-        done | \
+    # Find all git repositories at any depth
+    project=$(fd --type d --hidden '^\.git$' "$PROJECTS_DIR" 2>/dev/null | \
+        xargs -n1 dirname | \
         sed "s|$PROJECTS_DIR/||" | \
+        sort | \
         fzf --height 40% --reverse --border --prompt="  Project: " --header="Select a project")
 
     [[ -z "$project" ]] && return
