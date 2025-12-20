@@ -27,21 +27,23 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # ===========================================
 # PROJECT LAUNCHER (proj command)
 # ===========================================
-PROJECTS_DIR="$HOME/Web"
+PROJECT_DIRS=(
+    "$HOME/Web"
+    "$HOME/.dotfiles"
+)
 
 proj() {
     local project
 
-    # Find all git repositories at any depth
-    project=$(fd --type d --hidden '^\.git$' "$PROJECTS_DIR" 2>/dev/null | \
-        xargs -n1 dirname | \
-        sed "s|$PROJECTS_DIR/||" | \
-        sort | \
+    # Find all git repositories in PROJECT_DIRS
+    project=$(for dir in "${PROJECT_DIRS[@]}"; do
+        fd --type d --hidden '^\.git$' "$dir" 2>/dev/null | xargs -n1 dirname
+    done | sed "s|$HOME/||" | sort | \
         fzf --height 40% --reverse --border --prompt="  Project: " --header="Select a project")
 
     [[ -z "$project" ]] && return
 
-    local full_path="$PROJECTS_DIR/$project"
+    local full_path="$HOME/$project"
     local session_name=$(basename "$project" | tr '.' '_')
 
     # Check if we're already in tmux
