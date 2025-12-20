@@ -44,19 +44,22 @@ proj() {
     local full_path="$PROJECTS_DIR/$project"
     local session_name=$(basename "$project" | tr '.' '_')
 
-    # Check if we're already in zellij
-    if [[ -n "$ZELLIJ" ]]; then
-        # Already in zellij - just cd and open nvim
+    # Check if we're already in tmux
+    if [[ -n "$TMUX" ]]; then
+        # Already in tmux - just cd and open nvim
         cd "$full_path" && nvim .
     else
         # Check if session exists
-        if zellij list-sessions 2>/dev/null | grep -q "^$session_name"; then
+        if tmux has-session -t "$session_name" 2>/dev/null; then
             # Attach to existing session
-            zellij attach "$session_name"
+            tmux attach -t "$session_name"
         else
-            # Create new session
-            cd "$full_path"
-            zellij --session "$session_name" --layout default
+            # Create new session with nvim + terminal layout
+            tmux new-session -d -s "$session_name" -c "$full_path"
+            tmux send-keys -t "$session_name" "nvim ." Enter
+            tmux split-window -h -t "$session_name" -c "$full_path"
+            tmux select-pane -t "$session_name:0.0"
+            tmux attach -t "$session_name"
         fi
     fi
 }
@@ -66,10 +69,11 @@ proj() {
 # ===========================================
 alias lg="lazygit"
 alias nv="nvim"
-alias zj="zellij"
-alias zja="zellij attach"
-alias zjl="zellij list-sessions"
-alias zjd="zellij delete-session"
-alias zjk="zellij kill-session"
 alias v="nvim ."
 alias web="cd ~/Web"
+
+# tmux aliases
+alias ta="tmux attach -t"
+alias tl="tmux list-sessions"
+alias tk="tmux kill-session -t"
+alias tka="tmux kill-server"
