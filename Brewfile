@@ -3,6 +3,7 @@
 # Sync:    brewsync --pull
 
 # Tap repositories
+tap "arl/arl"
 tap "shopify/shopify"
 
 # CLI tools
@@ -14,6 +15,7 @@ brew "ffmpeg"
 brew "ffmpegthumbnailer"
 brew "figlet"
 brew "fzf"
+brew "gitmux"
 brew "imagemagick"
 brew "jq"
 brew "lazygit"
