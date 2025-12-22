@@ -5,3 +5,27 @@ url = "https://github.com/catppuccin/tmux/archive/refs/heads/main.tar.gz"
 exact = true
 stripComponents = 1
 refreshPeriod = "168h"
+
+# Oh My Zsh
+[".oh-my-zsh"]
+type = "archive"
+url = "https://github.com/ohmyzsh/ohmyzsh/archive/refs/heads/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+# zsh-autosuggestions plugin
+[".oh-my-zsh/custom/plugins/zsh-autosuggestions"]
+type = "archive"
+url = "https://github.com/zsh-users/zsh-autosuggestions/archive/refs/heads/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+# Powerlevel10k theme
+[".oh-my-zsh/custom/themes/powerlevel10k"]
+type = "archive"
+url = "https://github.com/romkatv/powerlevel10k/archive/refs/heads/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"

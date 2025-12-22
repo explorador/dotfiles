@@ -1,3 +1,6 @@
 # Ignore chezmoi config file.
 chezmoi.json
 apps
+
+# Oh My Zsh cache (generated at runtime)
+.oh-my-zsh/cache

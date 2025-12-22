@@ -36,16 +36,6 @@ cp ~/.dotfiles/config/chezmoi.json ~/.config/chezmoi
 chezmoi update
 
 
-# ohmyzsh
-# ----------------------------------------------------------------
-# Install
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
-# Install zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-# Install Powerlevel9k theme
-git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
-
-
 # Countdown
 countdown() {
 	secs=$1
