@@ -66,7 +66,6 @@ cask "fliqlo"
 cask "vlc"
 
 # Development
-cask "claude-code"
 cask "dash"
 cask "docker-desktop"
 cask "gas-mask"
