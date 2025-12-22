@@ -37,9 +37,9 @@ return {
 		version = "v3.*.*",
 		lazy = false,
 		keys = {
-			{ "<leader>nm", "<cmd>Neominimap toggle<cr>", desc = "Toggle Minimap" },
-			{ "<leader>nf", "<cmd>Neominimap toggleFocus<cr>", desc = "Toggle Minimap Focus" },
-			{ "<leader>nr", "<cmd>Neominimap refresh<cr>", desc = "Refresh Minimap" },
+			{ "<leader>nm", "<cmd>Neominimap Toggle<cr>", desc = "Toggle Minimap" },
+			{ "<leader>nf", "<cmd>Neominimap ToggleFocus<cr>", desc = "Toggle Minimap Focus" },
+			{ "<leader>nr", "<cmd>Neominimap Refresh<cr>", desc = "Refresh Minimap" },
 		},
 		init = function()
 			vim.g.neominimap = {
