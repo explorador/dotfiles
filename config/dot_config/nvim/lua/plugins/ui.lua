@@ -24,7 +24,6 @@ return {
 	{
 		"coder/claudecode.nvim",
 		lazy = false, -- Must load on startup for WebSocket server to register before Claude Code CLI starts
-		config = true,
 		keys = {
 			{ "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
 			{ "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
@@ -35,8 +34,9 @@ return {
 				provider = "none", -- Use external terminal (tmux) instead of Neovim split
 			},
 			diff_opts = {
-				auto_close_on_accept = true,
-				vertical_split = true,
+				layout = "vertical",
+				open_in_new_tab = false,
+				on_new_file_reject = "close_window",
 			},
 		},
 	},
