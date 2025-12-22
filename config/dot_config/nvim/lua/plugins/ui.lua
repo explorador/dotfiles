@@ -23,6 +23,7 @@ return {
 	-- Claude Code integration
 	{
 		"coder/claudecode.nvim",
+		lazy = false, -- Must load on startup for WebSocket server to register before Claude Code CLI starts
 		config = true,
 		keys = {
 			{ "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
@@ -31,8 +32,7 @@ return {
 		},
 		opts = {
 			terminal = {
-				split_side = "right",
-				split_width_percentage = 0.40,
+				provider = "none", -- Use external terminal (tmux) instead of Neovim split
 			},
 			diff_opts = {
 				auto_close_on_accept = true,
@@ -53,7 +53,7 @@ return {
 		},
 		init = function()
 			vim.g.neominimap = {
-				auto_enable = true,
+				auto_enable = false,
 				layout = "float",
 				float = {
 					minimap_width = 15,
