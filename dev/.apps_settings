@@ -10,7 +10,6 @@ open -a "Firefox Developer Edition" https://tinyjpg.com
 read "TinyPNG API" tinyPNG
 
 # Open apps we are about to modify.
-open "/Applications/Kaleidoscope.app"
 open "/Applications/TinyPNG4Mac.app"
 open "/Applications/Dash.app"
 open "/Applications/SnippetsLab.app"
@@ -21,22 +20,13 @@ open "/Applications/Safari Technology Preview.app"
 sleep 3
 
 # Close apps we are about to modify.
-for app in "Kaleidoscope" \
-	"TinyPNG4Mac" \
+for app in "TinyPNG4Mac" \
 	"Dash" \
 	"SnippetsLab" \
 	"Safari" \
 	"Safari Technology Preview" ; do
 	killall "${app}" &> /dev/null
 done
-
-
-# Kaleidoscope
-# ----------------------------------------------------------------
-# Ignore differences in whitespace
-defaults write com.blackpixel.kaleidoscope KSIgnoreWhitespaceUserDefaultsKey -int 1
-# Disable "Send anonumous system profile"
-defaults write com.blackpixel.kaleidoscope KSSendsSystemProfile -int 0
 
 
 # TinyPNG
