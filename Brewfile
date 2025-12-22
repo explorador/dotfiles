@@ -33,7 +33,6 @@ brew "um"
 brew "unar"
 brew "yazi"
 brew "yt-dlp"
-brew "zellij"
 brew "zoxide"
 
 # Fonts
