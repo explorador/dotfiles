@@ -1,0 +1,23 @@
+-- ~/.config/nvim/lua/plugins/git.lua
+
+return {
+	-- Diffview (side-by-side diffs)
+	{
+		"sindrets/diffview.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		cmd = { "DiffviewOpen", "DiffviewFileHistory" },
+		keys = {
+			{ "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Git Diff View" },
+			{ "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "File History" },
+			{ "<leader>gH", "<cmd>DiffviewFileHistory<cr>", desc = "Branch History" },
+			{ "<leader>gc", "<cmd>DiffviewClose<cr>", desc = "Close Diff View" },
+		},
+		opts = {
+			enhanced_diff_hl = true,
+			view = {
+				default = { layout = "diff2_horizontal" },
+				file_history = { layout = "diff2_horizontal" },
+			},
+		},
+	},
+}
