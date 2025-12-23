@@ -5,6 +5,9 @@ return {
 	-- Disable mini.icons, use nvim-web-devicons instead
 	{ "nvim-mini/mini.icons", enabled = false },
 
+	-- Disable old nvim-cmp bridge (using blink.cmp instead)
+	{ "hrsh7th/cmp-nvim-lsp", enabled = false },
+
 	-- nvim-web-devicons for file icons
 	{
 		"nvim-tree/nvim-web-devicons",
