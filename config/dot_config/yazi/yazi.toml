@@ -21,6 +21,11 @@ sixel_fraction = 15
 ueberzug_scale = 1
 ueberzug_offset = [0, 0, 0, 0]
 
+[tasks]
+# Image size limits (0 = unlimited)
+image_alloc = 0  # Memory allocation limit in bytes
+image_bound = [0, 0]  # Max dimensions [width, height] in pixels
+
 [opener]
 edit = [
   { run = 'nvim "$@"', block = true, for = "unix" },
