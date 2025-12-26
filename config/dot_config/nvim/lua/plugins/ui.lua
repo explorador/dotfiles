@@ -2,6 +2,18 @@
 -- Custom UI plugins and LazyVim overrides
 
 return {
+	-- Snacks customization (ayu colorscheme doesn't have snacks integration)
+	{
+		"folke/snacks.nvim",
+		opts = {
+			indent = {
+				indent = {
+					hl = "LineNr", -- Use subtle LineNr color instead of NonText
+				},
+			},
+		},
+	},
+
 	-- Disable mini.icons, use nvim-web-devicons instead
 	{ "nvim-mini/mini.icons", enabled = false },
 
