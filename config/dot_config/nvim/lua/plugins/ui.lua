@@ -38,7 +38,7 @@ return {
 			},
 			diff_opts = {
 				layout = "vertical",
-				open_in_new_tab = false,
+				open_in_new_tab = true, -- Open diffs in new tab to avoid splitting
 				on_new_file_reject = "close_window",
 			},
 		},
