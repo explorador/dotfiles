@@ -13,6 +13,8 @@ return {
 					Visual = { bg = "#34455a" },
 					-- Slightly brighter comments
 					Comment = { fg = "#707a8c", italic = true },
+					-- Lighter NonText for snacks picker directory paths
+					NonText = { fg = "#8a919d" },
 					-- Better diff colors
 					DiffAdd = { bg = "#2d3b2d" },
 					DiffChange = { bg = "#2d3b4d" },
