@@ -1,6 +1,14 @@
 -- ~/.config/nvim/lua/plugins/git.lua
 
 return {
+	-- Gitsigns (enable current line blame by default)
+	{
+		"lewis6991/gitsigns.nvim",
+		opts = {
+			current_line_blame = true,
+		},
+	},
+
 	-- Diffview (side-by-side diffs)
 	{
 		"sindrets/diffview.nvim",
