@@ -5,3 +5,6 @@ apps
 # Oh My Zsh cache (generated at runtime)
 .oh-my-zsh/cache
 .oh-my-zsh/**/*.zwc
+
+# GitHub CLI auth tokens (machine-specific, use `gh auth login`)
+.config/gh/hosts.yml
