@@ -169,6 +169,30 @@ else
         "$(__dock_item /Applications/Spotify.app)"
 fi
 
+# Downloads folder next to Trash (both work and personal)
+defaults write com.apple.dock persistent-others -array "<dict>
+    <key>tile-data</key>
+    <dict>
+        <key>arrangement</key>
+        <integer>1</integer>
+        <key>displayas</key>
+        <integer>0</integer>
+        <key>file-data</key>
+        <dict>
+            <key>_CFURLString</key>
+            <string>file://$HOME/Downloads</string>
+            <key>_CFURLStringType</key>
+            <integer>15</integer>
+        </dict>
+        <key>file-type</key>
+        <integer>2</integer>
+        <key>showas</key>
+        <integer>0</integer>
+    </dict>
+    <key>tile-type</key>
+    <string>directory-tile</string>
+</dict>"
+
 
 # Kill affected processes to apply changes
 killall Dock 2>/dev/null
