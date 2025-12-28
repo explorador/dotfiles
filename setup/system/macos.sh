@@ -74,7 +74,8 @@ defaults write NSGlobalDomain com.apple.trackpad.scaling -float 1.5
 # ----------------------------------------------------------------
 # Time zone is set automatically via Location Services (macOS default).
 # Use a 24-hour clock and display date.
-defaults write com.apple.menuextra.clock "DateFormat" -string "\"EEE MMM d HH:mm\""
+defaults write com.apple.menuextra.clock DateFormat -string "EEE MMM d HH:mm"
+defaults write com.apple.menuextra.clock ShowAMPM -bool false
 
 
 # Menu bar
