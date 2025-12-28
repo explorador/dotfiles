@@ -74,7 +74,6 @@ cask "iconjar"
 cask "poedit"
 cask "postman"
 cask "table-tool"
-cask "visual-studio-code"
 
 # Virtualization
 cask "virtualbox"

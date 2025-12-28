@@ -61,15 +61,6 @@ defaults write com.apple.Safari IncludeDevelopMenu -bool true
 defaults write com.apple.SafariTechnologyPreview.SandboxBroker ShowDevelopMenu -bool true
 
 
-# Visual Studio Code
-# ----------------------------------------------------------------
-# Turn sync on.
-code --sync on
-
-# Wait 1 second.
-sleep 1
-
-
 # Terminal
 # ----------------------------------------------------------------
 # Set theme.
