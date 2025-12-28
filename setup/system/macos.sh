@@ -125,27 +125,49 @@ __dock_item() {
            '</dict></dict></dict>'
 }
 
-defaults write com.apple.dock \
-    persistent-apps -array \
-    "$(__dock_item /System/Applications/App\ Store.app)" \
-    "$(__dock_item /System/Applications/Launchpad.app)" \
-    '{"tile-type"="spacer-tile";}' \
-    "$(__dock_item /Applications/Safari.app)" \
-    "$(__dock_item /Applications/Firefox\ Developer\ Edition.app)" \
-    '{"tile-type"="spacer-tile";}' \
-    "$(__dock_item /Applications/kitty.app)" \
-    "$(__dock_item /Applications/Figma.app)" \
-    "$(__dock_item /Applications/Postman.app)" \
-    "$(__dock_item /Applications/SnippetsLab.app)" \
-    "$(__dock_item /Applications/Dash.app)" \
-    '{"tile-type"="spacer-tile";}' \
-    "$(__dock_item /Applications/Slack.app)" \
-    "$(__dock_item /Applications/Microsoft\ Teams.app)" \
-    "$(__dock_item /System/Applications/Messages.app)" \
-    "$(__dock_item /Applications/WhatsApp.app)" \
-    "$(__dock_item /System/Applications/Mail.app)" \
-    "$(__dock_item /Applications/1Password.app)" \
-    "$(__dock_item /Applications/Spotify.app)"
+if [ "$(get_machine_type)" = "work" ]; then
+    # Work Dock: excludes Spotify, WhatsApp, Messages, Teams
+    defaults write com.apple.dock \
+        persistent-apps -array \
+        "$(__dock_item /System/Applications/App\ Store.app)" \
+        "$(__dock_item /System/Applications/Launchpad.app)" \
+        '{"tile-type"="spacer-tile";}' \
+        "$(__dock_item /Applications/Safari.app)" \
+        "$(__dock_item /Applications/Firefox\ Developer\ Edition.app)" \
+        '{"tile-type"="spacer-tile";}' \
+        "$(__dock_item /Applications/kitty.app)" \
+        "$(__dock_item /Applications/Figma.app)" \
+        "$(__dock_item /Applications/Postman.app)" \
+        "$(__dock_item /Applications/SnippetsLab.app)" \
+        "$(__dock_item /Applications/Dash.app)" \
+        '{"tile-type"="spacer-tile";}' \
+        "$(__dock_item /Applications/Slack.app)" \
+        "$(__dock_item /System/Applications/Mail.app)" \
+        "$(__dock_item /Applications/1Password.app)"
+else
+    # Personal Dock: includes all apps
+    defaults write com.apple.dock \
+        persistent-apps -array \
+        "$(__dock_item /System/Applications/App\ Store.app)" \
+        "$(__dock_item /System/Applications/Launchpad.app)" \
+        '{"tile-type"="spacer-tile";}' \
+        "$(__dock_item /Applications/Safari.app)" \
+        "$(__dock_item /Applications/Firefox\ Developer\ Edition.app)" \
+        '{"tile-type"="spacer-tile";}' \
+        "$(__dock_item /Applications/kitty.app)" \
+        "$(__dock_item /Applications/Figma.app)" \
+        "$(__dock_item /Applications/Postman.app)" \
+        "$(__dock_item /Applications/SnippetsLab.app)" \
+        "$(__dock_item /Applications/Dash.app)" \
+        '{"tile-type"="spacer-tile";}' \
+        "$(__dock_item /Applications/Slack.app)" \
+        "$(__dock_item /Applications/Microsoft\ Teams.app)" \
+        "$(__dock_item /System/Applications/Messages.app)" \
+        "$(__dock_item /Applications/WhatsApp.app)" \
+        "$(__dock_item /System/Applications/Mail.app)" \
+        "$(__dock_item /Applications/1Password.app)" \
+        "$(__dock_item /Applications/Spotify.app)"
+fi
 
 
 # Kill affected processes to apply changes
