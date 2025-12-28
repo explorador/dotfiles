@@ -1,5 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
+DOTFILES="$HOME/.dotfiles"
+SETUP_DIR="$DOTFILES/setup"
+
+# Source helper functions
+source "$SETUP_DIR/lib/tracking.sh"
+
+# Clear screen and show header
 tput clear
 tput setaf 7
 cat << "EOF"
@@ -11,49 +18,77 @@ cat << "EOF"
          ###[==_____>
     *      /_/
 
-🚀 Dot Files Installation Wizard
+Dotfiles Installation Wizard
 EOF
 tput sgr0
 
+# Check if this is first run (no setup log exists)
+if [ ! -f "$SETUP_LOG" ] || [ -z "$(get_machine_type)" ]; then
+    echo ""
+    tput setaf 6
+    echo "First time setup detected!"
+    tput sgr0
+    prompt_machine_type
+    echo ""
+fi
 
-# Wizard Menu
-# ----------------------------------------------------------------
-tput cup 10 15
+# Show current machine type
+machine_type=$(get_machine_type)
+echo ""
+echo "Machine type: $machine_type"
+echo ""
+
+# Menu
+tput cup 14 15
 tput rev
-echo " SELECT MODE "
+echo " SELECT OPTION "
 tput sgr0
 
-tput cup 12 2
-echo "1. Baseline"
+tput cup 16 2
+echo "1. Full Setup (first-time install)"
 
-tput cup 13 2
-echo "2. Dev"
+tput cup 17 2
+echo "2. Update (idempotent steps only)"
 
-# tput cup 14 2
-# echo "3. Design"
+tput cup 18 2
+echo "3. Configure specific app"
 
-# tput cup 15 2
-# echo "4. Music"
+tput cup 19 2
+echo "4. Reset and re-run all"
 
-# Set bold mode
+tput cup 20 2
+echo "5. Show status"
+
+tput cup 21 2
+echo "6. Change machine type"
+
+tput cup 23 2
 tput bold
-tput cup 15 2
-read -p "Enter your choice [1-2] " choice
-
+read -p "Enter your choice [1-6]: " choice
 tput sgr0
-tput rc
 
-
-# Run selected option.
-# ----------------------------------------------------------------
+# Run selected option
 case $choice in
-	1) sh ~/.dotfiles/baseline/.start # Run baseline setup
-	;;
-	2) sh ~/.dotfiles/dev/.start # Run dev setup
-	;;
-	# 3) sh ./design/.start # Run design setup
-	# ;;
-	# 4) sh ./music/.start # Run music setup
-	# ;;
+    1)
+        source "$SETUP_DIR/main.sh" --full
+        ;;
+    2)
+        source "$SETUP_DIR/main.sh" --update
+        ;;
+    3)
+        source "$SETUP_DIR/main.sh" --select
+        ;;
+    4)
+        source "$SETUP_DIR/main.sh" --reset
+        ;;
+    5)
+        source "$SETUP_DIR/main.sh" --status
+        ;;
+    6)
+        source "$SETUP_DIR/main.sh" --change-machine
+        ;;
+    *)
+        echo "Invalid choice"
+        exit 1
+        ;;
 esac
-

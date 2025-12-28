@@ -46,3 +46,6 @@ Temporary Items
 # IntelliJ IDEA
 .idea/
 *.iml
+
+# Setup state tracking
+.setup-log
