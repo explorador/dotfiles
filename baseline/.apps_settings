@@ -76,16 +76,10 @@ sleep 1
 
 # Fliqlo (Screensaver).
 # ----------------------------------------------------------------
-# Set time to 300 seconds.
-defaults -currentHost write com.apple.screensaver idleTime -int 300
-# Set Fliqlo as screensaver.
-defaults -currentHost write com.apple.screensaver moduleDict -dict \
-	moduleName -string "Fliqlo" \
-	path -string "$HOME/Library/Screen Savers/Fliqlo.saver" \
-	type -int 0
-
-# Wait 1 second.
-sleep 1
+# NOTE: macOS Sonoma+ no longer supports setting screensavers via defaults command.
+# Set manually: System Settings > Screen Saver > Show All > Fliqlo
+echo "Set screensaver manually: System Settings > Screen Saver > Show All > Fliqlo"
+read -p "Press enter once done"
 
 
 # iTerm settings.
