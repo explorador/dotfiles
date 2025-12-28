@@ -21,8 +21,11 @@ mkdir install
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.0/install.sh | bash
 
 
-# Get email.
-email=$(defaults read com.apple.iTunes MacBuddyStoreID)
+# Get email from iCloud account (or prompt if not signed in).
+email=$(/usr/libexec/PlistBuddy -c "print :Accounts:0:AccountID" ~/Library/Preferences/MobileMeAccounts.plist 2>/dev/null)
+if [ -z "$email" ]; then
+    read -p "Enter your email: " email
+fi
 # Signin into 1password
 eval $(op signin my.1password.com $email)
 
