@@ -120,11 +120,18 @@ sleep 1
 
 # Mail settings.
 # ----------------------------------------------------------------
-# Open Mail.
-open "/System/Applications/Mail.app"
-sleep 3
-# Close app
+# Mail is sandboxed - requires Full Disk Access to modify defaults.
+if ! plutil -lint /Library/Preferences/com.apple.TimeMachine.plist >/dev/null 2>&1; then
+    echo "Terminal needs Full Disk Access to configure Mail."
+    echo "Add Terminal to: System Settings > Privacy & Security > Full Disk Access"
+    open "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles"
+    read -p "Press enter after granting access and restarting Terminal"
+fi
+
+# Ensure Mail is closed before modifying defaults.
 killall "Mail" &> /dev/null
+sleep 1
+
 # Disable "Use dark backgrounds for messages".
 defaults write com.apple.mail ViewMessagesWithDarkBackgrounds -bool false
 # Enable "Show most recent message at the top".
