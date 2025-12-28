@@ -10,7 +10,6 @@ SETUP_DIR="$HOME/.dotfiles/setup"
 ALL_APPS=(
     "nvm"
     "firefox"
-    "kitty"
     "git-github"
     "fliqlo"
     "iterm"
