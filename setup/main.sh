@@ -2,11 +2,8 @@
 
 # Main orchestrator script for dotfiles setup
 
-DOTFILES="$HOME/.dotfiles"
-SETUP_DIR="$DOTFILES/setup"
-
-# Source helper functions
-source "$SETUP_DIR/lib/tracking.sh"
+# Source helper functions (tracking.sh sources common.sh which defines paths)
+source "$HOME/.dotfiles/setup/lib/tracking.sh"
 
 # Parse arguments
 MODE="${1:---full}"
@@ -25,18 +22,14 @@ countdown() {
 
 # Select specific app to configure
 select_app() {
-    echo ""
-    tput setaf 6
-    echo "=== Select App to Configure ==="
-    tput sgr0
-    echo ""
+    print_header "Select App to Configure"
 
     local i=1
     for app in "${ALL_APPS[@]}"; do
         if is_configured "$app"; then
-            tput setaf 8
+            color_gray
             printf "%2d. %s (configured)\n" "$i" "$app"
-            tput sgr0
+            color_reset
         else
             printf "%2d. %s\n" "$i" "$app"
         fi
@@ -68,11 +61,7 @@ select_app() {
 
 # Run full setup
 run_full_setup() {
-    echo ""
-    tput setaf 6
-    echo "=== Full Setup ==="
-    tput sgr0
-    echo ""
+    print_header "Full Setup"
 
     # Close System Preferences
     osascript -e 'tell application "System Preferences" to quit' 2>/dev/null
@@ -84,18 +73,12 @@ run_full_setup() {
     mkdir -p "$HOME/install"
 
     # System setup (always runs - these are idempotent)
-    echo ""
-    tput setaf 5
-    echo "--- System Configuration ---"
-    tput sgr0
+    print_subheader "System Configuration"
     source "$SETUP_DIR/system/macos.sh"
     source "$SETUP_DIR/system/homebrew.sh"
 
     # App setup (tracked) - uses centralized ALL_APPS list
-    echo ""
-    tput setaf 5
-    echo "--- App Configuration ---"
-    tput sgr0
+    print_subheader "App Configuration"
     run_all_apps
 
     # Final message
@@ -116,11 +99,7 @@ run_full_setup() {
 
 # Run update (idempotent steps only)
 run_update() {
-    echo ""
-    tput setaf 6
-    echo "=== Update (idempotent steps only) ==="
-    tput sgr0
-    echo ""
+    print_header "Update (idempotent steps only)"
 
     osascript -e 'tell application "System Preferences" to quit' 2>/dev/null
     sudo -v
@@ -129,9 +108,9 @@ run_update() {
     source "$SETUP_DIR/system/homebrew.sh"
 
     echo ""
-    tput setaf 2
+    color_green
     echo "Update complete!"
-    tput sgr0
+    color_reset
 }
 
 # Change machine type
@@ -145,9 +124,9 @@ change_machine_type() {
 # Reset and run all
 reset_all() {
     echo ""
-    tput setaf 1
+    color_red
     echo "WARNING: This will reset all setup progress!"
-    tput sgr0
+    color_reset
     read -p "Are you sure? [y/N]: " confirm
 
     if [[ "$confirm" =~ ^[Yy]$ ]]; then

@@ -1,14 +1,11 @@
 #!/bin/bash
 
-DOTFILES="$HOME/.dotfiles"
-SETUP_DIR="$DOTFILES/setup"
-
-# Source helper functions
-source "$SETUP_DIR/lib/tracking.sh"
+# Source helper functions (tracking.sh sources common.sh which defines paths)
+source "$HOME/.dotfiles/setup/lib/tracking.sh"
 
 # Clear screen and show header
 tput clear
-tput setaf 7
+color_white
 cat << "EOF"
    __
    \ \_____         *
@@ -20,14 +17,14 @@ cat << "EOF"
 
 Dotfiles Installation Wizard
 EOF
-tput sgr0
+color_reset
 
 # Check if this is first run (no setup log exists)
 if [ ! -f "$SETUP_LOG" ] || [ -z "$(get_machine_type)" ]; then
     echo ""
-    tput setaf 6
+    color_cyan
     echo "First time setup detected!"
-    tput sgr0
+    color_reset
     prompt_machine_type
     echo ""
 fi
@@ -40,9 +37,9 @@ echo ""
 
 # Menu
 tput cup 14 15
-tput rev
+text_reverse
 echo " SELECT OPTION "
-tput sgr0
+color_reset
 
 tput cup 16 2
 echo "1. Full Setup (first-time install)"
@@ -63,9 +60,9 @@ tput cup 21 2
 echo "6. Change machine type"
 
 tput cup 23 2
-tput bold
+text_bold
 read -p "Enter your choice [1-6]: " choice
-tput sgr0
+color_reset
 
 # Run selected option
 case $choice in
