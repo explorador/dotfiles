@@ -36,7 +36,7 @@ proj() {
 
     # Find all git repositories in PROJECT_DIRS
     project=$(for dir in "${PROJECT_DIRS[@]}"; do
-        fd --type d --hidden '^\.git$' "$dir" 2>/dev/null | xargs -n1 dirname
+        fd --type d --hidden '^\.git$' "$dir" --print0 2>/dev/null | xargs -0 -n1 dirname
     done | sed "s|$HOME/||" | sort | \
         fzf --height 40% --reverse --border --prompt="  Project: " --header="Select a project")
 
