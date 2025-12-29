@@ -3,8 +3,11 @@
 # State tracking library for dotfiles setup
 # Tracks which apps have been configured to avoid re-running setup
 
-SETUP_LOG="$HOME/.dotfiles/.setup-log"
-SETUP_DIR="$HOME/.dotfiles/setup"
+# Source common utilities (provides DOTFILES_ROOT, SETUP_DIR, color helpers)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/common.sh"
+
+SETUP_LOG="$DOTFILES_ROOT/.setup-log"
 
 # Central list of all trackable apps (single source of truth)
 ALL_APPS=(
@@ -69,9 +72,9 @@ set_machine_type() {
 # Prompt user for machine type
 prompt_machine_type() {
     echo ""
-    tput setaf 6
+    color_cyan
     echo "Is this a Work or Personal machine?"
-    tput sgr0
+    color_reset
     echo ""
     echo "  1. Personal (installs all apps including Spotify, Dropbox, etc.)"
     echo "  2. Work (skips personal apps)"
@@ -138,24 +141,24 @@ print_status() {
 
     case "$status" in
         running)
-            tput setaf 3  # Yellow
+            color_yellow
             echo ">>> Configuring: $app_name"
-            tput sgr0
+            color_reset
             ;;
         skipped)
-            tput setaf 8  # Gray
+            color_gray
             echo "--- Skipping: $app_name (already configured)"
-            tput sgr0
+            color_reset
             ;;
         done)
-            tput setaf 2  # Green
+            color_green
             echo "<<< Done: $app_name"
-            tput sgr0
+            color_reset
             ;;
         failed)
-            tput setaf 1  # Red
+            color_red
             echo "!!! Failed: $app_name"
-            tput sgr0
+            color_reset
             ;;
     esac
 }
@@ -193,11 +196,7 @@ run_forced() {
 
 # Display setup status for all apps
 show_all_status() {
-    echo ""
-    tput setaf 6
-    echo "=== Setup Status ==="
-    tput sgr0
-    echo ""
+    print_header "Setup Status"
 
     local machine_type=$(get_machine_type)
     if [ -n "$machine_type" ]; then
@@ -207,14 +206,14 @@ show_all_status() {
 
     for app in "${ALL_APPS[@]}"; do
         if is_configured "$app"; then
-            tput setaf 2
+            color_green
             printf "[x] %s\n" "$app"
         else
-            tput setaf 8
+            color_gray
             printf "[ ] %s\n" "$app"
         fi
     done
-    tput sgr0
+    color_reset
     echo ""
 }
 
