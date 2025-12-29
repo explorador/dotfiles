@@ -74,46 +74,37 @@ watchdefaults() {
 # ===========================================
 
 # Sync Homebrew packages from dotfiles Brewfile
-# Only installs packages listed in the Brewfile, does not export or remove anything
+# Uses saved machine type from setup, or prompts if not configured
 # Usage: brewsync [--pull]
 #   --pull  Pull latest dotfiles before syncing
 brewsync() {
 	local DOTFILES_DIR="$HOME/.dotfiles"
 	local BREWFILE="$DOTFILES_DIR/Brewfile"
+	local SETUP_LOG="$DOTFILES_DIR/.setup-log"
 
-	if [[ ! -f "$BREWFILE" ]]; then
-		echo "Error: Brewfile not found at $BREWFILE"
-		return 1
+	[[ ! -f "$BREWFILE" ]] && echo "Error: Brewfile not found" && return 1
+
+	# Pull if requested
+	[[ "$1" == "--pull" ]] && echo "Pulling latest dotfiles..." && git -C "$DOTFILES_DIR" pull && shift
+
+	# Check if machine type already configured
+	local machine_type
+	if [[ -f "$SETUP_LOG" ]]; then
+		machine_type=$(grep "^MACHINE=" "$SETUP_LOG" 2>/dev/null | cut -d= -f2)
 	fi
 
-	# Pull latest dotfiles if --pull flag is passed
-	if [[ "$1" == "--pull" ]]; then
-		echo "Pulling latest dotfiles..."
-		git -C "$DOTFILES_DIR" pull
-		shift
+	if [[ -n "$machine_type" ]]; then
+		echo "Using saved machine type: $machine_type"
+		[[ "$machine_type" == "work" ]] && export MACHINE=work
+	else
+		# Prompt only if not configured
+		echo "Select configuration:"
+		echo "  1) Personal (all packages)"
+		echo "  2) Work (excludes personal apps)"
+		read "choice?Enter choice [1]: "
+		[[ "${choice:-1}" == "2" ]] && export MACHINE=work
 	fi
 
-	# Prompt for configuration
-	echo "Select configuration:"
-	echo "  1) Personal (all packages)"
-	echo "  2) Work (excludes personal apps)"
-	echo ""
-	read "choice?Enter choice [1]: "
-
-	case "${choice:-1}" in
-		1|personal)
-			echo "\nInstalling all packages..."
-			brew bundle --file="$BREWFILE"
-			;;
-		2|work)
-			echo "\nInstalling work packages only..."
-			MACHINE=work brew bundle --file="$BREWFILE"
-			;;
-		*)
-			echo "Invalid choice"
-			return 1
-			;;
-	esac
-
+	brew bundle --file="$BREWFILE"
 	echo "\nHomebrew sync complete!"
 }
