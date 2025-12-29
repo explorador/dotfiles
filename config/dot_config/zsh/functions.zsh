@@ -5,11 +5,21 @@
 # List all custom functions
 myfunctions() {
 	echo "Available custom functions:"
+	echo "  dotfiles        - Run dotfiles setup wizard"
+	echo "  brewsync        - Sync Homebrew packages from Brewfile"
 	echo "  wp-permissions  - Fix WordPress file permissions"
 	echo "  search          - Search for files by name"
 	echo "  cleardns        - Clear macOS DNS cache"
 	echo "  watchdefaults   - Watch for macOS defaults changes"
-	echo "  brewsync        - Sync Homebrew packages (prompts for personal/work config)"
+}
+
+# ===========================================
+# Dotfiles
+# ===========================================
+
+# Run dotfiles setup wizard
+dotfiles() {
+	~/.dotfiles/installer.sh
 }
 
 # ===========================================
