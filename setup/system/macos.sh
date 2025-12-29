@@ -116,11 +116,16 @@ sudo spctl --master-disable
 # Dock icons
 # ----------------------------------------------------------------
 # Create a Dock entry for an application
+# Resolves symlinks to avoid alias arrow icons (e.g., Safari is a symlink)
 create_dock_app_entry() {
+    local app_path="$1"
+    # Resolve symlinks to get the real path
+    local real_path
+    real_path=$(readlink -f "$app_path" 2>/dev/null || echo "$app_path")
     printf '%s%s%s%s%s' \
            '<dict><key>tile-data</key><dict><key>file-data</key><dict>' \
            '<key>_CFURLString</key><string>' \
-           "$1" \
+           "$real_path" \
            '</string><key>_CFURLStringType</key><integer>0</integer>' \
            '</dict></dict></dict>'
 }
