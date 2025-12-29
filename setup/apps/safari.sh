@@ -6,12 +6,11 @@
 # Open Safari apps
 open "/Applications/Safari.app" 2>/dev/null
 open "/Applications/Safari Technology Preview.app" 2>/dev/null
-sleep 3
+sleep "$DELAY_APP_INIT"
 
 # Close apps
-killall "Safari" &> /dev/null
+close_app "Safari"
 killall "Safari Technology Preview" &> /dev/null
-sleep 1
 
 # Enable developer menu in Safari
 defaults write com.apple.Safari IncludeDevelopMenu -bool true

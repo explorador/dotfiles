@@ -5,9 +5,7 @@
 # Requires manual setup
 
 echo ""
-tput setaf 3
-echo "Fliqlo screensaver requires manual setup:"
-tput sgr0
+print_warning "Fliqlo screensaver requires manual setup:"
 echo "  1. Open System Settings"
 echo "  2. Go to Screen Saver"
 echo "  3. Click 'Show All'"

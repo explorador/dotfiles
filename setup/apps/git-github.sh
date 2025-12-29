@@ -3,11 +3,7 @@
 # Git & GitHub CLI configuration
 # Sets up git config, SSH keys, and GitHub authentication
 
-# Get email from iCloud account (or prompt if not signed in)
-email=$(/usr/libexec/PlistBuddy -c "print :Accounts:0:AccountID" ~/Library/Preferences/MobileMeAccounts.plist 2>/dev/null)
-if [ -z "$email" ]; then
-    read -p "Enter your email: " email
-fi
+email=$(get_user_email)
 
 # Git configuration
 git config --global color.ui true
@@ -34,4 +30,4 @@ git config --global commit.gpgsign true
 # Verify SSH connection
 ssh -T git@github.com
 
-sleep 1
+wait_for_settings

@@ -3,21 +3,11 @@
 # SnippetsLab configuration
 # Sets editor theme, active languages, and enables iCloud sync
 
-SNIPPETSLAB_APP="/Applications/SnippetsLab.app"
+APP_PATH="/Applications/SnippetsLab.app"
 
-# Check if SnippetsLab is installed
-if [ ! -d "$SNIPPETSLAB_APP" ]; then
-    echo "SnippetsLab not installed, skipping"
-    return 0 2>/dev/null || exit 0
-fi
+require_app "$APP_PATH" || return 0
 
-# Open app
-open "$SNIPPETSLAB_APP"
-sleep 3
-
-# Close app
-killall "SnippetsLab" &> /dev/null
-sleep 1
+init_app_preferences "$APP_PATH" "SnippetsLab"
 
 # Set editor theme
 defaults write com.renfei.SnippetsLab "User EditorTheme" -string "CodeRunner"

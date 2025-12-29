@@ -2,11 +2,7 @@
 
 # Global NPM packages installation
 
-# Check if npm is available
-if ! command -v npm &> /dev/null; then
-    echo "npm not installed, skipping global packages"
-    return 0 2>/dev/null || exit 0
-fi
+require_command "npm" || return 0
 
 echo "Installing global npm packages..."
 npm i -g contentful-cli expo-cli pa11y vnu-jar svgo

@@ -3,35 +3,27 @@
 # Rectangle window manager configuration
 # Sets Spectacle-mode shortcuts
 
-RECTANGLE_APP="/Applications/Rectangle.app"
+APP_PATH="/Applications/Rectangle.app"
 
-# Check if Rectangle is installed
-if [ ! -d "$RECTANGLE_APP" ]; then
-    echo "Rectangle not installed, skipping"
-    return 0 2>/dev/null || exit 0
-fi
+require_app "$APP_PATH" || return 0
 
 # Open Rectangle
-open "$RECTANGLE_APP"
+open "$APP_PATH"
 
 # Prompt for authorization
 echo ""
-tput setaf 3
-echo "Rectangle needs Accessibility permissions."
-tput sgr0
+print_warning "Rectangle needs Accessibility permissions."
 echo "Grant access when prompted, then press enter to continue."
 read -p "Press enter once done"
-sleep 3
+sleep "$DELAY_APP_INIT"
 
-# Close app
-killall "Rectangle" &> /dev/null
+close_app "Rectangle"
 
 # Set "Spectacle mode" shortcuts
 defaults write com.knollsoft.Rectangle alternateDefaultShortcuts -bool false
-# Set cycling behavior to "Spectacle mode"
 defaults write com.knollsoft.Rectangle subsequentExecutionMode -int 0
 
 # Open app again
-open "$RECTANGLE_APP"
+open "$APP_PATH"
 
-sleep 1
+wait_for_settings

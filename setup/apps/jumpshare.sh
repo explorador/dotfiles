@@ -3,21 +3,11 @@
 # Jumpshare configuration
 # Sets custom keyboard shortcuts
 
-JUMPSHARE_APP="/Applications/Jumpshare.app"
+APP_PATH="/Applications/Jumpshare.app"
 
-# Check if Jumpshare is installed
-if [ ! -d "$JUMPSHARE_APP" ]; then
-    echo "Jumpshare not installed, skipping"
-    return 0 2>/dev/null || exit 0
-fi
+require_app "$APP_PATH" || return 0
 
-# Open app
-open "$JUMPSHARE_APP"
-sleep 3
-
-# Close app
-killall "Jumpshare" &> /dev/null
-sleep 1
+init_app_preferences "$APP_PATH" "Jumpshare"
 
 # Take & Edit Screenshot shortcut
 defaults write com.jumpshare.Jumpshare hotkeyannotation -dict \
@@ -26,4 +16,4 @@ defaults write com.jumpshare.Jumpshare hotkeyannotation -dict \
     keyCode -int 21 \
     modifierFlags -int 1179648
 
-sleep 1
+wait_for_settings

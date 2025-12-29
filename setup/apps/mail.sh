@@ -6,17 +6,14 @@
 # Check for Full Disk Access
 if ! plutil -lint /Library/Preferences/com.apple.TimeMachine.plist >/dev/null 2>&1; then
     echo ""
-    tput setaf 3
-    echo "Terminal needs Full Disk Access to configure Mail."
-    tput sgr0
+    print_warning "Terminal needs Full Disk Access to configure Mail."
     echo "Add Terminal to: System Settings > Privacy & Security > Full Disk Access"
     open "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles"
     read -p "Press enter after granting access and restarting Terminal"
 fi
 
 # Ensure Mail is closed before modifying defaults
-killall "Mail" &> /dev/null
-sleep 1
+close_app "Mail"
 
 # Disable "Use dark backgrounds for messages"
 defaults write com.apple.mail ViewMessagesWithDarkBackgrounds -bool false
@@ -27,4 +24,4 @@ defaults write com.apple.mail AutoReplyFormat -bool true
 # Disable "Increase quote level" (Preferences > Composing)
 defaults write com.apple.mail SupressQuoteBarsInComposeWindows -bool false
 
-sleep 1
+wait_for_settings
