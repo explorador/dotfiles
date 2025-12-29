@@ -3,9 +3,7 @@
 # macOS System Settings
 # Idempotent - safe to run multiple times
 
-tput setaf 7
-tput smso; echo " Running macOS config "; tput rmso
-tput sgr0
+print_banner "Running macOS config"
 
 # Close any open System Preferences panes to prevent them from
 # overriding settings we're about to change
@@ -117,7 +115,8 @@ sudo spctl --master-disable
 
 # Dock icons
 # ----------------------------------------------------------------
-__dock_item() {
+# Create a Dock entry for an application
+create_dock_app_entry() {
     printf '%s%s%s%s%s' \
            '<dict><key>tile-data</key><dict><key>file-data</key><dict>' \
            '<key>_CFURLString</key><string>' \
@@ -130,44 +129,44 @@ if [ "$(get_machine_type)" = "work" ]; then
     # Work Dock: excludes Spotify, WhatsApp, Messages, Teams
     defaults write com.apple.dock \
         persistent-apps -array \
-        "$(__dock_item /System/Applications/App\ Store.app)" \
-        "$(__dock_item /System/Applications/Launchpad.app)" \
+        "$(create_dock_app_entry /System/Applications/App\ Store.app)" \
+        "$(create_dock_app_entry /System/Applications/Launchpad.app)" \
         '{"tile-type"="spacer-tile";}' \
-        "$(__dock_item /Applications/Safari.app)" \
-        "$(__dock_item /Applications/Firefox\ Developer\ Edition.app)" \
+        "$(create_dock_app_entry /Applications/Safari.app)" \
+        "$(create_dock_app_entry /Applications/Firefox\ Developer\ Edition.app)" \
         '{"tile-type"="spacer-tile";}' \
-        "$(__dock_item /Applications/kitty.app)" \
-        "$(__dock_item /Applications/Figma.app)" \
-        "$(__dock_item /Applications/Postman.app)" \
-        "$(__dock_item /Applications/SnippetsLab.app)" \
-        "$(__dock_item /Applications/Dash.app)" \
+        "$(create_dock_app_entry /Applications/kitty.app)" \
+        "$(create_dock_app_entry /Applications/Figma.app)" \
+        "$(create_dock_app_entry /Applications/Postman.app)" \
+        "$(create_dock_app_entry /Applications/SnippetsLab.app)" \
+        "$(create_dock_app_entry /Applications/Dash.app)" \
         '{"tile-type"="spacer-tile";}' \
-        "$(__dock_item /Applications/Slack.app)" \
-        "$(__dock_item /System/Applications/Mail.app)" \
-        "$(__dock_item /Applications/1Password.app)"
+        "$(create_dock_app_entry /Applications/Slack.app)" \
+        "$(create_dock_app_entry /System/Applications/Mail.app)" \
+        "$(create_dock_app_entry /Applications/1Password.app)"
 else
     # Personal Dock: includes all apps
     defaults write com.apple.dock \
         persistent-apps -array \
-        "$(__dock_item /System/Applications/App\ Store.app)" \
-        "$(__dock_item /System/Applications/Launchpad.app)" \
+        "$(create_dock_app_entry /System/Applications/App\ Store.app)" \
+        "$(create_dock_app_entry /System/Applications/Launchpad.app)" \
         '{"tile-type"="spacer-tile";}' \
-        "$(__dock_item /Applications/Safari.app)" \
-        "$(__dock_item /Applications/Firefox\ Developer\ Edition.app)" \
+        "$(create_dock_app_entry /Applications/Safari.app)" \
+        "$(create_dock_app_entry /Applications/Firefox\ Developer\ Edition.app)" \
         '{"tile-type"="spacer-tile";}' \
-        "$(__dock_item /Applications/kitty.app)" \
-        "$(__dock_item /Applications/Figma.app)" \
-        "$(__dock_item /Applications/Postman.app)" \
-        "$(__dock_item /Applications/SnippetsLab.app)" \
-        "$(__dock_item /Applications/Dash.app)" \
+        "$(create_dock_app_entry /Applications/kitty.app)" \
+        "$(create_dock_app_entry /Applications/Figma.app)" \
+        "$(create_dock_app_entry /Applications/Postman.app)" \
+        "$(create_dock_app_entry /Applications/SnippetsLab.app)" \
+        "$(create_dock_app_entry /Applications/Dash.app)" \
         '{"tile-type"="spacer-tile";}' \
-        "$(__dock_item /Applications/Slack.app)" \
-        "$(__dock_item /Applications/Microsoft\ Teams.app)" \
-        "$(__dock_item /System/Applications/Messages.app)" \
-        "$(__dock_item /Applications/WhatsApp.app)" \
-        "$(__dock_item /System/Applications/Mail.app)" \
-        "$(__dock_item /Applications/1Password.app)" \
-        "$(__dock_item /Applications/Spotify.app)"
+        "$(create_dock_app_entry /Applications/Slack.app)" \
+        "$(create_dock_app_entry /Applications/Microsoft\ Teams.app)" \
+        "$(create_dock_app_entry /System/Applications/Messages.app)" \
+        "$(create_dock_app_entry /Applications/WhatsApp.app)" \
+        "$(create_dock_app_entry /System/Applications/Mail.app)" \
+        "$(create_dock_app_entry /Applications/1Password.app)" \
+        "$(create_dock_app_entry /Applications/Spotify.app)"
 fi
 
 # Downloads folder next to Trash (both work and personal)
