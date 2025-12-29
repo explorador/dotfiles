@@ -133,4 +133,35 @@ return {
 		},
 	},
 
+	-- Disable markdown linting
+	{
+		"mfussenegger/nvim-lint",
+		opts = {
+			linters_by_ft = {
+				markdown = {},
+			},
+		},
+	},
+
+	-- Markdown rendering (re-enable features LazyVim disables)
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		opts = {
+			heading = {
+				enabled = true,
+				sign = false,
+				icons = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },
+			},
+			checkbox = {
+				enabled = true,
+			},
+			bullet = {
+				enabled = true,
+			},
+			quote = {
+				enabled = true,
+			},
+		},
+	},
+
 }
