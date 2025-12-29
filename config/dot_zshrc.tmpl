@@ -96,8 +96,8 @@ EOF
 	printf "\e[0m"
 fi
 
-# Reload .zshrc
-alias zreload='source ~/.zshrc && echo .zshrc reloaded!'
+# Reload shell (exec replaces shell, ensuring removed aliases/functions are cleared)
+alias zreload='exec zsh'
 
 # Reload command with sudo
 alias please='sudo !!'
