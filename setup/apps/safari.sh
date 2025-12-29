@@ -1,16 +1,10 @@
 #!/bin/bash
 
-# Safari configuration
-# Enables developer menu
+# Safari configuration - enables developer menu
 
-# Open Safari apps
-open "/Applications/Safari.app" 2>/dev/null
-open "/Applications/Safari Technology Preview.app" 2>/dev/null
-sleep "$DELAY_APP_INIT"
-
-# Close apps
-close_app "Safari"
-killall "Safari Technology Preview" &> /dev/null
+# Open Safari apps to initialize preferences
+init_app_preferences "/Applications/Safari.app" "Safari"
+init_app_preferences "/Applications/Safari Technology Preview.app" "Safari Technology Preview"
 
 # Enable developer menu in Safari
 defaults write com.apple.Safari IncludeDevelopMenu -bool true
