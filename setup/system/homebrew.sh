@@ -15,10 +15,11 @@ if ! command -v brew &> /dev/null; then
     fi
 fi
 
-# Export MACHINE environment variable for Brewfile conditional logic
+# Export HOMEBREW_MACHINE environment variable for Brewfile conditional logic
+# (Homebrew only passes HOMEBREW_* prefixed vars to its Ruby environment)
 machine_type=$(get_machine_type)
 if [ "$machine_type" = "work" ]; then
-    export MACHINE=work
+    export HOMEBREW_MACHINE=work
 fi
 
 # Install all packages from Brewfile using brew bundle
