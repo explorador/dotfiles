@@ -12,18 +12,15 @@ osascript -e 'tell application "System Preferences" to quit' 2>/dev/null
 # Ask for the administrator password upfront
 sudo -v
 
-
 # Dock
 # ----------------------------------------------------------------
 # Uncheck "Show recent applications in Dock"
 defaults write com.apple.dock "show-recents" -bool false
 
-
 # Siri
 # ----------------------------------------------------------------
 # Disable "Ask Siri"
 defaults write com.apple.assistant.support "Assistant Enabled" -bool false
-
 
 # Keyboard
 # ----------------------------------------------------------------
@@ -47,7 +44,6 @@ defaults write com.apple.symbolichotkeys.plist AppleSymbolicHotKeys -dict-add 30
   </dict>
 "
 
-
 # Mouse
 # ----------------------------------------------------------------
 # Mouse > Point & Click > Secondary click
@@ -55,7 +51,6 @@ defaults write com.apple.symbolichotkeys.plist AppleSymbolicHotKeys -dict-add 30
 defaults write com.apple.AppleMultitouchMouse MouseButtonMode -string "TwoButton"
 # Mouse speed to "Fast"
 defaults write -g com.apple.mouse.scaling 3
-
 
 # Trackpad
 # ----------------------------------------------------------------
@@ -67,14 +62,12 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightC
 # Tracking speed
 defaults write NSGlobalDomain com.apple.trackpad.scaling -float 1.5
 
-
 # Date and Time
 # ----------------------------------------------------------------
 # Time zone is set automatically via Location Services (macOS default).
 # Use a 24-hour clock and display date.
 defaults write com.apple.menuextra.clock DateFormat -string "EEE MMM d HH:mm"
 defaults write com.apple.menuextra.clock ShowAMPM -bool false
-
 
 # Menu bar
 # ----------------------------------------------------------------
@@ -84,7 +77,6 @@ defaults write com.apple.Siri StatusMenuVisible 0
 defaults write com.apple.menuextra.battery ShowPercent -string "NO"
 # Uncheck "Show input menu in menu bar" (Hide language bar)
 defaults write com.apple.TextInputMenu visible -bool false
-
 
 # Finder & General
 # ----------------------------------------------------------------
@@ -112,66 +104,68 @@ sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo Hos
 # Disable Gatekeeper
 sudo spctl --master-disable
 
-
 # Dock icons
 # ----------------------------------------------------------------
 # Create a Dock entry for an application
 # Resolves symlinks to avoid alias arrow icons (e.g., Safari is a symlink)
 create_dock_app_entry() {
-    local app_path="$1"
-    # Resolve symlinks to get the real path
-    local real_path
-    real_path=$(readlink -f "$app_path" 2>/dev/null || echo "$app_path")
-    printf '%s%s%s%s%s' \
-           '<dict><key>tile-data</key><dict><key>file-data</key><dict>' \
-           '<key>_CFURLString</key><string>' \
-           "$real_path" \
-           '</string><key>_CFURLStringType</key><integer>0</integer>' \
-           '</dict></dict></dict>'
+  local app_path="$1"
+  # Resolve symlinks to get the real path
+  local real_path
+  real_path=$(readlink -f "$app_path" 2>/dev/null || echo "$app_path")
+  printf '%s%s%s%s%s' \
+    '<dict><key>tile-data</key><dict><key>file-data</key><dict>' \
+    '<key>_CFURLString</key><string>' \
+    "$real_path" \
+    '</string><key>_CFURLStringType</key><integer>0</integer>' \
+    '</dict></dict></dict>'
 }
 
 if [ "$(get_machine_type)" = "work" ]; then
-    # Work Dock: excludes Spotify, WhatsApp, Messages, Teams
-    defaults write com.apple.dock \
-        persistent-apps -array \
-        "$(create_dock_app_entry /System/Applications/App\ Store.app)" \
-        "$(create_dock_app_entry /System/Applications/Launchpad.app)" \
-        '{"tile-type"="spacer-tile";}' \
-        "$(create_dock_app_entry /Applications/Safari.app)" \
-        "$(create_dock_app_entry /Applications/Firefox\ Developer\ Edition.app)" \
-        '{"tile-type"="spacer-tile";}' \
-        "$(create_dock_app_entry /Applications/kitty.app)" \
-        "$(create_dock_app_entry /Applications/Figma.app)" \
-        "$(create_dock_app_entry /Applications/Postman.app)" \
-        "$(create_dock_app_entry /Applications/SnippetsLab.app)" \
-        "$(create_dock_app_entry /Applications/Dash.app)" \
-        '{"tile-type"="spacer-tile";}' \
-        "$(create_dock_app_entry /Applications/Slack.app)" \
-        "$(create_dock_app_entry /System/Applications/Mail.app)" \
-        "$(create_dock_app_entry /Applications/1Password.app)"
+  # Work Dock: excludes Spotify, WhatsApp, Messages, Teams
+  defaults write com.apple.dock \
+    persistent-apps -array \
+    "$(create_dock_app_entry /System/Applications/App\ Store.app)" \
+    "$(create_dock_app_entry /System/Applications/Apps.app)" \
+    '{"tile-type"="spacer-tile";}' \
+    "$(create_dock_app_entry /Applications/Polypane.app)" \
+    "$(create_dock_app_entry /Applications/Safari.app)" \
+    "$(create_dock_app_entry /Applications/Google\ Chrome.app)" \
+    "$(create_dock_app_entry /Applications/Firefox\ Developer\ Edition.app)" \
+    '{"tile-type"="spacer-tile";}' \
+    "$(create_dock_app_entry /Applications/kitty.app)" \
+    "$(create_dock_app_entry /Applications/Postman.app)" \
+    "$(create_dock_app_entry /Applications/Dash.app)" \
+    "$(create_dock_app_entry /Applications/Figma.app)" \
+    '{"tile-type"="spacer-tile";}' \
+    "$(create_dock_app_entry /Applications/Slack.app)" \
+    "$(create_dock_app_entry /Applications/Obsidian.app)" \
+    "$(create_dock_app_entry /Applications/Notion.app)" \
+    "$(create_dock_app_entry /System/Applications/Mail.app)" \
+    "$(create_dock_app_entry /Applications/1Password.app)"
 else
-    # Personal Dock: includes all apps
-    defaults write com.apple.dock \
-        persistent-apps -array \
-        "$(create_dock_app_entry /System/Applications/App\ Store.app)" \
-        "$(create_dock_app_entry /System/Applications/Launchpad.app)" \
-        '{"tile-type"="spacer-tile";}' \
-        "$(create_dock_app_entry /Applications/Safari.app)" \
-        "$(create_dock_app_entry /Applications/Firefox\ Developer\ Edition.app)" \
-        '{"tile-type"="spacer-tile";}' \
-        "$(create_dock_app_entry /Applications/kitty.app)" \
-        "$(create_dock_app_entry /Applications/Figma.app)" \
-        "$(create_dock_app_entry /Applications/Postman.app)" \
-        "$(create_dock_app_entry /Applications/SnippetsLab.app)" \
-        "$(create_dock_app_entry /Applications/Dash.app)" \
-        '{"tile-type"="spacer-tile";}' \
-        "$(create_dock_app_entry /Applications/Slack.app)" \
-        "$(create_dock_app_entry /Applications/Microsoft\ Teams.app)" \
-        "$(create_dock_app_entry /System/Applications/Messages.app)" \
-        "$(create_dock_app_entry /Applications/WhatsApp.app)" \
-        "$(create_dock_app_entry /System/Applications/Mail.app)" \
-        "$(create_dock_app_entry /Applications/1Password.app)" \
-        "$(create_dock_app_entry /Applications/Spotify.app)"
+  # Personal Dock: includes all apps
+  defaults write com.apple.dock \
+    persistent-apps -array \
+    "$(create_dock_app_entry /System/Applications/App\ Store.app)" \
+    "$(create_dock_app_entry /System/Applications/Launchpad.app)" \
+    '{"tile-type"="spacer-tile";}' \
+    "$(create_dock_app_entry /Applications/Safari.app)" \
+    "$(create_dock_app_entry /Applications/Firefox\ Developer\ Edition.app)" \
+    '{"tile-type"="spacer-tile";}' \
+    "$(create_dock_app_entry /Applications/kitty.app)" \
+    "$(create_dock_app_entry /Applications/Figma.app)" \
+    "$(create_dock_app_entry /Applications/Postman.app)" \
+    "$(create_dock_app_entry /Applications/SnippetsLab.app)" \
+    "$(create_dock_app_entry /Applications/Dash.app)" \
+    '{"tile-type"="spacer-tile";}' \
+    "$(create_dock_app_entry /Applications/Slack.app)" \
+    "$(create_dock_app_entry /Applications/Microsoft\ Teams.app)" \
+    "$(create_dock_app_entry /System/Applications/Messages.app)" \
+    "$(create_dock_app_entry /Applications/WhatsApp.app)" \
+    "$(create_dock_app_entry /System/Applications/Mail.app)" \
+    "$(create_dock_app_entry /Applications/1Password.app)" \
+    "$(create_dock_app_entry /Applications/Spotify.app)"
 fi
 
 # Downloads folder next to Trash (both work and personal)
@@ -197,7 +191,6 @@ defaults write com.apple.dock persistent-others -array "<dict>
     <key>tile-type</key>
     <string>directory-tile</string>
 </dict>"
-
 
 # Kill affected processes to apply changes
 killall Dock 2>/dev/null
