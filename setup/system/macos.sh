@@ -5,9 +5,9 @@
 
 print_banner "Running macOS config"
 
-# Close any open System Preferences panes to prevent them from
-# overriding settings we're about to change
-osascript -e 'tell application "System Preferences" to quit' 2>/dev/null
+# Close System Settings to prevent it from overriding settings we're about to change
+# (renamed from "System Preferences" in Ventura 13)
+osascript -e 'tell application "System Settings" to quit' 2>/dev/null
 
 # Ask for the administrator password upfront
 sudo -v
@@ -73,8 +73,8 @@ defaults write com.apple.menuextra.clock ShowAMPM -bool false
 # ----------------------------------------------------------------
 # Remove siri icon in menu bar
 defaults write com.apple.Siri StatusMenuVisible 0
-# Disable "Show percentage"
-defaults write com.apple.menuextra.battery ShowPercent -string "NO"
+# Battery percentage: com.apple.menuextra.battery stopped working in Big Sur.
+# Now controlled via System Settings > Control Center (manual setting).
 # Uncheck "Show input menu in menu bar" (Hide language bar)
 defaults write com.apple.TextInputMenu visible -bool false
 
@@ -102,6 +102,8 @@ defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 # Reveal IP address, hostname, OS version, etc. when clicking the clock in the login window
 sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
 # Disable Gatekeeper
+# Note: On Sequoia (15) and later, requires manual confirmation in
+# System Settings > Privacy & Security > select "Anywhere"
 sudo spctl --master-disable
 
 # Dock icons
