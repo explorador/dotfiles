@@ -95,14 +95,14 @@ brewsync() {
 
 	if [[ -n "$machine_type" ]]; then
 		echo "Using saved machine type: $machine_type"
-		[[ "$machine_type" == "work" ]] && export MACHINE=work
+		[[ "$machine_type" == "work" ]] && export HOMEBREW_MACHINE=work
 	else
 		# Prompt only if not configured
 		echo "Select configuration:"
 		echo "  1) Personal (all packages)"
 		echo "  2) Work (excludes personal apps)"
 		read "choice?Enter choice [1]: "
-		[[ "${choice:-1}" == "2" ]] && export MACHINE=work
+		[[ "${choice:-1}" == "2" ]] && export HOMEBREW_MACHINE=work
 	fi
 
 	brew bundle --file="$BREWFILE"

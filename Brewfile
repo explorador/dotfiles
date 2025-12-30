@@ -87,7 +87,7 @@ cask "tinypng4mac"
 # ===========================================
 # Personal only (skipped on work machines)
 # ===========================================
-unless ENV["MACHINE"] == "work"
+unless ENV["HOMEBREW_MACHINE"] == "work"
   cask "daisydisk"
   cask "dropbox"
   cask "ibettercharge"
