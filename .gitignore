@@ -49,3 +49,6 @@ Temporary Items
 
 # Setup state tracking
 .setup-log
+
+# Claude Code local settings
+.claude/settings.local.json
