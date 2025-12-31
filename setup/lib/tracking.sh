@@ -9,26 +9,12 @@ source "$SCRIPT_DIR/common.sh"
 
 SETUP_LOG="$DOTFILES_ROOT/.setup-log"
 
-# Central list of all trackable apps (single source of truth)
-ALL_APPS=(
-    "nvm"
-    "firefox"
-    "git-github"
-    "fliqlo"
-    "iterm"
-    "jumpshare"
-    "mail"
-    "rectangle"
-    "keyboard"
-    "1password"
-    "chezmoi"
-    "tinypng"
-    "dash"
-    "snippetslab"
-    "safari"
-    "terminal"
-    "npm-packages"
-)
+# Build list of all trackable apps from apps/ directory
+ALL_APPS=()
+for _script in "$SETUP_DIR/apps/"*.sh; do
+    ALL_APPS+=("$(basename "$_script" .sh)")
+done
+unset _script _app
 
 # Initialize the setup log if it doesn't exist
 init_setup_log() {
@@ -220,11 +206,6 @@ show_all_status() {
 # Run all app setups (uses ALL_APPS list)
 run_all_apps() {
     for app in "${ALL_APPS[@]}"; do
-        # nvm is in system/, others in apps/
-        if [ "$app" = "nvm" ]; then
-            run_if_needed "$app" "$SETUP_DIR/system/nvm.sh"
-        else
-            run_if_needed "$app" "$SETUP_DIR/apps/${app}.sh"
-        fi
+        run_if_needed "$app" "$SETUP_DIR/apps/${app}.sh"
     done
 }
