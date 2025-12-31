@@ -7,17 +7,18 @@ email=$(get_user_email)
 
 # Git configuration
 git config --global color.ui true
-git config --global user.name "Cristian"
+git config --global user.name "Cristian Guerra"
 git config --global user.email "$email"
 
 # Generate SSH key if it doesn't exist
 if [ ! -f ~/.ssh/id_rsa ]; then
-    ssh-keygen -t rsa -b 4096 -C "$email"
+  ssh-keygen -t rsa -b 4096 -C "$email"
 fi
 
 # Authenticate with GitHub CLI (uploads SSH key for authentication)
+# Include admin:ssh_signing_key scope to allow uploading signing keys
 echo "Authenticate with GitHub in your browser."
-gh auth login --git-protocol ssh
+gh auth login --git-protocol ssh --scopes admin:ssh_signing_key
 
 # Upload same SSH key for commit signing
 gh ssh-key add ~/.ssh/id_rsa.pub --type signing --title "Signing key ($(hostname))"
