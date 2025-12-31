@@ -28,3 +28,31 @@ git clone https://github.com/explorador/dotfiles.git ~/.dotfiles
 ```
 sh ~/.dotfiles/installer.sh
 ```
+
+## Structure
+
+```
+Brewfile        # Homebrew packages and casks
+config/         # Dotfiles managed by chezmoi
+setup/
+  system/       # System setup (macOS, Homebrew, Node)
+  apps/         # App configuration scripts
+  lib/          # Shared utilities
+```
+
+## How it works
+
+1. **System setup** runs first: macOS preferences, Homebrew (installs `Brewfile`), Node via Volta
+2. **App setup** runs tracked scripts from `setup/apps/` - each app is configured once and skipped on re-runs
+3. **Dotfiles** are managed by [chezmoi](https://chezmoi.io) from `config/`
+
+Run `setup/main.sh --status` to see what's configured.
+
+## Shell customizations
+
+Custom functions and aliases are in `config/dot_config/zsh/`:
+
+- `functions.zsh` - utility functions
+- `dev-env.zsh` - dev tools, aliases, and the `proj` command
+
+Run `myfunctions` to list all available custom functions.
