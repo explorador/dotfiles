@@ -41,19 +41,11 @@ select_app() {
 
     if [ "$selection" = "all" ]; then
         for app in "${ALL_APPS[@]}"; do
-            if [ "$app" = "nvm" ]; then
-                run_forced "$app" "$SETUP_DIR/system/nvm.sh"
-            else
-                run_forced "$app" "$SETUP_DIR/apps/${app}.sh"
-            fi
+            run_forced "$app" "$SETUP_DIR/apps/${app}.sh"
         done
     elif [[ "$selection" =~ ^[0-9]+$ ]] && [ "$selection" -ge 1 ] && [ "$selection" -le "${#ALL_APPS[@]}" ]; then
         local selected_app="${ALL_APPS[$((selection-1))]}"
-        if [ "$selected_app" = "nvm" ]; then
-            run_forced "$selected_app" "$SETUP_DIR/system/nvm.sh"
-        else
-            run_forced "$selected_app" "$SETUP_DIR/apps/${selected_app}.sh"
-        fi
+        run_forced "$selected_app" "$SETUP_DIR/apps/${selected_app}.sh"
     else
         echo "Invalid selection"
     fi
@@ -76,6 +68,7 @@ run_full_setup() {
     print_subheader "System Configuration"
     source "$SETUP_DIR/system/macos.sh"
     source "$SETUP_DIR/system/homebrew.sh"
+    source "$SETUP_DIR/system/node.sh"
 
     # App setup (tracked) - uses centralized ALL_APPS list
     print_subheader "App Configuration"
