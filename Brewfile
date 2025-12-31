@@ -4,11 +4,13 @@
 
 # Tap repositories
 tap "arl/arl"
+tap "oven-sh/bun"
 tap "shopify/shopify"
 
 # CLI tools
 brew "archey4"
 brew "bat"
+brew "oven-sh/bun/bun"
 brew "chafa"
 brew "chezmoi"
 brew "fd"
