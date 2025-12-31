@@ -52,7 +52,7 @@ Run `setup/main.sh --status` to see what's configured.
 
 Custom functions and aliases are in `config/dot_config/zsh/`:
 
-- `functions.zsh` - utility functions
-- `dev-env.zsh` - dev tools, aliases, and the `proj` command
+- `functions.zsh` - utility functions and the `proj` command
+- `aliases.zsh` - dev and tmux aliases
 
 Run `myfunctions` to list all available custom functions.

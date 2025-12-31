@@ -58,11 +58,30 @@ plugins=(git zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 
 # Custom zsh configurations
-source ~/.config/zsh/dev-env.zsh
 source ~/.config/zsh/functions.zsh
+source ~/.config/zsh/aliases.zsh
 
-# add support for ctrl+o to open selected file in VS Code
-export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
+# ===========================================
+# Dev Tools Initialization
+# ===========================================
+
+# Zoxide (smart cd)
+eval "$(zoxide init zsh)"
+
+# FZF
+source <(fzf --zsh)
+
+# FZF Theme (Ayu Mirage) + keybindings
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#232834,bg:#1f2430,spinner:#ffcc66,hl:#f28779 \
+--color=fg:#cbccc6,header:#f28779,info:#d4bfff,pointer:#ffcc66 \
+--color=marker:#ffcc66,fg+:#cbccc6,prompt:#d4bfff,hl+:#f28779 \
+--color=border:#707a8c \
+--bind='ctrl-o:execute(code {})+abort'"
+
+# Use fd for faster file finding
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git --exclude node_modules'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -95,32 +114,6 @@ cat << "EOF"
 EOF
 	printf "\e[0m"
 fi
-
-# Reload shell (exec replaces shell, ensuring removed aliases/functions are cleared)
-alias zreload='exec zsh'
-
-# Reload command with sudo
-alias please='sudo !!'
-
-# npm install fix
-alias npmplease='rm -rf node_modules/ && rm -f package-lock.json && npm install'
-
-#export NODE_PATH=/opt/lib/node_modules
-
-# Update brew
-alias brewery='brew update && brew upgrade && brew cleanup'
-
-# ls aliases
-alias l='ls -CF'
-alias la='ls -A'
-alias ll='ls -alF'
-alias lh='ls -Shl' # Sort files by size
-
-# cat alias
-alias cat='bat'
-
-# stat alias
-alias stat='stat -x'
 
 # Volta (primary Node manager)
 export VOLTA_HOME="$HOME/.volta"
