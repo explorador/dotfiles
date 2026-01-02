@@ -3,7 +3,7 @@
 # State tracking library for dotfiles setup
 # Tracks which apps have been configured to avoid re-running setup
 
-# Source common utilities (provides DOTFILES_ROOT, SETUP_DIR, color helpers)
+# Source common utilities (common.sh -> gum.sh provides TUI functions)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
 
@@ -58,26 +58,25 @@ set_machine_type() {
 # Prompt user for machine type
 prompt_machine_type() {
     echo ""
-    color_cyan
-    echo "Is this a Work or Personal machine?"
-    color_reset
+    gum_status "info" "Is this a Work or Personal machine?"
     echo ""
-    echo "  1. Personal (installs all apps including Spotify, Dropbox, etc.)"
-    echo "  2. Work (skips personal apps)"
-    echo ""
-    read -p "Enter choice [1/2]: " choice
+
+    local choice
+    choice=$(gum_choose \
+        "Personal (installs all apps including Spotify, Dropbox, etc.)" \
+        "Work (skips personal apps)")
 
     case "$choice" in
-        1|personal|Personal)
+        Personal*)
             set_machine_type "personal"
-            echo "Machine type set to: personal"
+            gum_status "success" "Machine type set to: personal"
             ;;
-        2|work|Work)
+        Work*)
             set_machine_type "work"
-            echo "Machine type set to: work"
+            gum_status "success" "Machine type set to: work"
             ;;
         *)
-            echo "Invalid choice, defaulting to personal"
+            gum_status "warning" "Invalid choice, defaulting to personal"
             set_machine_type "personal"
             ;;
     esac
@@ -182,7 +181,7 @@ run_forced() {
 
 # Display setup status for all apps
 show_all_status() {
-    print_header "Setup Status"
+    gum_header "Setup Status"
 
     local machine_type=$(get_machine_type)
     if [ -n "$machine_type" ]; then

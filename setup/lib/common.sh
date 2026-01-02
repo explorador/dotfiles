@@ -7,6 +7,10 @@
 [[ -n "$_COMMON_SH_LOADED" ]] && return 0
 _COMMON_SH_LOADED=1
 
+# Source gum.sh for TUI support (provides colors and output functions)
+_COMMON_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$_COMMON_SCRIPT_DIR/gum.sh"
+
 #=============================================================================
 # PATH CONSTANTS (single source of truth)
 #=============================================================================
@@ -119,46 +123,10 @@ get_user_email() {
 }
 
 #=============================================================================
-# OUTPUT FORMATTING
+# OUTPUT FORMATTING (aliases to gum.sh for backward compatibility)
 #=============================================================================
 
-# Print a section header
-# Usage: print_header "Section Name"
-print_header() {
-    local title="$1"
-    echo ""
-    color_cyan
-    echo "=== $title ==="
-    color_reset
-    echo ""
-}
-
-# Print a subsection header
-# Usage: print_subheader "Subsection"
-print_subheader() {
-    local title="$1"
-    echo ""
-    color_magenta
-    echo "--- $title ---"
-    color_reset
-}
-
-# Print a warning message
-# Usage: print_warning "Something needs attention"
-print_warning() {
-    local message="$1"
-    color_yellow
-    echo "$message"
-    color_reset
-}
-
-# Print a banner (reversed text)
-# Usage: print_banner "Running setup"
-print_banner() {
-    local text="$1"
-    color_white
-    text_reverse
-    echo " $text "
-    text_reverse_off
-    color_reset
-}
+print_header() { gum_header "$1"; }
+print_subheader() { gum_subheader "$1"; }
+print_warning() { gum_status "warning" "$1"; }
+print_banner() { gum_banner "$1"; }

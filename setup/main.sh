@@ -2,7 +2,7 @@
 
 # Main orchestrator script for dotfiles setup
 
-# Source helper functions (tracking.sh sources common.sh which defines paths)
+# Source helper functions (chain: tracking -> common -> gum)
 source "$HOME/.dotfiles/setup/lib/tracking.sh"
 
 # Parse arguments
@@ -22,38 +22,45 @@ countdown() {
 
 # Select specific app to configure
 select_app() {
-    print_header "Select App to Configure"
+    while true; do
+        gum_header "Select App to Configure"
 
-    local i=1
-    for app in "${ALL_APPS[@]}"; do
-        if is_configured "$app"; then
-            color_gray
-            printf "%2d. %s (configured)\n" "$i" "$app"
-            color_reset
-        else
-            printf "%2d. %s\n" "$i" "$app"
-        fi
-        ((i++))
-    done
-
-    echo ""
-    read -p "Enter number (or 'all' to reconfigure all): " selection
-
-    if [ "$selection" = "all" ]; then
+        # Build options array with status indicators
+        local options=()
         for app in "${ALL_APPS[@]}"; do
-            run_forced "$app" "$SETUP_DIR/apps/${app}.sh"
+            if is_configured "$app"; then
+                options+=("$app (configured)")
+            else
+                options+=("$app")
+            fi
         done
-    elif [[ "$selection" =~ ^[0-9]+$ ]] && [ "$selection" -ge 1 ] && [ "$selection" -le "${#ALL_APPS[@]}" ]; then
-        local selected_app="${ALL_APPS[$((selection-1))]}"
-        run_forced "$selected_app" "$SETUP_DIR/apps/${selected_app}.sh"
-    else
-        echo "Invalid selection"
-    fi
+        options+=("Reconfigure ALL apps")
+        options+=("← Back to main menu")
+
+        # Use gum to select
+        local selection=$(gum_choose "${options[@]}")
+
+        case "$selection" in
+            "← Back to main menu")
+                return 0
+                ;;
+            "Reconfigure ALL apps")
+                for app in "${ALL_APPS[@]}"; do
+                    run_forced "$app" "$SETUP_DIR/apps/${app}.sh"
+                done
+                ;;
+            *)
+                # Extract app name (remove " (configured)" suffix if present)
+                local selected_app="${selection% (configured)}"
+                run_forced "$selected_app" "$SETUP_DIR/apps/${selected_app}.sh"
+                ;;
+        esac
+    done
 }
 
 # Run full setup
 run_full_setup() {
-    print_header "Full Setup"
+    gum_header "Full Setup"
 
     # Close System Preferences
     osascript -e 'tell application "System Preferences" to quit' 2>/dev/null
@@ -65,26 +72,25 @@ run_full_setup() {
     mkdir -p "$HOME/install"
 
     # System setup (always runs - these are idempotent)
-    print_subheader "System Configuration"
+    gum_subheader "System Configuration"
     source "$SETUP_DIR/system/macos.sh"
     source "$SETUP_DIR/system/homebrew.sh"
     source "$SETUP_DIR/system/node.sh"
 
     # App setup (tracked) - uses centralized ALL_APPS list
-    print_subheader "App Configuration"
+    gum_subheader "App Configuration"
     run_all_apps
 
     # Final message
     echo ""
-    osascript -e 'display dialog "Setup complete! Remember to setup Dropbox and Alfred."' 2>/dev/null
+    gum_status "success" "Setup complete! Remember to setup Dropbox and Alfred."
 
     # Show final status
     show_all_status
 
     # Ask about reboot
     echo ""
-    read -p "Would you like to reboot now? [y/N]: " reboot_choice
-    if [[ "$reboot_choice" =~ ^[Yy]$ ]]; then
+    if gum_confirm "Would you like to reboot now?"; then
         countdown 10 "Rebooting in"
         reboot
     fi
@@ -92,7 +98,7 @@ run_full_setup() {
 
 # Run update (idempotent steps only)
 run_update() {
-    print_header "Update (idempotent steps only)"
+    gum_header "Update (idempotent steps only)"
 
     osascript -e 'tell application "System Preferences" to quit' 2>/dev/null
     sudo -v
@@ -101,28 +107,23 @@ run_update() {
     source "$SETUP_DIR/system/homebrew.sh"
 
     echo ""
-    color_green
-    echo "Update complete!"
-    color_reset
+    gum_status "success" "Update complete!"
 }
 
 # Change machine type
 change_machine_type() {
     local current=$(get_machine_type)
     echo ""
-    echo "Current machine type: ${current:-not set}"
+    gum_status "info" "Current machine type: ${current:-not set}"
     prompt_machine_type
 }
 
 # Reset and run all
 reset_all() {
     echo ""
-    color_red
-    echo "WARNING: This will reset all setup progress!"
-    color_reset
-    read -p "Are you sure? [y/N]: " confirm
+    gum_status "warning" "This will reset all setup progress!"
 
-    if [[ "$confirm" =~ ^[Yy]$ ]]; then
+    if gum_confirm "Are you sure?"; then
         # Keep machine type but clear app tracking
         local machine_type=$(get_machine_type)
         rm -f "$SETUP_LOG"
@@ -131,7 +132,7 @@ reset_all() {
         fi
         run_full_setup
     else
-        echo "Cancelled"
+        gum_status "info" "Cancelled"
     fi
 }
 
