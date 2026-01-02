@@ -2,11 +2,11 @@
 
 # Homebrew installation and package setup
 
-print_banner "Running Homebrew setup"
+gum_subheader "Homebrew Setup"
 
 # Install Homebrew if not present
 if ! command -v brew &> /dev/null; then
-    echo "Installing Homebrew..."
+    gum_status "info" "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
     # Add brew to PATH for Apple Silicon Macs
@@ -23,7 +23,6 @@ if [ "$machine_type" = "work" ]; then
 fi
 
 # Install all packages from Brewfile using brew bundle
-echo "Installing packages from Brewfile..."
-brew bundle --file="$DOTFILES_ROOT/Brewfile"
+gum_spin "Installing packages from Brewfile..." brew bundle --file="$DOTFILES_ROOT/Brewfile"
 
-echo "Homebrew setup complete!"
+gum_status "success" "Homebrew setup complete!"

@@ -3,7 +3,7 @@
 # macOS System Settings
 # Idempotent - safe to run multiple times
 
-print_banner "Running macOS config"
+gum_subheader "macOS Configuration"
 
 # Close System Settings to prevent it from overriding settings we're about to change
 # (renamed from "System Preferences" in Ventura 13)
@@ -199,4 +199,4 @@ killall Dock 2>/dev/null
 killall SystemUIServer 2>/dev/null
 killall Finder 2>/dev/null
 
-echo "macOS configuration complete!"
+gum_status "success" "macOS configuration complete!"

@@ -4,7 +4,6 @@
 
 require_command "volta" || return 0
 
-echo "Installing Node.js via Volta..."
-volta install node
+gum_spin "Installing Node.js via Volta..." volta install node
 
-echo "Node.js installed!"
+gum_status "success" "Node.js installed!"
