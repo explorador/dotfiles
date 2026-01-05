@@ -1,0 +1,10 @@
+# Global workmux configuration
+# Matches pane layout from proj() function
+
+window_prefix: ""
+merge_strategy: rebase
+
+panes:
+  - command: nvim .
+    focus: true
+  - split: horizontal

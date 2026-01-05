@@ -6,6 +6,7 @@
 tap "arl/arl"
 tap "dopplerhq/cli"
 tap "oven-sh/bun"
+tap "raine/workmux"
 tap "shopify/shopify"
 
 # CLI tools
@@ -43,6 +44,7 @@ brew "unar"
 brew "yazi"
 brew "yt-dlp"
 brew "volta"
+brew "raine/workmux/workmux"
 brew "zoxide"
 
 # Fonts
