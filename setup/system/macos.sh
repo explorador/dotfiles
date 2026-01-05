@@ -163,6 +163,7 @@ else
     '{"tile-type"="spacer-tile";}' \
     "$(create_dock_app_entry /Applications/Slack.app)" \
     "$(create_dock_app_entry /Applications/Microsoft\ Teams.app)" \
+    "$(create_dock_app_entry /Applications/Obsidian.app)" \
     "$(create_dock_app_entry /System/Applications/Messages.app)" \
     "$(create_dock_app_entry /Applications/WhatsApp.app)" \
     "$(create_dock_app_entry /System/Applications/Mail.app)" \
