@@ -4,6 +4,7 @@
 
 # Tap repositories
 tap "arl/arl"
+tap "dopplerhq/cli"
 tap "oven-sh/bun"
 tap "shopify/shopify"
 
@@ -13,12 +14,14 @@ brew "bat"
 brew "oven-sh/bun/bun"
 brew "chafa"
 brew "chezmoi"
+brew "doppler"
 brew "fd"
 brew "ffmpeg"
 brew "ffmpegthumbnailer"
 brew "figlet"
 brew "fzf"
 brew "gh"
+brew "gnupg"
 brew "gitmux"
 brew "imagemagick"
 brew "jq"
