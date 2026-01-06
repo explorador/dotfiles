@@ -12,6 +12,10 @@ return {
 				},
 			},
 		},
+		keys = {
+			{ "<leader>gd", false }, -- Disable to use diffview instead
+			{ "<leader>gD", false }, -- Disable to use diffview instead
+		},
 	},
 
 	-- Disable mini.icons, use nvim-web-devicons instead

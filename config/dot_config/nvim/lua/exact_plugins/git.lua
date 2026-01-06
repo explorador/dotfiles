@@ -16,6 +16,7 @@ return {
 		cmd = { "DiffviewOpen", "DiffviewFileHistory" },
 		keys = {
 			{ "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Git Diff View" },
+			{ "<leader>gD", "<cmd>DiffviewOpen origin/HEAD<cr>", desc = "Diff vs Origin" },
 			{ "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "File History" },
 			{ "<leader>gH", "<cmd>DiffviewFileHistory<cr>", desc = "Branch History" },
 			{ "<leader>gc", "<cmd>DiffviewClose<cr>", desc = "Close Diff View" },
