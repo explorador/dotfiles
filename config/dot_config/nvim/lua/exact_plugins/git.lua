@@ -13,7 +13,7 @@ return {
 	{
 		"folke/snacks.nvim",
 		keys = {
-			{ "<leader>gp", function() vim.fn.system("gh pr view --web") end, desc = "Open PR in Browser" },
+			{ "<leader>gp", function() vim.fn.system("gh pr view --web || gh repo view --web") end, desc = "Open PR in Browser" },
 			{ "<leader>gP", function() Snacks.picker.gh_pr({ search = "draft:false" }) end, desc = "GitHub Pull Requests (open)" },
 		},
 	},
