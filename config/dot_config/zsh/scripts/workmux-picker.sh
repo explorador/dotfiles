@@ -8,6 +8,11 @@ RED='\033[31m'
 CYAN='\033[36m'
 RESET='\033[0m'
 
+# Normalize branch name to match worktree directory format (slashes and underscores -> dashes)
+normalize_name() {
+  echo "${1//[_\/]/-}"
+}
+
 get_branch_ref() {
   local branch="$1"
   # If branch exists on remote, use origin/ prefix to ensure latest remote version
@@ -52,8 +57,7 @@ while true; do
   if [[ -n "$pr_branches" ]]; then
     while read -r br; do
       [[ -z "$br" ]] && continue
-      # Normalize: feat/name -> feat-name (matches worktree directory format)
-      normalized="${br//\//-}"
+      normalized=$(normalize_name "$br")
 
       # Skip if we've already seen this normalized name
       if [[ -z "${seen_branches[$normalized]}" ]]; then
@@ -93,13 +97,22 @@ while true; do
   if [[ "$selection" == "[open] "* ]]; then
     # Open existing worktree
     name="${selection#\[open\] }"
-    workmux open "$name"
+    workmux open "$(normalize_name "$name")"
     break
   elif [[ "$selection" == "[remove] "* ]]; then
     # Remove worktree (with confirmation)
     name="${selection#\[remove\] }"
     echo "Remove worktree '$name'? (y/N) "
-    read -q && workmux remove "$name"
+    if read -q; then
+      echo
+      if workmux remove "$(normalize_name "$name")"; then
+        break
+      else
+        echo "\nFailed to remove worktree. Press any key to retry..."
+        read -k1
+        continue
+      fi
+    fi
     break
   elif [[ "$selection" == "[new] "* ]]; then
     # Create new worktree from branch
