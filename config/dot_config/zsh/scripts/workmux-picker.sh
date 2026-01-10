@@ -33,18 +33,18 @@ while true; do
   # Fetch latest from remote first
   git fetch origin --prune 2>/dev/null
 
-  # Get existing worktrees - extract directory name from PATH column
-  # Skip header line and (here) entry, get the basename of the path
+  # Get existing worktrees - extract branch name (first column)
+  # Skip header line and (here) entry
   existing=$(workmux list 2>/dev/null | tail -n +2 | grep -v '(here)' | \
-    awk '{print $NF}' | xargs -I{} basename {})
+    awk '{print $1}')
 
   # Track seen normalized names to avoid duplicates
   typeset -A seen_branches
 
-  # Mark existing worktrees as seen (they use normalized names already)
+  # Mark existing worktrees as seen (normalize for matching with PR branches)
   if [[ -n "$existing" ]]; then
     while read -r wt; do
-      seen_branches[$wt]=1
+      seen_branches[$(normalize_name "$wt")]=1
     done <<< "$existing"
   fi
 
