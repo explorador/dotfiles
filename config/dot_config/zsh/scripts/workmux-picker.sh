@@ -105,12 +105,13 @@ while true; do
     echo "Remove worktree '$name'? (y/N) "
     if read -q; then
       echo
-      if workmux remove "$(normalize_name "$name")"; then
-        break
-      else
-        echo "\nFailed to remove worktree. Press any key to retry..."
-        read -k1
-        continue
+      local dir_name=$(normalize_name "$name")
+      if ! workmux remove "$dir_name"; then
+        echo "\nForce remove? This will discard uncommitted changes. (y/N) "
+        if read -q; then
+          echo
+          workmux remove --force "$dir_name"
+        fi
       fi
     fi
     break
