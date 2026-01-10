@@ -41,6 +41,7 @@ require("lazy").setup({
 		{ import = "lazyvim.plugins.extras.lang.typescript" },
 		{ import = "lazyvim.plugins.extras.lang.tailwind" },
 		{ import = "lazyvim.plugins.extras.lang.markdown" },
+		{ import = "lazyvim.plugins.extras.util.dot" },
 		{ import = "lazyvim.plugins.extras.editor.neo-tree" },
 
 		-- Your custom plugins
