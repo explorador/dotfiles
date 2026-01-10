@@ -12,6 +12,7 @@ myfunctions() {
 	echo "  search          - Search for files by name"
 	echo "  cleardns        - Clear macOS DNS cache"
 	echo "  watchdefaults   - Watch for macOS defaults changes"
+	echo "  nvim-reset      - Reset nvim if it stops working"
 }
 
 # ===========================================
@@ -47,6 +48,15 @@ search() {
 # Clear DNS cache
 cleardns() {
 	sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder; echo "macOS DNS Cache Reset"
+}
+
+# Reset nvim (clear plugins/cache if nvim stops working)
+nvim-reset() {
+	echo "Clearing nvim data directories..."
+	rm -rf ~/.local/share/nvim
+	rm -rf ~/.local/state/nvim
+	rm -rf ~/.cache/nvim
+	echo "Done. Run 'nvim' to reinstall plugins."
 }
 
 # Watch for "defaults" macos settings changes
