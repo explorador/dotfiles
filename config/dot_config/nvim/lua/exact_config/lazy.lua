@@ -43,6 +43,7 @@ require("lazy").setup({
 		{ import = "lazyvim.plugins.extras.lang.markdown" },
 		{ import = "lazyvim.plugins.extras.util.dot" },
 		{ import = "lazyvim.plugins.extras.editor.neo-tree" },
+		{ import = "lazyvim.plugins.extras.test.core" },
 
 		-- Your custom plugins
 		{ import = "plugins" },
