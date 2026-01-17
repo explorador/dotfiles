@@ -66,7 +66,9 @@ cat >"$PROFILE" <<SBEOF
 (allow file-read*)
 
 ; --- DENY: Credentials & Keys ---
+; Block .ssh first, then allow .pub files (later rules have higher precedence)
 (deny file-read* (subpath "$HOME/.ssh"))
+(allow file-read* (regex #"\\.pub$"))
 (deny file-read* (subpath "$HOME/.aws"))
 (deny file-read* (subpath "$HOME/.gnupg"))
 (deny file-read* (subpath "$HOME/.gpg"))
@@ -128,10 +130,7 @@ cat >"$PROFILE" <<SBEOF
 (deny file-read* (subpath "$HOME/Library/Mail"))
 
 ; --- DENY: Key file patterns ---
-(deny file-read* (regex #"id_rsa"))
-(deny file-read* (regex #"id_ed25519"))
-(deny file-read* (regex #"id_ecdsa"))
-(deny file-read* (regex #"\\.pem\$"))
+(deny file-read* (regex #"\\.pem$"))
 (deny file-read* (regex #"/\\.env"))
 
 ; ============================================
@@ -155,16 +154,25 @@ cat >"$PROFILE" <<SBEOF
 (allow file-write* (subpath "$PROJECT_DIR/.git/refs"))
 (allow file-write* (subpath "$PROJECT_DIR/.git/logs"))
 (allow file-write* (literal "$PROJECT_DIR/.git/index"))
+(allow file-write* (literal "$PROJECT_DIR/.git/index.lock"))
 (allow file-write* (literal "$PROJECT_DIR/.git/COMMIT_EDITMSG"))
 (allow file-write* (literal "$PROJECT_DIR/.git/HEAD"))
+(allow file-write* (literal "$PROJECT_DIR/.git/HEAD.lock"))
 (allow file-write* (literal "$PROJECT_DIR/.git/ORIG_HEAD"))
 (allow file-write* (literal "$PROJECT_DIR/.git/FETCH_HEAD"))
+(allow file-write* (literal "$PROJECT_DIR/.git/FETCH_HEAD.lock"))
 (allow file-write* (literal "$PROJECT_DIR/.git/MERGE_HEAD"))
 (allow file-write* (literal "$PROJECT_DIR/.git/packed-refs"))
+(allow file-write* (literal "$PROJECT_DIR/.git/packed-refs.lock"))
+(allow file-write* (literal "$PROJECT_DIR/.git/shallow"))
+(allow file-write* (literal "$PROJECT_DIR/.git/shallow.lock"))
+(allow file-write* (literal "$PROJECT_DIR/.git/AUTO_MERGE"))
+(allow file-write* (literal "$PROJECT_DIR/.git/AUTO_MERGE.lock"))
 
-; Explicitly deny dangerous git files
+; Explicitly deny dangerous git files (these enable code execution)
 (deny file-write* (subpath "$PROJECT_DIR/.git/hooks"))
 (deny file-write* (literal "$PROJECT_DIR/.git/config"))
+(deny file-write* (literal "$PROJECT_DIR/.git/config.lock"))
 
 ; Claude config directories
 (allow file-write* (subpath "$HOME/.claude"))
@@ -175,6 +183,9 @@ cat >"$PROFILE" <<SBEOF
 (allow file-write* (subpath "/private/tmp/claude"))
 ; Note: /private/var/folders needed for system temp operations
 (allow file-write* (subpath "/private/var/folders"))
+
+; SSH agent socket (for git commit signing without exposing private keys)
+(allow file-write* (regex #"^/private/tmp/com\\.apple\\.launchd\\.[^/]+/Listeners$"))
 
 ; Deny sensitive files even within allowed paths
 (deny file-write* (regex #"/\\.env"))
@@ -191,5 +202,5 @@ echo "  Network:   localhost + HTTPS + SSH + DNS"
 echo "  Blocked:   ~/.ssh, ~/.aws, credentials, history, browsers"
 echo ""
 
-# Run with sandbox
-env PATH="$FAKE_BIN:$PATH" TMPDIR="$CLAUDE_TMP" $IDE_ENV sandbox-exec -f "$PROFILE" claude --dangerously-skip-permissions "$@"
+# Run with sandbox (SSH_AUTH_SOCK passed for git commit signing via agent)
+env PATH="$FAKE_BIN:$PATH" TMPDIR="$CLAUDE_TMP" SSH_AUTH_SOCK="$SSH_AUTH_SOCK" $IDE_ENV sandbox-exec -f "$PROFILE" claude --dangerously-skip-permissions "$@"
