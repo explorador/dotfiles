@@ -178,9 +178,9 @@ cat >"$PROFILE" <<SBEOF
 (allow file-write* (subpath "$HOME/.claude"))
 (allow file-write* (literal "$HOME/.claude.json"))
 
-; Temp directories (restricted to Claude-specific paths)
+; Temp directories
 (allow file-write* (subpath "$PROJECT_DIR/.claude-tmp"))
-(allow file-write* (subpath "/private/tmp/claude"))
+(allow file-write* (subpath "/private/tmp"))
 ; Note: /private/var/folders needed for system temp operations
 (allow file-write* (subpath "/private/var/folders"))
 
@@ -194,7 +194,6 @@ SBEOF
 # Create project-specific temp directory
 CLAUDE_TMP="$PROJECT_DIR/.claude-tmp"
 mkdir -p "$CLAUDE_TMP"
-mkdir -p /private/tmp/claude
 
 echo "safe-claude: Starting with hardened sandbox"
 echo "  Writable:  $PROJECT_DIR (git hooks/config blocked)"
