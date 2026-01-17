@@ -15,6 +15,9 @@ if [ ! -f ~/.ssh/id_rsa ]; then
   ssh-keygen -t rsa -b 4096 -C "$email"
 fi
 
+# Add key to SSH agent (--apple-use-keychain persists across reboots on macOS)
+ssh-add --apple-use-keychain ~/.ssh/id_rsa 2>/dev/null || ssh-add ~/.ssh/id_rsa
+
 # Authenticate with GitHub CLI (uploads SSH key for authentication)
 # Include admin:ssh_signing_key scope to allow uploading signing keys
 echo "Authenticate with GitHub in your browser."
