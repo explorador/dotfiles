@@ -1,0 +1,6 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $config := fromJson .chezmoi.stdin -}}
+{{- $config = setValueAtPath "statusLine.type" "command" $config -}}
+{{- $config = setValueAtPath "statusLine.command" "ccstatusline" $config -}}
+{{- $config = setValueAtPath "enabledPlugins" (dict "lua-lsp@claude-plugins-official" true "typescript-lsp@claude-plugins-official" true "security-guidance@claude-plugins-official" true "hookify@claude-plugins-official" true "code-simplifier@claude-plugins-official" true "ralph-loop@claude-plugins-official" true) $config -}}
+{{ toPrettyJson $config }}
