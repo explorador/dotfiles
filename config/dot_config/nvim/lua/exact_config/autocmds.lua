@@ -30,3 +30,13 @@ vim.api.nvim_create_autocmd("OptionSet", {
 		end
 	end,
 })
+
+-- Disable diagnostics for chezmoi modify-templates (detected by marker in first line)
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	callback = function()
+		local first_line = vim.api.nvim_buf_get_lines(0, 0, 1, false)[1] or ""
+		if first_line:match("chezmoi:modify%-template") then
+			vim.diagnostic.enable(false, { bufnr = 0 })
+		end
+	end,
+})
