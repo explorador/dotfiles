@@ -1,0 +1,195 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# safe-claude: Run Claude Code with sandbox restrictions
+# (including Edit/Write tools) to the project directory.
+
+PROJECT_DIR="$(pwd -P)"
+PROFILE="$(mktemp)"
+trap "rm -f '$PROFILE'" EXIT
+
+# IDE detection: sandbox blocks 'ps aux' (setuid binary).
+# Cache ps output BEFORE sandbox, then fake ps reads from cache.
+FAKE_BIN=$(mktemp -d)
+PS_CACHE="$FAKE_BIN/.ps_cache"
+trap "rm -rf '$PROFILE' '$FAKE_BIN'" EXIT
+
+# Capture real ps aux output before entering sandbox
+ps aux >"$PS_CACHE"
+
+cat >"$FAKE_BIN/ps" <<FAKEPS
+#!/bin/bash
+# Fake ps that reads from cached output (captured before sandbox)
+if [[ "\$*" == *"aux"* ]] || [[ "\$*" == *"-e"* ]] || [[ "\$*" == *"-A"* ]]; then
+  cat "$PS_CACHE"
+fi
+FAKEPS
+chmod +x "$FAKE_BIN/ps"
+
+# Find nvim SSE port and set env vars to help Claude connect
+IDE_ENV=""
+NVIM_PORT=$(lsof -iTCP -sTCP:LISTEN -P 2>/dev/null | awk '/nvim.*localhost/ {gsub(/.*:/,"",$9); print $9}' | head -1)
+if [ -n "$NVIM_PORT" ]; then
+  echo "safe-claude: nvim detected on port $NVIM_PORT"
+  IDE_ENV="CLAUDE_CODE_SSE_PORT=$NVIM_PORT CLAUDE_CODE_IDE_SKIP_VALID_CHECK=true"
+elif pgrep -q nvim 2>/dev/null; then
+  echo "safe-claude: nvim running (no SSE port found)"
+fi
+
+# Generate sandbox profile (simple like safe-claude, strict on file writes)
+cat >"$PROFILE" <<SBEOF
+(version 1)
+(deny default)
+
+; Allow process operations
+(allow process*)
+(allow process-info*)
+(allow signal)
+
+; ============================================
+; NETWORK - ALLOW ALL
+; ============================================
+; Note: macOS sandbox network filtering is limited.
+; File read/write restrictions are the primary security layer.
+(allow network*)
+
+(allow sysctl-read)
+(allow mach-lookup)
+(allow file-ioctl)
+
+; ============================================
+; FILE READ - HYBRID APPROACH
+; ============================================
+; Allow most reads but explicitly deny sensitive locations
+; (Pure allowlist was too restrictive for Claude to function)
+
+(allow file-read*)
+
+; --- DENY: Credentials & Keys ---
+(deny file-read* (subpath "$HOME/.ssh"))
+(deny file-read* (subpath "$HOME/.aws"))
+(deny file-read* (subpath "$HOME/.gnupg"))
+(deny file-read* (subpath "$HOME/.gpg"))
+(deny file-read* (literal "$HOME/.netrc"))
+(deny file-read* (subpath "$HOME/.config/gh"))
+(deny file-read* (subpath "$HOME/.docker"))
+(deny file-read* (subpath "$HOME/.kube"))
+(deny file-read* (subpath "$HOME/Library/Keychains"))
+(deny file-read* (literal "$HOME/.anthropic"))
+
+; --- DENY: Cloud Provider Credentials ---
+(deny file-read* (subpath "$HOME/.config/gcloud"))
+(deny file-read* (subpath "$HOME/.azure"))
+(deny file-read* (subpath "$HOME/.terraform.d"))
+(deny file-read* (subpath "$HOME/.config/op"))
+(deny file-read* (subpath "$HOME/.local/share/keyrings"))
+(deny file-read* (subpath "$HOME/.config/hub"))
+
+; --- DENY: Package Manager Credentials ---
+(deny file-read* (literal "$HOME/.npmrc"))
+(deny file-read* (literal "$HOME/.yarnrc"))
+(deny file-read* (literal "$HOME/.pypirc"))
+(deny file-read* (literal "$HOME/.gem/credentials"))
+(deny file-read* (literal "$HOME/.cargo/credentials"))
+(deny file-read* (literal "$HOME/.cargo/credentials.toml"))
+
+; --- DENY: Git Credentials ---
+(deny file-read* (literal "$HOME/.git-credentials"))
+(deny file-read* (subpath "$HOME/.config/git/credentials"))
+
+; --- DENY: Password Managers ---
+(deny file-read* (subpath "$HOME/.password-store"))
+(deny file-read* (subpath "$HOME/.1password"))
+(deny file-read* (subpath "$HOME/Library/Group Containers"))
+
+; --- DENY: Shell History ---
+(deny file-read* (literal "$HOME/.bash_history"))
+(deny file-read* (literal "$HOME/.zsh_history"))
+(deny file-read* (literal "$HOME/.zhistory"))
+(deny file-read* (literal "$HOME/.local/share/fish/fish_history"))
+(deny file-read* (literal "$HOME/.lesshst"))
+(deny file-read* (literal "$HOME/.wget-hsts"))
+
+; --- DENY: Browser Sensitive Data (passwords, cookies, history) ---
+; Block specific sensitive files rather than entire browser directories
+(deny file-read* (regex #"/Chrome.*/Login Data"))
+(deny file-read* (regex #"/Chrome.*/Cookies"))
+(deny file-read* (regex #"/Chrome.*/History"))
+(deny file-read* (regex #"/Chrome.*/Web Data"))
+(deny file-read* (regex #"/Firefox.*/logins\\.json"))
+(deny file-read* (regex #"/Firefox.*/cookies\\.sqlite"))
+(deny file-read* (regex #"/Firefox.*/places\\.sqlite"))
+(deny file-read* (regex #"/Safari.*/History"))
+(deny file-read* (regex #"/Safari.*/Cookies"))
+(deny file-read* (subpath "$HOME/Library/Cookies"))
+
+; --- DENY: Communication Apps ---
+(deny file-read* (subpath "$HOME/Library/Messages"))
+(deny file-read* (subpath "$HOME/Library/Mail"))
+
+; --- DENY: Key file patterns ---
+(deny file-read* (regex #"id_rsa"))
+(deny file-read* (regex #"id_ed25519"))
+(deny file-read* (regex #"id_ecdsa"))
+(deny file-read* (regex #"\\.pem\$"))
+(deny file-read* (regex #"/\\.env"))
+
+; ============================================
+; FILE WRITE - RESTRICTED TO SAFE LOCATIONS
+; ============================================
+
+; Device files
+(allow file-write* (literal "/dev/null"))
+
+; Project directory - main writable area
+(allow file-write* (subpath "$PROJECT_DIR"))
+
+; ============================================
+; GIT - GRANULAR PERMISSIONS
+; ============================================
+; Deny all git by default
+(deny file-write* (subpath "$PROJECT_DIR/.git"))
+
+; Allow only what's needed for commits
+(allow file-write* (subpath "$PROJECT_DIR/.git/objects"))
+(allow file-write* (subpath "$PROJECT_DIR/.git/refs"))
+(allow file-write* (subpath "$PROJECT_DIR/.git/logs"))
+(allow file-write* (literal "$PROJECT_DIR/.git/index"))
+(allow file-write* (literal "$PROJECT_DIR/.git/COMMIT_EDITMSG"))
+(allow file-write* (literal "$PROJECT_DIR/.git/HEAD"))
+(allow file-write* (literal "$PROJECT_DIR/.git/ORIG_HEAD"))
+(allow file-write* (literal "$PROJECT_DIR/.git/FETCH_HEAD"))
+(allow file-write* (literal "$PROJECT_DIR/.git/MERGE_HEAD"))
+(allow file-write* (literal "$PROJECT_DIR/.git/packed-refs"))
+
+; Explicitly deny dangerous git files
+(deny file-write* (subpath "$PROJECT_DIR/.git/hooks"))
+(deny file-write* (literal "$PROJECT_DIR/.git/config"))
+
+; Claude config directories
+(allow file-write* (subpath "$HOME/.claude"))
+(allow file-write* (literal "$HOME/.claude.json"))
+
+; Temp directories (restricted to Claude-specific paths)
+(allow file-write* (subpath "$PROJECT_DIR/.claude-tmp"))
+(allow file-write* (subpath "/private/tmp/claude"))
+; Note: /private/var/folders needed for system temp operations
+(allow file-write* (subpath "/private/var/folders"))
+
+; Deny sensitive files even within allowed paths
+(deny file-write* (regex #"/\\.env"))
+SBEOF
+
+# Create project-specific temp directory
+CLAUDE_TMP="$PROJECT_DIR/.claude-tmp"
+mkdir -p "$CLAUDE_TMP"
+mkdir -p /private/tmp/claude
+
+echo "safe-claude: Starting with hardened sandbox"
+echo "  Writable:  $PROJECT_DIR (git hooks/config blocked)"
+echo "  Network:   localhost + HTTPS + SSH + DNS"
+echo "  Blocked:   ~/.ssh, ~/.aws, credentials, history, browsers"
+echo ""
+
+# Run with sandbox
+env PATH="$FAKE_BIN:$PATH" TMPDIR="$CLAUDE_TMP" $IDE_ENV sandbox-exec -f "$PROFILE" claude --dangerously-skip-permissions "$@"
