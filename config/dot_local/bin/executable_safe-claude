@@ -198,11 +198,21 @@ SBEOF
 CLAUDE_TMP="$PROJECT_DIR/.claude-tmp"
 mkdir -p "$CLAUDE_TMP"
 
+# Keep Node compile cache in system temp (not project dir)
+SYSTEM_TMPDIR="${TMPDIR:-/tmp}"
+export NODE_COMPILE_CACHE="$SYSTEM_TMPDIR/node-compile-cache"
+
 echo "safe-claude: Starting with hardened sandbox"
 echo "  Writable:  $PROJECT_DIR (git hooks/config blocked)"
 echo "  Network:   localhost + HTTPS + SSH + DNS"
 echo "  Blocked:   ~/.ssh, ~/.aws, credentials, history, browsers"
 echo ""
 
-# Run with sandbox (SSH_AUTH_SOCK passed for git commit signing via agent)
-env PATH="$FAKE_BIN:$PATH" TMPDIR="$CLAUDE_TMP" SSH_AUTH_SOCK="$SSH_AUTH_SOCK" $IDE_ENV sandbox-exec -f "$PROFILE" claude --dangerously-skip-permissions "$@"
+# Run with sandbox
+env \
+  PATH="$FAKE_BIN:$PATH" \
+  TMPDIR="$CLAUDE_TMP" \
+  SSH_AUTH_SOCK="$SSH_AUTH_SOCK" \
+  npm_config_ignore_scripts=true \
+  $IDE_ENV \
+  sandbox-exec -f "$PROFILE" claude --dangerously-skip-permissions "$@"
