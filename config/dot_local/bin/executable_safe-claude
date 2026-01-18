@@ -8,6 +8,32 @@ PROJECT_DIR="$(pwd -P)"
 PROFILE="$(mktemp)"
 trap "rm -f '$PROFILE'" EXIT
 
+# Detect git worktree - worktrees need access to both their own git-dir and the common git-dir
+GIT_DIR=""
+GIT_COMMON_DIR=""
+WORKTREE_RULES=""
+if git rev-parse --git-dir &>/dev/null; then
+  GIT_DIR="$(cd "$(git rev-parse --git-dir)" && pwd -P)"
+  GIT_COMMON_DIR="$(cd "$(git rev-parse --git-common-dir)" && pwd -P)"
+  if [ "$GIT_DIR" != "$PROJECT_DIR/.git" ]; then
+    echo "safe-claude: Detected git worktree"
+    echo "  worktree git-dir: $GIT_DIR"
+    echo "  common git-dir:   $GIT_COMMON_DIR"
+    WORKTREE_RULES="
+; Git worktree directory (index, HEAD, etc.)
+(allow file-write* (subpath \"$GIT_DIR\"))
+(deny file-write* (subpath \"$GIT_DIR/hooks\"))
+(deny file-write* (literal \"$GIT_DIR/config\"))
+(deny file-write* (literal \"$GIT_DIR/config.lock\"))
+; Main repo git directory (shared objects)
+(allow file-write* (subpath \"$GIT_COMMON_DIR\"))
+(deny file-write* (subpath \"$GIT_COMMON_DIR/hooks\"))
+(deny file-write* (literal \"$GIT_COMMON_DIR/config\"))
+(deny file-write* (literal \"$GIT_COMMON_DIR/config.lock\"))
+"
+  fi
+fi
+
 # IDE detection: sandbox blocks 'ps aux' (setuid binary).
 # Cache ps output BEFORE sandbox, then fake ps reads from cache.
 FAKE_BIN=$(mktemp -d)
@@ -144,36 +170,13 @@ cat >"$PROFILE" <<SBEOF
 (allow file-write* (subpath "$PROJECT_DIR"))
 
 ; ============================================
-; GIT - GRANULAR PERMISSIONS
+; GIT - Allow .git with hooks/config blocked
 ; ============================================
-; Deny all git by default
-(deny file-write* (subpath "$PROJECT_DIR/.git"))
-
-; Allow only what's needed for commits
-(allow file-write* (subpath "$PROJECT_DIR/.git/objects"))
-(allow file-write* (subpath "$PROJECT_DIR/.git/refs"))
-(allow file-write* (subpath "$PROJECT_DIR/.git/logs"))
-(allow file-write* (literal "$PROJECT_DIR/.git/index"))
-(allow file-write* (literal "$PROJECT_DIR/.git/index.lock"))
-(allow file-write* (literal "$PROJECT_DIR/.git/COMMIT_EDITMSG"))
-(allow file-write* (literal "$PROJECT_DIR/.git/HEAD"))
-(allow file-write* (literal "$PROJECT_DIR/.git/HEAD.lock"))
-(allow file-write* (literal "$PROJECT_DIR/.git/ORIG_HEAD"))
-(allow file-write* (literal "$PROJECT_DIR/.git/FETCH_HEAD"))
-(allow file-write* (literal "$PROJECT_DIR/.git/FETCH_HEAD.lock"))
-(allow file-write* (literal "$PROJECT_DIR/.git/MERGE_HEAD"))
-(allow file-write* (literal "$PROJECT_DIR/.git/packed-refs"))
-(allow file-write* (literal "$PROJECT_DIR/.git/packed-refs.lock"))
-(allow file-write* (literal "$PROJECT_DIR/.git/shallow"))
-(allow file-write* (literal "$PROJECT_DIR/.git/shallow.lock"))
-(allow file-write* (literal "$PROJECT_DIR/.git/AUTO_MERGE"))
-(allow file-write* (literal "$PROJECT_DIR/.git/AUTO_MERGE.lock"))
-
-; Explicitly deny dangerous git files (these enable code execution)
+(allow file-write* (subpath "$PROJECT_DIR/.git"))
 (deny file-write* (subpath "$PROJECT_DIR/.git/hooks"))
 (deny file-write* (literal "$PROJECT_DIR/.git/config"))
 (deny file-write* (literal "$PROJECT_DIR/.git/config.lock"))
-
+$WORKTREE_RULES
 ; Claude config directories
 (allow file-write* (subpath "$HOME/.claude"))
 (allow file-write* (literal "$HOME/.claude.json"))
