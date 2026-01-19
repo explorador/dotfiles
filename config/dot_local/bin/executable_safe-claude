@@ -181,6 +181,10 @@ $WORKTREE_RULES
 (allow file-write* (subpath "$HOME/.claude"))
 (allow file-write* (literal "$HOME/.claude.json"))
 
+; Wrangler local dev cache (no auth tokens for local-only usage)
+(allow file-write* (subpath "$HOME/.wrangler"))
+(allow file-write* (subpath "$HOME/Library/Preferences/.wrangler"))
+
 ; Temp directories
 (allow file-write* (subpath "$PROJECT_DIR/.claude-tmp"))
 (allow file-write* (subpath "/private/tmp"))
