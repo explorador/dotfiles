@@ -21,7 +21,7 @@ ssh-add --apple-use-keychain ~/.ssh/id_rsa 2>/dev/null || ssh-add ~/.ssh/id_rsa
 # Authenticate with GitHub CLI (uploads SSH key for authentication)
 # Include admin:ssh_signing_key scope to allow uploading signing keys
 echo "Authenticate with GitHub in your browser."
-gh auth login --git-protocol ssh --scopes admin:ssh_signing_key
+gh auth login --git-protocol ssh --scopes admin:ssh_signing_key --secure-storage
 
 # Upload same SSH key for commit signing
 gh ssh-key add ~/.ssh/id_rsa.pub --type signing --title "Signing key ($(hostname))"

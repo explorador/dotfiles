@@ -92,17 +92,20 @@ cat >"$PROFILE" <<SBEOF
 (allow file-read*)
 
 ; --- DENY: Credentials & Keys ---
-; Block .ssh first, then allow .pub files (later rules have higher precedence)
+; Block .ssh but allow public keys and known_hosts (needed for git push)
 (deny file-read* (subpath "$HOME/.ssh"))
 (allow file-read* (regex #"\\.pub$"))
+(allow file-read* (literal "$HOME/.ssh/known_hosts"))
 (deny file-read* (subpath "$HOME/.aws"))
 (deny file-read* (subpath "$HOME/.gnupg"))
 (deny file-read* (subpath "$HOME/.gpg"))
 (deny file-read* (literal "$HOME/.netrc"))
-(deny file-read* (subpath "$HOME/.config/gh"))
+; gh config readable (tokens stored in Keychain via --secure-storage, not here)
+; (deny file-read* (subpath "$HOME/.config/gh"))
 (deny file-read* (subpath "$HOME/.docker"))
 (deny file-read* (subpath "$HOME/.kube"))
-(deny file-read* (subpath "$HOME/Library/Keychains"))
+; Keychains: needed for gh --secure-storage (Security framework XPC still needs some file access)
+; (deny file-read* (subpath "$HOME/Library/Keychains"))
 (deny file-read* (literal "$HOME/.anthropic"))
 
 ; --- DENY: Cloud Provider Credentials ---
