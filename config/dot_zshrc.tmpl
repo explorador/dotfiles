@@ -125,5 +125,7 @@ export NVM_DIR="$HOME/.nvm"
 
 export PATH="$HOME/.local/bin:$PATH"
 
-# Claude Code OAuth Token (from 1Password)
+{{- if lookPath "op" }}
+# Claude Code OAuth Token (from 1Password, resolved at chezmoi apply time)
 export CLAUDE_CODE_OAUTH_TOKEN="{{ onepasswordRead "op://Clients/Claude Code Token/Token" }}"
+{{- end }}
