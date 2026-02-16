@@ -1,0 +1,4 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $config := fromJson .chezmoi.stdin -}}
+{{- $config = setValueAtPath "mcpServers.chrome-devtools" (dict "type" "stdio" "command" "/opt/homebrew/bin/chrome-devtools-mcp" "args" (list "--browser-url=http://127.0.0.1:9222") "env" (dict)) $config -}}
+{{ toPrettyJson $config }}
