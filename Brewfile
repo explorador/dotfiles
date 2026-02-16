@@ -69,6 +69,7 @@ cask "rectangle"
 # Browsers
 cask "firefox@developer-edition"
 cask "google-chrome"
+cask "google-chrome@beta"
 cask "safari-technology-preview"
 # Communication
 cask "slack"
@@ -78,6 +79,7 @@ cask "fliqlo"
 cask "vlc"
 
 # Development
+cask "codex"
 cask "dash"
 cask "docker-desktop"
 cask "gas-mask"
