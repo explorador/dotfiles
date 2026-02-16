@@ -13,6 +13,7 @@ myfunctions() {
 	echo "  cleardns        - Clear macOS DNS cache"
 	echo "  watchdefaults   - Watch for macOS defaults changes"
 	echo "  nvim-reset      - Reset nvim if it stops working"
+	echo "  chrome-debug    - Start Chrome Beta with remote debugging (CDP)"
 }
 
 # ===========================================
@@ -163,4 +164,58 @@ proj() {
             tmux attach -t "$session_name"
         fi
     fi
+}
+
+# ===========================================
+# Browser Debugging
+# ===========================================
+
+# Start Chrome Beta with remote debugging for Playwright/Puppeteer CDP
+# Usage: chrome-debug [--headless]
+# Connect: chromium.connectOverCDP('http://127.0.0.1:9222')
+chrome-debug() {
+	local CHROME="/Applications/Google Chrome Beta.app/Contents/MacOS/Google Chrome Beta"
+	local PORT=9222
+	local HEADLESS=""
+
+	for arg in "$@"; do
+		case $arg in
+			-h|--help)
+				echo "Usage: chrome-debug [--headless]"
+				echo ""
+				echo "Start Chrome Beta with remote debugging (CDP) on port 9222."
+				echo "Playwright/Puppeteer can connect from inside safe-claude."
+				echo ""
+				echo "Options:"
+				echo "  --headless  Run without UI"
+				echo "  -h, --help  Show this help"
+				echo ""
+				echo "Connect: chromium.connectOverCDP('http://127.0.0.1:9222')"
+				return 0
+				;;
+			--headless) HEADLESS="--headless=new" ;;
+		esac
+	done
+
+	if [[ ! -x "$CHROME" ]]; then
+		echo "Error: Chrome Beta not found"
+		return 1
+	fi
+
+	if lsof -i ":$PORT" &>/dev/null; then
+		echo "chrome-debug: Port $PORT already in use"
+		echo "  Connect: chromium.connectOverCDP('http://127.0.0.1:$PORT')"
+		return 0
+	fi
+
+	echo "chrome-debug: Starting Chrome Beta on port $PORT"
+	[[ -n "$HEADLESS" ]] && echo "  Mode: headless"
+	echo "  Connect: chromium.connectOverCDP('http://127.0.0.1:$PORT')"
+
+	"$CHROME" \
+		--remote-debugging-port="$PORT" \
+		--user-data-dir="$HOME/.chrome-debug-profile" \
+		--no-first-run \
+		--no-default-browser-check \
+		$HEADLESS
 }
