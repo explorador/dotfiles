@@ -34,24 +34,6 @@ if git rev-parse --git-dir &>/dev/null; then
   fi
 fi
 
-# IDE detection: sandbox blocks 'ps aux' (setuid binary).
-# Cache ps output BEFORE sandbox, then fake ps reads from cache.
-FAKE_BIN=$(mktemp -d)
-PS_CACHE="$FAKE_BIN/.ps_cache"
-trap "rm -rf '$PROFILE' '$FAKE_BIN'" EXIT
-
-# Capture real ps aux output before entering sandbox
-ps aux >"$PS_CACHE"
-
-cat >"$FAKE_BIN/ps" <<FAKEPS
-#!/bin/bash
-# Fake ps that reads from cached output (captured before sandbox)
-if [[ "\$*" == *"aux"* ]] || [[ "\$*" == *"-e"* ]] || [[ "\$*" == *"-A"* ]]; then
-  cat "$PS_CACHE"
-fi
-FAKEPS
-chmod +x "$FAKE_BIN/ps"
-
 # Find nvim SSE port and set env vars to help Claude connect
 IDE_ENV=""
 NVIM_PORT=$(lsof -iTCP -sTCP:LISTEN -P 2>/dev/null | awk '/nvim.*localhost/ {gsub(/.*:/,"",$9); print $9}' | head -1)
@@ -81,7 +63,12 @@ cat >"$PROFILE" <<SBEOF
 
 (allow sysctl-read)
 (allow mach-lookup)
+(allow mach-register)
 (allow file-ioctl)
+
+; IPC mechanisms (needed for Chrome/Chromium)
+(allow ipc-posix*)
+(allow ipc-sysv*)
 
 ; ============================================
 ; FILE READ - HYBRID APPROACH
@@ -183,10 +170,21 @@ $WORKTREE_RULES
 ; Claude config directories
 (allow file-write* (subpath "$HOME/.claude"))
 (allow file-write* (literal "$HOME/.claude.json"))
+; Claude logs (needed for MCP servers)
+(allow file-write* (subpath "$HOME/Library/Logs/Claude"))
+; Node.js caches (project-scoped for MCP servers, avoids global cache poisoning)
+(allow file-write* (subpath "$PROJECT_DIR/.npm-cache"))
 
 ; Wrangler local dev cache (no auth tokens for local-only usage)
 (allow file-write* (subpath "$HOME/.wrangler"))
 (allow file-write* (subpath "$HOME/Library/Preferences/.wrangler"))
+
+; Puppeteer/Playwright caches (browser runs outside sandbox, connects via CDP)
+(allow file-write* (subpath "$HOME/.cache/puppeteer"))
+(allow file-write* (subpath "$HOME/.cache/ms-playwright"))
+
+; Yarn Berry cache
+(allow file-write* (subpath "$HOME/.yarn"))
 
 ; Temp directories
 (allow file-write* (subpath "$PROJECT_DIR/.claude-tmp"))
@@ -202,8 +200,6 @@ $WORKTREE_RULES
 SBEOF
 
 # Create project-specific temp directory
-CLAUDE_TMP="$PROJECT_DIR/.claude-tmp"
-mkdir -p "$CLAUDE_TMP"
 
 # Keep Node compile cache in system temp (not project dir)
 SYSTEM_TMPDIR="${TMPDIR:-/tmp}"
@@ -215,11 +211,23 @@ echo "  Network:   localhost + HTTPS + SSH + DNS"
 echo "  Blocked:   ~/.ssh, ~/.aws, credentials, history, browsers"
 echo ""
 
+# Remove quarantine from Puppeteer's Chrome for Testing (runs OUTSIDE sandbox)
+# Chrome for Testing is official Google but unsigned, so macOS quarantines it
+if [ -d "$HOME/.cache/puppeteer" ]; then
+  find "$HOME/.cache/puppeteer" -name "*.app" -exec xattr -cr {} \; 2>/dev/null || true
+fi
+
 # Run with sandbox
+# Note: Chrome's internal sandbox is disabled via env vars because it conflicts with sandbox-exec.
+# Security is maintained by the outer sandbox-exec which blocks sensitive files and restricts writes.
+# shellcheck disable=SC2086
 env \
-  PATH="$FAKE_BIN:$PATH" \
-  TMPDIR="$CLAUDE_TMP" \
+  PATH="$PATH" \
+  TMPDIR="/tmp" \
   SSH_AUTH_SOCK="$SSH_AUTH_SOCK" \
   npm_config_ignore_scripts=true \
+  npm_config_cache="$PROJECT_DIR/.npm-cache" \
+  PUPPETEER_CHROMIUM_ARGS="--no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage" \
+  PLAYWRIGHT_CHROMIUM_ARGS="--no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage" \
   $IDE_ENV \
   sandbox-exec -f "$PROFILE" claude --dangerously-skip-permissions "$@"
