@@ -195,8 +195,8 @@ $WORKTREE_RULES
 ; SSH agent socket (for git commit signing without exposing private keys)
 (allow file-write* (regex #"^/private/tmp/com\\.apple\\.launchd\\.[^/]+/Listeners$"))
 
-; Deny sensitive files even within allowed paths
-(deny file-write* (regex #"/\\.env"))
+; .env write allowed (e.g. Doppler --mount creates named pipes)
+; .env read still denied (line 150) so Claude can't read secrets
 SBEOF
 
 # Create project-specific temp directory
