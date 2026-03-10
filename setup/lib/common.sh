@@ -116,7 +116,8 @@ get_user_email() {
     email=$(/usr/libexec/PlistBuddy -c "print :Accounts:0:AccountID" \
         ~/Library/Preferences/MobileMeAccounts.plist 2>/dev/null)
 
-    if [ -z "$email" ]; then
+    # Validate it looks like an email, otherwise prompt
+    if [[ ! "$email" =~ ^[^@]+@[^@]+\.[^@]+$ ]]; then
         read -p "Enter your email: " email
     fi
     echo "$email"
