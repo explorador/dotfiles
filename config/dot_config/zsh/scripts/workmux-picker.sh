@@ -48,9 +48,9 @@ while true; do
     done <<< "$existing"
   fi
 
-  # Get branches with open PRs only, sorted by most recent
-  pr_branches=$(gh pr list --state open --json headRefName,updatedAt \
-    --jq 'sort_by(.updatedAt) | reverse | .[].headRefName' 2>/dev/null)
+  # Get all remote branches, sorted by most recent commit
+  pr_branches=$(git branch -r --sort=-committerdate \
+    | grep -v 'HEAD' | sed 's|origin/||' | sed 's/^[[:space:]]*//')
 
   # Deduplicate branches by normalizing slashes to dashes
   filtered_branches=""
@@ -84,7 +84,7 @@ while true; do
     fi
   ) | fzf --ansi --no-sort --print-query \
          --prompt="Worktree: " \
-         --header="[open]=switch, [remove]=delete, [new]=create (open PRs only)" | \
+         --header="[open]=switch, [remove]=delete, [new]=create (all remote branches)" | \
       tail -1)
 
   # Strip ANSI codes from selection
